@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/drawer_menus/about.dart';
+import 'package:gb_marketing/screens/drawer_menus/contact.dart';
+import 'package:gb_marketing/screens/drawer_menus/my_account.dart';
+import 'package:gb_marketing/screens/drawer_menus/need_help.dart';
+import 'package:gb_marketing/screens/drawer_menus/privacy.dart';
+import 'package:gb_marketing/screens/drawer_menus/terms.dart';
 import 'package:gb_marketing/widgets/drawer_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'bottom_bar.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({Key? key}) : super(key: key);
@@ -70,16 +75,47 @@ class DrawerWidget extends StatelessWidget {
             SizedBox(
               height: 5,
             ),
-            DrawerTile(onTap: () {}, title: 'My Account', icon: Icons.person),
-            DrawerTile(onTap: () {}, title: 'About', icon: Icons.feedback),
-            DrawerTile(onTap: () {}, title: 'Need Help?', icon: Icons.help),
             DrawerTile(
-                onTap: () {}, title: 'Terms & Conditions', icon: Icons.notes),
+                onTap: () {
+                  Get.back();
+                  Get.to(() => MyAccountView());
+                },
+                title: 'My Account',
+                icon: Icons.person),
             DrawerTile(
-                onTap: () {}, title: 'Privacy Policy', icon: Icons.privacy_tip),
+                onTap: () {
+                  Get.back();
+                  Get.to(() => AboutView());
+                },
+                title: 'About',
+                icon: Icons.feedback),
             DrawerTile(
-                onTap: () {},
+                onTap: () {
+                  Get.back();
+                  Get.to(() => NeedHelpView());
+                },
+                title: 'Need Help?',
+                icon: Icons.help),
+            DrawerTile(
+                onTap: () {
+                  Get.back();
+                  Get.to(() => TermsView());
+                },
+                title: 'Terms & Conditions',
+                icon: Icons.notes),
+            DrawerTile(
+                onTap: () {
+                  Get.back();
+                  Get.to(() => PrivacyView());
+                },
                 title: 'Privacy Policy',
+                icon: Icons.privacy_tip),
+            DrawerTile(
+                onTap: () {
+                  Get.back();
+                  Get.to(() => ContactView());
+                },
+                title: 'Contact Us',
                 icon: Icons.contact_mail),
             DrawerTile(onTap: () {}, title: 'Share App', icon: Icons.share),
           ],

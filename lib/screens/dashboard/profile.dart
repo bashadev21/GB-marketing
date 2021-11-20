@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/addressbook/all_address.dart';
 import 'package:gb_marketing/widgets/profile_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+
+import '../change_password.dart';
+import '../my_orders.dart';
+import '../wishlist.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -25,7 +31,7 @@ class ProfileView extends StatelessWidget {
           ),
           ProfileTile(
             icon: CupertinoIcons.bag_fill,
-            onTap: () {},
+            onTap: () => Get.to(() => MyOrdersView()),
             title: 'My Orders',
           ),
           SizedBox(
@@ -34,7 +40,7 @@ class ProfileView extends StatelessWidget {
           ProfileTile(
             icon: CupertinoIcons.heart_fill,
             color: Colors.red,
-            onTap: () {},
+            onTap: () => Get.to(() => WishlistView()),
             title: 'Wishlist',
           ),
           SizedBox(
@@ -42,15 +48,15 @@ class ProfileView extends StatelessWidget {
           ),
           ProfileTile(
             icon: CupertinoIcons.building_2_fill,
-            onTap: () {},
-            title: 'Addres Book',
+            onTap: () => Get.to(() => AddressView()),
+            title: 'Address Book',
           ),
           SizedBox(
             height: 10,
           ),
           ProfileTile(
             icon: CupertinoIcons.lock_rotation,
-            onTap: () {},
+            onTap: () => Get.to(() => ChangePassView()),
             title: 'Change Password',
           ),
           SizedBox(

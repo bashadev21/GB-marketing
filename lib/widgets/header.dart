@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 
 import 'text.dart';
@@ -7,13 +9,15 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool center;
   final bool backicon;
+  final bool carticon;
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   const BaseAppBar(
       {Key? key,
       this.title = 'GB Marketing',
       this.center = true,
-      this.backicon = false})
+      this.backicon = false,
+      this.carticon = false})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,42 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: Colors.white,
         defalutsize: true,
       ),
+      actions: [
+        if (carticon)
+          IconButton(
+            onPressed: () => Get.offAll(() => BottamBar(currentindex: 2)),
+            icon: Stack(
+              fit: StackFit.expand,
+              children: [
+                const Icon(
+                  CupertinoIcons.shopping_cart,
+                  size: 26.0,
+                ),
+                Positioned(
+                    right: 0,
+                    top: 0,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.red,
+                      radius: 8,
+                      child: Text(
+                        '1',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ))
+              ],
+            ),
+          ),
+      ],
       leading: backicon
-          ? const BackButton()
+          ? IconButton(
+              onPressed: () => Get.back(),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              ))
           : IconButton(
               icon: const Icon(
                 Icons.sort,

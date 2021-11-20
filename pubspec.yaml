@@ -42,6 +42,8 @@ dependencies:
   cached_network_image: ^3.0.0
   animations: ^2.0.2
   badges: ^2.0.1
+  flutter_star_rating: ^0.0.3
+  
 
 dev_dependencies:
   flutter_test:

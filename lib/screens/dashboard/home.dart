@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/products.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/search_bar.dart';
 import 'package:gb_marketing/widgets/text.dart';
@@ -67,26 +68,29 @@ class HomeView extends StatelessWidget {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: Column(
-                            children: [
-                              Expanded(child: Placeholder()),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 6),
-                                child: Txt(
-                                  fsize: 12,
-                                  text: 'Wooden',
-                                  lines: 2,
-                                  weight: FontWeight.w500,
-                                ),
-                              )
-                            ],
+                        return InkWell(
+                          onTap: () => Get.to(() => ProductsView()),
+                          child: Card(
+                            child: Column(
+                              children: [
+                                Expanded(child: Placeholder()),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 6),
+                                  child: Txt(
+                                    fsize: 12,
+                                    text: 'Wooden',
+                                    lines: 2,
+                                    weight: FontWeight.w500,
+                                  ),
+                                )
+                              ],
+                            ),
+                            color: Colors.blueGrey[50],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            elevation: 2,
                           ),
-                          color: Colors.blueGrey[50],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 2,
                         );
                       }),
                 ],

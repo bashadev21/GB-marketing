@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gb_marketing/screens/my_orders.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -29,9 +30,7 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.grey[50],
             primaryColorLight: Colors.blueAccent,
             primaryColor: Colors.lightBlue),
-        home: BottamBar(
-          currentindex: 2,
-        ),
+        home: BottamBar(currentindex: 0),
         debugShowCheckedModeBanner: false,
       );
     });

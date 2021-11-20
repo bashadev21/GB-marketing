@@ -1,19 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/widgets/text.dart';
 
 class RaisedGradientButton extends StatelessWidget {
-  final Gradient gradient;
   final String text;
   final double width;
   final double height;
+  final bool addicon;
   final VoidCallback onPressed;
 
   const RaisedGradientButton({
     Key? key,
-    required this.gradient,
     required this.text,
     this.width = double.infinity,
     this.height = 50.0,
+    this.addicon = false,
     required this.onPressed,
   }) : super(key: key);
 
@@ -24,7 +25,9 @@ class RaisedGradientButton extends StatelessWidget {
       height: 50.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          gradient: gradient,
+          gradient: LinearGradient(
+            colors: <Color>[Colors.lightBlue, Colors.blueAccent],
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey[500]!,
@@ -37,11 +40,25 @@ class RaisedGradientButton extends StatelessWidget {
         child: InkWell(
             onTap: onPressed,
             child: Center(
-              child: Txt(
-                text: text,
-                color: Colors.white,
-                defalutsize: true,
-                weight: FontWeight.w500,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (addicon)
+                    Icon(
+                      CupertinoIcons.add,
+                      color: Colors.white,
+                    ),
+                  if (addicon)
+                    SizedBox(
+                      width: 8,
+                    ),
+                  Txt(
+                    text: text,
+                    color: Colors.white,
+                    defalutsize: true,
+                    weight: FontWeight.w500,
+                  ),
+                ],
               ),
             )),
       ),
