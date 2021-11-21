@@ -7,6 +7,7 @@ class RaisedGradientButton extends StatelessWidget {
   final double width;
   final double height;
   final bool addicon;
+  final bool ispink;
   final VoidCallback onPressed;
 
   const RaisedGradientButton({
@@ -14,6 +15,7 @@ class RaisedGradientButton extends StatelessWidget {
     required this.text,
     this.width = double.infinity,
     this.height = 50.0,
+    this.ispink = false,
     this.addicon = false,
     required this.onPressed,
   }) : super(key: key);
@@ -24,9 +26,12 @@ class RaisedGradientButton extends StatelessWidget {
       width: width,
       height: 50.0,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
-            colors: <Color>[Colors.lightBlue, Colors.blueAccent],
+            colors: <Color>[
+              ispink ? Colors.pink : Colors.lightBlue,
+              ispink ? Colors.pink : Colors.blueAccent
+            ],
           ),
           boxShadow: [
             BoxShadow(

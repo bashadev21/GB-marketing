@@ -15,20 +15,30 @@ class CTextField extends StatelessWidget {
   final IconData preicon;
   final bool ispass;
   final bool isvisible;
+  final bool istheme;
+  final double padd;
+  final bool obs;
+  final bool islabel;
+  final VoidCallback passontap;
   final TextEditingController controller;
-
+  static _defaultFunction() {}
   const CTextField(
       {Key? key,
       this.hint = '',
       this.prefix = '',
+      this.padd = 14,
+      this.obs = false,
       this.enabled = true,
       this.suffixicon = false,
+      this.istheme = false,
       this.label = '',
       this.ispass = false,
       this.isvisible = false,
+      this.passontap = _defaultFunction,
       this.preicon = Icons.person,
       this.ispreicon = false,
       this.isprefix = false,
+      this.islabel = false,
       this.max = 500,
       required this.controller,
       this.keyboard = TextInputType.text})
@@ -37,12 +47,12 @@ class CTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      obscureText: ispass ? true : false,
+      obscureText: obs ? true : false,
       focusNode: enabled ? FocusNode() : AlwaysDisabledFocusNode(),
       controller: controller,
       keyboardType: keyboard,
       inputFormatters: <TextInputFormatter>[
-        if (max == 10 || max == 6)
+        if (max == 10 || max == 6 || max == 3)
           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       ],
       maxLength: max,
@@ -56,24 +66,34 @@ class CTextField extends StatelessWidget {
               letterSpacing: .8)),
       decoration: InputDecoration(
         suffixIcon: ispass
-            ? Icon(isvisible ? Icons.visibility_off : Icons.visibility)
+            ? InkWell(
+                onTap: passontap,
+                child:
+                    Icon(!isvisible ? Icons.visibility_off : Icons.visibility))
             : null,
         counterText: '',
-        // prefixIcon: ispreicon ? Icon(preicon) : SizedBox(),
-        // : Padding(
-        //     padding: EdgeInsets.all(isprefix ? 15.sp : 0),
-        //     child: Text(prefix,
-        //         style: GoogleFonts.poppins(
-        //             textStyle: TextStyle(
-        //                 fontSize: 14.sp,
-        //                 fontWeight: FontWeight.w500,
-        //                 color: Colors.black87,
-        //                 letterSpacing: .8))),
-        //   ),
-        hintText: hint,
+        label: Text(
+          hint,
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  fontSize: 12.sp, color: Colors.grey, letterSpacing: .8)),
+        ),
+        fillColor: Colors.white,
+        filled: true,
+        floatingLabelBehavior:
+            islabel ? FloatingLabelBehavior.always : FloatingLabelBehavior.auto,
+        labelStyle: GoogleFonts.poppins(
+            textStyle: TextStyle(
+                fontSize: 12.sp, color: Colors.black, letterSpacing: .8)),
+        hintStyle: GoogleFonts.poppins(
+            textStyle: TextStyle(
+                fontSize: 12.sp, color: Colors.grey, letterSpacing: .8)),
+        hintText: label,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.black, width: 1.0),
+          borderSide: BorderSide(
+              color: istheme ? Get.theme.primaryColor : Colors.black,
+              width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -83,7 +103,7 @@ class CTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1.0),
         ),
-        contentPadding: EdgeInsets.all(14.sp),
+        contentPadding: EdgeInsets.all(padd.sp),
       ),
     );
   }

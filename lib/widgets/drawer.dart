@@ -6,6 +6,7 @@ import 'package:gb_marketing/screens/drawer_menus/my_account.dart';
 import 'package:gb_marketing/screens/drawer_menus/need_help.dart';
 import 'package:gb_marketing/screens/drawer_menus/privacy.dart';
 import 'package:gb_marketing/screens/drawer_menus/terms.dart';
+import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/drawer_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,9 @@ class DrawerWidget extends StatelessWidget {
             DrawerTile(
                 onTap: () {
                   Get.back();
-                  Get.to(() => MyAccountView());
+                  Get.offAll(() => BottamBar(
+                        currentindex: 3,
+                      ));
                 },
                 title: 'My Account',
                 icon: Icons.person),

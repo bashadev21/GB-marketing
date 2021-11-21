@@ -30,9 +30,35 @@ class CartView extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
+                  itemCount: 4,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return CartTile();
+                    return Column(
+                      children: [
+                        CartTile(),
+                        index == 3
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Txt(
+                                      text: 'Total: ',
+                                      color: Colors.grey,
+                                      fsize: 13,
+                                    ),
+                                    Txt(
+                                      text: '₹50000',
+                                      weight: FontWeight.w500,
+                                      fsize: 13,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SizedBox()
+                      ],
+                    );
                   }),
             ),
             Container(

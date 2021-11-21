@@ -9,10 +9,12 @@ class Txt extends StatelessWidget {
   final int lines;
   final Color color;
   final bool defalutsize;
+  final bool iscenter;
   const Txt(
       {Key? key,
       this.text = '',
       this.fsize = 16,
+      this.iscenter = false,
       this.lines = 1000,
       this.color = Colors.black87,
       this.defalutsize = false,
@@ -25,6 +27,7 @@ class Txt extends StatelessWidget {
       text,
       maxLines: lines,
       overflow: TextOverflow.ellipsis,
+      textAlign: iscenter ? TextAlign.center : TextAlign.start,
       style: GoogleFonts.poppins(
           textStyle: TextStyle(
               fontSize: defalutsize ? 17 : fsize.sp,

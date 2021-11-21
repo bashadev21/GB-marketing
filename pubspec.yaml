@@ -43,6 +43,10 @@ dependencies:
   animations: ^2.0.2
   badges: ^2.0.1
   flutter_star_rating: ^0.0.3
+  flutter_swiper: ^1.1.6
+  pinput: ^1.2.2
+  fluttertoast:
+  upgrader: ^3.9.0
   
 
 dev_dependencies:

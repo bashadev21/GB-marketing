@@ -109,9 +109,14 @@ class CheckOutView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Container(
                     height: 50,
-                    color: Colors.pink,
+                    decoration: BoxDecoration(
+                        color: Colors.pink,
+                        borderRadius: BorderRadius.circular(3)),
                     child: Center(
                       child: Txt(
                         text: 'Manage Address',
@@ -121,7 +126,7 @@ class CheckOutView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   for (int i = 0; i < 2; i++)
                     Column(
@@ -377,6 +382,7 @@ class CheckOutView extends StatelessWidget {
                                 Txt(
                                   text: 'Online Payment',
                                   weight: FontWeight.w500,
+                                  fsize: 14,
                                 ),
                               ],
                             ),
@@ -389,7 +395,40 @@ class CheckOutView extends StatelessWidget {
                                     toggleable: true,
                                     onChanged: (s) {}))
                           ],
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: 60.sp,
+                                    width: 60.sp,
+                                    child: Placeholder(),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Txt(
+                                  text: 'Cash on Delivery',
+                                  weight: FontWeight.w500,
+                                  fsize: 14,
+                                ),
+                              ],
+                            ),
+                            Transform.scale(
+                                scale: 1.5,
+                                child: Radio(
+                                    activeColor: Colors.green,
+                                    value: false,
+                                    groupValue: true,
+                                    toggleable: true,
+                                    onChanged: (s) {}))
+                          ],
+                        ),
                       ],
                     ),
                   ),

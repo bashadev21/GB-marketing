@@ -27,6 +27,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Txt(
         text: title,
         color: Colors.white,
+        weight: FontWeight.w500,
         defalutsize: true,
       ),
       actions: [

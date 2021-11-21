@@ -1,38 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/products.dart';
-import 'package:gb_marketing/screens/subcategory.dart';
+import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({Key? key}) : super(key: key);
+class SubCaterGoryView extends StatelessWidget {
+  const SubCaterGoryView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: BaseAppBar(
+        backicon: true,
+        title: 'Sub Categories',
+        carticon: true,
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 6.sp),
         child: Column(
           children: [
-            Container(
-              height: 50,
-              child: Center(
-                child: Txt(
-                  text: 'Categories',
-                  weight: FontWeight.w500,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 6,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
                   Txt(
-                    text: 'Select Category',
+                    text: 'Select Subcategory',
                     weight: FontWeight.w500,
                   ),
                 ],
@@ -43,12 +36,12 @@ class CategoryView extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.78, crossAxisCount: 2),
+                        childAspectRatio: 0.85, crossAxisCount: 2),
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () => Get.to(() => SubCaterGoryView()),
+                        onTap: () => Get.to(() => ProductsView()),
                         child: Card(
-                          color: Colors.blueGrey[50],
+                          color: Color(0xfffff2df),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           elevation: 2,
@@ -57,7 +50,7 @@ class CategoryView extends StatelessWidget {
                               Expanded(child: Placeholder()),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 6),
+                                    const EdgeInsets.symmetric(vertical: 8),
                                 child: Txt(
                                   fsize: 12,
                                   text: 'Wooden',
@@ -65,21 +58,6 @@ class CategoryView extends StatelessWidget {
                                   weight: FontWeight.w500,
                                 ),
                               ),
-                              Container(
-                                height: 1.5,
-                                color: Colors.white,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 6),
-                                child: Txt(
-                                  fsize: 12,
-                                  text: 'Wooden',
-                                  color: Colors.grey,
-                                  lines: 1,
-                                  weight: FontWeight.w500,
-                                ),
-                              )
                             ],
                           ),
                         ),

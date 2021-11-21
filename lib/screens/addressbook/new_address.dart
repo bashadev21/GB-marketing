@@ -31,6 +31,9 @@ class NewAddressView extends StatelessWidget {
               child: ListView(
                 shrinkWrap: true,
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
                   CTextField(
                     controller: c1,
                     hint: 'Full Name',
