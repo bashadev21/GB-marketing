@@ -56,6 +56,8 @@ class LoginView extends StatelessWidget {
                             isvisible: acon.lobs.value,
                             passontap: () {
                               acon.lobs.toggle();
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
                             },
                           )),
                       SizedBox(

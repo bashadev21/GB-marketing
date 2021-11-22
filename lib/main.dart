@@ -9,11 +9,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 import 'screens/login.dart';
+import 'services/controllers/zoom_image.dart';
 
 void main() async {
   await GetStorage.init();
   runApp(MyApp());
   Get.put(AuthCon());
+  Get.put(ZoomCon());
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue));
 }

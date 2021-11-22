@@ -371,8 +371,8 @@ class CheckOutView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    height: 60.sp,
-                                    width: 60.sp,
+                                    height: 40.sp,
+                                    width: 40.sp,
                                     child: Placeholder(),
                                   ),
                                 ),
@@ -382,12 +382,12 @@ class CheckOutView extends StatelessWidget {
                                 Txt(
                                   text: 'Online Payment',
                                   weight: FontWeight.w500,
-                                  fsize: 14,
+                                  fsize: 12,
                                 ),
                               ],
                             ),
                             Transform.scale(
-                                scale: 1.5,
+                                scale: 1.4,
                                 child: Radio(
                                     activeColor: Colors.green,
                                     value: true,
@@ -404,8 +404,8 @@ class CheckOutView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    height: 60.sp,
-                                    width: 60.sp,
+                                    height: 40.sp,
+                                    width: 40.sp,
                                     child: Placeholder(),
                                   ),
                                 ),
@@ -415,12 +415,12 @@ class CheckOutView extends StatelessWidget {
                                 Txt(
                                   text: 'Cash on Delivery',
                                   weight: FontWeight.w500,
-                                  fsize: 14,
+                                  fsize: 12,
                                 ),
                               ],
                             ),
                             Transform.scale(
-                                scale: 1.5,
+                                scale: 1.4,
                                 child: Radio(
                                     activeColor: Colors.green,
                                     value: false,

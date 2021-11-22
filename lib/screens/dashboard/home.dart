@@ -32,35 +32,34 @@ class HomeView extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           elevation: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(7.0),
-                            child: Swiper(
-                              autoplay: true,
-                              duration: 1200,
-                              autoplayDelay: 2000,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                    padding: EdgeInsets.all(4.0.sp),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(15.sp),
-                                      child: Placeholder(),
-                                      // child: CachedNetworkImage(
-                                      //   imageUrl: _con.banners[index]
-                                      //       ['image'],
-                                      //   fit: BoxFit.cover,
-                                      //   placeholder: (context, url) =>
-                                      //       Padding(
-                                      //     padding:
-                                      //         const EdgeInsets.all(1.0),
-                                      //     child: Placeholder(),
-                                      //   ),
-                                      // ),
-                                    ));
-                              },
-                              itemCount: 3,
-                              pagination: new SwiperPagination(),
-                            ),
+                          child: Swiper(
+                            autoplay: true,
+                            duration: 1200,
+                            onTap: (o) {
+                              print(o);
+                            },
+                            autoplayDelay: 2000,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                  padding: EdgeInsets.all(4.0.sp),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Placeholder(),
+                                    // child: CachedNetworkImage(
+                                    //   imageUrl: _con.banners[index]
+                                    //       ['image'],
+                                    //   fit: BoxFit.cover,
+                                    //   placeholder: (context, url) =>
+                                    //       Padding(
+                                    //     padding:
+                                    //         const EdgeInsets.all(1.0),
+                                    //     child: Placeholder(),
+                                    //   ),
+                                    // ),
+                                  ));
+                            },
+                            itemCount: 3,
+                            pagination: new SwiperPagination(),
                           ),
                         ),
                       ),
