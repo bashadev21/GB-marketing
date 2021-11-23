@@ -190,15 +190,20 @@ class AddressView extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          Txt(
-                                            text: address['doorno'] + ' , ',
-                                            weight: FontWeight.w500,
-                                            fsize: 12,
-                                          ),
-                                          Txt(
-                                            text: address['street'],
-                                            weight: FontWeight.w500,
-                                            fsize: 12,
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Txt(
+                                                  text: address['doorno'] +
+                                                      ' , ' +
+                                                      address['street'],
+                                                  weight: FontWeight.w500,
+                                                  fsize: 12,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),

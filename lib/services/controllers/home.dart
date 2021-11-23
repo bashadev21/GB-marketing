@@ -12,7 +12,7 @@ class HomeCon extends GetxController with BaseController {
   var popproductlist = [].obs;
   var catproductlist = [].obs;
   var productdetials = {}.obs;
-
+  var load = false.obs;
   @override
   void onInit() {
     getbanner();
@@ -66,6 +66,7 @@ class HomeCon extends GetxController with BaseController {
   }
 
   void getproddetails(prodid) async {
+    load.value = true;
     print(prodid);
     var body = {
       'functocall': API().getproddetails,
@@ -75,9 +76,11 @@ class HomeCon extends GetxController with BaseController {
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
     if (response == null) return;
+    load.value = false;
 
     print(response.toString());
     if (response != '[]' || response != '') {
+      load.value = false;
       var data = json.decode(response);
       productdetials.value = data[0];
       print(productdetials.toString());
