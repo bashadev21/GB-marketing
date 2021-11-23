@@ -98,6 +98,8 @@ class LoginView extends StatelessWidget {
                                   textColor: Colors.white,
                                   fontSize: 16,
                                 );
+                              } else {
+                                acon.login();
                               }
                             }),
                       ),

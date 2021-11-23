@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 
@@ -12,13 +13,14 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool carticon;
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-  const BaseAppBar(
+  BaseAppBar(
       {Key? key,
       this.title = 'GB Marketing',
       this.center = true,
       this.backicon = false,
       this.carticon = false})
       : super(key: key);
+  final CartCon ccon = Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -44,17 +46,19 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Positioned(
                     right: 0,
                     top: 0,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      radius: 8,
-                      child: Text(
-                        '1',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ))
+                    child: Obx(() => CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: ccon.cartlist.length.toString().length == 1
+                              ? 8
+                              : 11,
+                          child: Text(
+                            ccon.cartlist.length.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        )))
               ],
             ),
           ),

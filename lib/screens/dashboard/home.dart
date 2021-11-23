@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/products.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
 import 'package:gb_marketing/widgets/search_bar.dart';
@@ -8,9 +10,11 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+import '../../api_endpoints.dart';
 
+class HomeView extends StatelessWidget {
+  HomeView({Key? key}) : super(key: key);
+  final HomeCon hcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,42 +31,43 @@ class HomeView extends StatelessWidget {
                     shrinkWrap: true,
                     children: [
                       Container(
-                        height: 150.sp,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 2,
-                          child: Swiper(
-                            autoplay: true,
-                            duration: 1200,
-                            onTap: (o) {
-                              print(o);
-                            },
-                            autoplayDelay: 2000,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                  padding: EdgeInsets.all(4.0.sp),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Placeholder(),
-                                    // child: CachedNetworkImage(
-                                    //   imageUrl: _con.banners[index]
-                                    //       ['image'],
-                                    //   fit: BoxFit.cover,
-                                    //   placeholder: (context, url) =>
-                                    //       Padding(
-                                    //     padding:
-                                    //         const EdgeInsets.all(1.0),
-                                    //     child: Placeholder(),
-                                    //   ),
-                                    // ),
-                                  ));
-                            },
-                            itemCount: 3,
-                            pagination: new SwiperPagination(),
-                          ),
-                        ),
-                      ),
+                          height: 150.sp,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            elevation: 2,
+                            child: Swiper(
+                              autoplay: true,
+                              duration: 1200,
+                              onTap: (o) {
+                                print(o);
+                              },
+                              autoplayDelay: 2000,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                    padding: EdgeInsets.all(4.0.sp),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: API().imagebase +
+                                            hcon.bannerlist[index]['image'],
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            color: Colors.grey.withOpacity(0.2),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ));
+                              },
+                              itemCount: hcon.bannerlist.length,
+                              pagination: new SwiperPagination(),
+                            ),
+                          )),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Container(
@@ -90,39 +95,84 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      GridView.builder(
-                          itemCount: 4,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () => Get.to(() => ProductsView()),
-                              child: Card(
-                                child: Column(
-                                  children: [
-                                    Expanded(child: Placeholder()),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 6),
-                                      child: Txt(
-                                        fsize: 12,
-                                        text: 'Wooden',
-                                        lines: 2,
-                                        weight: FontWeight.w500,
-                                      ),
-                                    )
-                                  ],
+                      Obx(
+                        () => GridView.builder(
+                            itemCount: hcon.popcategotylist.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            itemBuilder: (context, index) {
+                              final cat = hcon.popcategotylist[index];
+                              return InkWell(
+                                onTap: () {
+                                  hcon.getpopcatprod(hcon.popcategotylist[index]
+                                      ['category_id']);
+                                  Get.to(() => ProductsView());
+                                },
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                          child: CachedNetworkImage(
+                                        imageUrl:
+                                            API().imagebase + cat['image'],
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            color: Colors.grey.withOpacity(0.2),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      )),
+                                      Container(
+                                        color: Colors.blueGrey[50],
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 6),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Column(
+                                                        children: [
+                                                          Txt(
+                                                            fsize: 12,
+                                                            text: cat[
+                                                                'category_name'],
+                                                            lines: 2,
+                                                            iscenter: true,
+                                                            weight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  elevation: 2,
                                 ),
-                                color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                elevation: 2,
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Container(
@@ -140,16 +190,18 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      GridView.builder(
-                          itemCount: 4,
+                      Obx(() => GridView.builder(
+                          itemCount: hcon.popproductlist.length,
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   childAspectRatio: 0.7, crossAxisCount: 2),
                           itemBuilder: (context, index) {
-                            return ProductTile();
-                          }),
+                            return ProductTile(
+                              prod: hcon.popproductlist[index],
+                            );
+                          })),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Container(

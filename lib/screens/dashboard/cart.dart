@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/cart_tile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:collection/collection.dart';
 import '../checkout.dart';
 
 class CartView extends StatelessWidget {
-  const CartView({Key? key}) : super(key: key);
-
+  CartView({Key? key}) : super(key: key);
+  final CartCon ccon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +29,23 @@ class CartView extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+                child: Obx(
+              () => ListView.builder(
                   shrinkWrap: true,
-                  itemCount: 4,
+                  itemCount: ccon.cartlist.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    var cashlist = <int>[];
+                    ccon.cartlist.forEach((e) {
+                      cashlist.add(int.parse(e['product_price']));
+                    });
+                    var total = cashlist.sum;
                     return Column(
                       children: [
-                        CartTile(),
-                        index == 3
+                        CartTile(
+                          cart: ccon.cartlist[index],
+                        ),
+                        index == ccon.cartlist.length - 1
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 8),
@@ -49,7 +58,7 @@ class CartView extends StatelessWidget {
                                       fsize: 13,
                                     ),
                                     Txt(
-                                      text: '₹50000',
+                                      text: '₹ ${total.toString()}',
                                       weight: FontWeight.w500,
                                       fsize: 13,
                                     ),
@@ -60,7 +69,7 @@ class CartView extends StatelessWidget {
                       ],
                     );
                   }),
-            ),
+            )),
             Container(
               height: kBottomNavigationBarHeight + 5,
               child: Padding(

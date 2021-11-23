@@ -121,8 +121,10 @@ class UnAuthorizedException extends AppException {
 class BaseClient {
   static const int TIME_OUT_DURATION = 20;
   //GET
-  Future<dynamic> get(String baseUrl, String api) async {
-    var uri = Uri.parse(baseUrl + api);
+  Future<dynamic> get(
+    String baseUrl,
+  ) async {
+    var uri = Uri.parse(baseUrl);
     try {
       var response =
           await http.get(uri).timeout(Duration(seconds: TIME_OUT_DURATION));
@@ -136,17 +138,17 @@ class BaseClient {
   }
 
   //POST
-  Future<dynamic> post(String baseUrl, String api, dynamic payloadObj) async {
-    var uri = Uri.parse(baseUrl + api);
-    var payload = json.encode(payloadObj);
-    print(payload);
+  Future<dynamic> post(String baseUrl, dynamic payloadObj) async {
+    var uri = Uri.parse(baseUrl);
+    // var payload = json.encode(payloadObj);
+    print(payloadObj.toString());
     try {
       var response = await http
           .post(uri,
               headers: <String, String>{
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
               },
-              body: payload)
+              body: payloadObj)
           .timeout(Duration(seconds: TIME_OUT_DURATION));
       print(response.statusCode);
 

@@ -7,6 +7,7 @@ import 'package:gb_marketing/screens/dashboard/cart.dart';
 import 'package:gb_marketing/screens/dashboard/category.dart';
 import 'package:gb_marketing/screens/dashboard/home.dart';
 import 'package:gb_marketing/screens/dashboard/profile.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:get/get.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -23,7 +24,8 @@ class BottamBar extends StatefulWidget {
 }
 
 class _BottamBarState extends State<BottamBar> {
-  static const List<Widget> _widgetOptions = <Widget>[
+  final CartCon ccon = Get.find();
+  List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     CategoryView(),
     CartView(),
@@ -33,6 +35,7 @@ class _BottamBarState extends State<BottamBar> {
   void _onItemTapped(int index) {
     setState(() {
       widget.currentindex = index;
+      print(index);
     });
   }
 
@@ -57,12 +60,11 @@ class _BottamBarState extends State<BottamBar> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-        appBar: const BaseAppBar(
+        appBar: BaseAppBar(
           carticon: true,
         ),
         drawer: DrawerWidget(),
         body: UpgradeAlert(
-          debugLogging: true,
           dialogStyle: GetPlatform.isIOS
               ? UpgradeDialogStyle.cupertino
               : UpgradeDialogStyle.material,
@@ -99,11 +101,11 @@ class _BottamBarState extends State<BottamBar> {
                   shape: BadgeShape.circle,
                   borderRadius: BorderRadius.circular(100),
                   child: Icon(CupertinoIcons.shopping_cart),
-                  badgeContent: Text(
-                    '2',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
-                  ),
+                  badgeContent: Obx(() => Text(
+                        ccon.cartlist.length.toString(),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w500),
+                      )),
                 ),
                 label: 'Cart',
               ),

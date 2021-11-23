@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/services/controllers/auth.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
@@ -10,7 +12,7 @@ import 'reset_password.dart';
 
 class ForgotPassView extends StatelessWidget {
   ForgotPassView({Key? key}) : super(key: key);
-  final TextEditingController c1 = new TextEditingController();
+  final AuthCon acon = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class ForgotPassView extends StatelessWidget {
               height: 20,
             ),
             CTextField(
-              controller: c1,
+              controller: acon.fphone,
               keyboard: TextInputType.number,
               max: 10,
               hint: 'Phone',
@@ -50,7 +52,15 @@ class ForgotPassView extends StatelessWidget {
               child: RaisedGradientButton(
                   text: 'Reset Password',
                   onPressed: () {
-                    Get.to(() => ResetPassView());
+                    if (acon.fphone.text.length != 10) {
+                      Fluttertoast.showToast(
+                        msg: 'Enter Valid Mobile',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      );
+                    } else {
+                      acon.forgotpass();
+                    }
                   }),
             ),
           ],

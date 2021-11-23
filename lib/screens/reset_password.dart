@@ -13,7 +13,7 @@ class ResetPassView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-        backicon: true,
+        backicon: false,
         title: 'Change Password',
         carticon: false,
       ),
@@ -61,11 +61,8 @@ class ResetPassView extends StatelessWidget {
               children: [
                 Container(
                   width: Get.width * .7,
-                  child: RaisedGradientButton(
-                      text: 'Confirm',
-                      onPressed: () {
-                        print('button clicked');
-                      }),
+                  child:
+                      RaisedGradientButton(text: 'Confirm', onPressed: () {}),
                 ),
               ],
             )

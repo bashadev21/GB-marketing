@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/drawer_menus/about.dart';
 import 'package:gb_marketing/screens/drawer_menus/contact.dart';
-import 'package:gb_marketing/screens/drawer_menus/my_account.dart';
 import 'package:gb_marketing/screens/drawer_menus/need_help.dart';
 import 'package:gb_marketing/screens/drawer_menus/privacy.dart';
 import 'package:gb_marketing/screens/drawer_menus/terms.dart';

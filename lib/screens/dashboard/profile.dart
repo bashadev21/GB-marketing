@@ -41,7 +41,9 @@ class ProfileView extends StatelessWidget {
           ProfileTile(
             icon: CupertinoIcons.heart_fill,
             color: Colors.red,
-            onTap: () => Get.to(() => WishlistView()),
+            onTap: () {
+              Get.to(() => WishlistView());
+            },
             title: 'Wishlist',
           ),
           SizedBox(

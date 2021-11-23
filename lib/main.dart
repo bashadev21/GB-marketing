@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gb_marketing/screens/my_orders.dart';
 import 'package:gb_marketing/services/controllers/auth.dart';
-import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import 'package:sizer/sizer.dart';
-
 import 'screens/login.dart';
+import 'services/controllers/cart.dart';
+import 'services/controllers/category.dart';
+import 'services/controllers/home.dart';
+import 'services/controllers/profile.dart';
 import 'services/controllers/zoom_image.dart';
 
 void main() async {
   await GetStorage.init();
   runApp(MyApp());
   Get.put(AuthCon());
+  Get.put(HomeCon());
   Get.put(ZoomCon());
+  Get.put(HomeCon());
+  Get.put(CatCon());
+  Get.put(CartCon());
+  Get.put(ProfileCon());
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue));
 }

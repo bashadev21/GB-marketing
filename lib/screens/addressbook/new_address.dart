@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text_field.dart';
+import 'package:get/get.dart';
 
 class NewAddressView extends StatelessWidget {
-  NewAddressView({Key? key}) : super(key: key);
-  final TextEditingController c1 = new TextEditingController();
-  final TextEditingController c2 = new TextEditingController();
-  final TextEditingController c3 = new TextEditingController();
-  final TextEditingController c4 = new TextEditingController();
-  final TextEditingController c5 = new TextEditingController();
-  final TextEditingController c6 = new TextEditingController();
-  final TextEditingController c7 = new TextEditingController();
-  final TextEditingController c8 = new TextEditingController();
-  final TextEditingController c9 = new TextEditingController();
+  final String isupdate, id;
+  NewAddressView({Key? key, this.isupdate = '', this.id = ''})
+      : super(key: key);
+  final ProfileCon pcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,28 +32,28 @@ class NewAddressView extends StatelessWidget {
                     height: 10,
                   ),
                   CTextField(
-                    controller: c1,
+                    controller: pcon.aname,
                     hint: 'Full Name',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   CTextField(
-                    controller: c2,
+                    controller: pcon.adoor,
                     hint: 'Door No / Appartments / Building',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   CTextField(
-                    controller: c3,
+                    controller: pcon.astreet,
                     hint: 'Street / Colony / Village',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   CTextField(
-                    controller: c4,
+                    controller: pcon.aland,
                     hint: 'Landmark',
                   ),
                   SizedBox(
@@ -66,7 +63,7 @@ class NewAddressView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CTextField(
-                          controller: c5,
+                          controller: pcon.acity,
                           hint: 'City / Town',
                         ),
                       ),
@@ -77,7 +74,7 @@ class NewAddressView extends StatelessWidget {
                         child: CTextField(
                           keyboard: TextInputType.number,
                           max: 6,
-                          controller: c6,
+                          controller: pcon.apincode,
                           hint: 'Pincode',
                         ),
                       ),
@@ -87,14 +84,14 @@ class NewAddressView extends StatelessWidget {
                     height: 20,
                   ),
                   CTextField(
-                    controller: c8,
+                    controller: pcon.astate,
                     hint: 'State',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   CTextField(
-                    controller: c9,
+                    controller: pcon.amobile,
                     max: 10,
                     keyboard: TextInputType.number,
                     hint: 'Mobile',
@@ -109,7 +106,87 @@ class NewAddressView extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedGradientButton(text: 'Add Address', onPressed: () {}),
+            child: RaisedGradientButton(
+                text: isupdate == 'yes' ? 'Update' : 'Add Address',
+                onPressed: () {
+                  if (pcon.aname.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Name Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.adoor.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Door No Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.astreet.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Street  Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.aland.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Landmark Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.acity.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'City Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.apincode.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Pincode Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.astate.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'State Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.amobile.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: 'Mobile No Required',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.apincode.text.length != 6) {
+                    Fluttertoast.showToast(
+                      msg: 'Enter Valid pincode',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else if (pcon.amobile.text.length != 10) {
+                    Fluttertoast.showToast(
+                      msg: 'Enter valid Mobile',
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                  } else {
+                    if (isupdate == 'yes') {
+                      pcon.updateaddress(id);
+                    } else {
+                      pcon.addaddress();
+                    }
+                  }
+                }),
           ),
         ],
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/services/controllers/auth.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
@@ -10,15 +12,8 @@ import 'otp.dart';
 
 class SignupView extends StatelessWidget {
   SignupView({Key? key}) : super(key: key);
-  final TextEditingController c1 = new TextEditingController();
-  final TextEditingController c2 = new TextEditingController();
-  final TextEditingController c3 = new TextEditingController();
-  final TextEditingController c4 = new TextEditingController();
-  final TextEditingController c5 = new TextEditingController();
-  final TextEditingController c6 = new TextEditingController();
-  final TextEditingController c7 = new TextEditingController();
-  final TextEditingController c8 = new TextEditingController();
-  final TextEditingController c9 = new TextEditingController();
+  final AuthCon acon = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,21 +31,21 @@ class SignupView extends StatelessWidget {
               height: 10,
             ),
             CTextField(
-              controller: c1,
+              controller: acon.sfirstname,
               hint: 'First Name',
             ),
             SizedBox(
               height: 20,
             ),
             CTextField(
-              controller: c2,
+              controller: acon.slastname,
               hint: 'Last Name',
             ),
             SizedBox(
               height: 20,
             ),
             CTextField(
-              controller: c3,
+              controller: acon.sphone,
               keyboard: TextInputType.number,
               max: 10,
               hint: 'Phone',
@@ -59,25 +54,41 @@ class SignupView extends StatelessWidget {
               height: 20,
             ),
             CTextField(
-              controller: c4,
+              controller: acon.semail,
               keyboard: TextInputType.emailAddress,
               hint: 'Email',
             ),
             SizedBox(
               height: 20,
             ),
-            CTextField(
-              controller: c6,
-              ispass: true,
-              hint: 'Password',
+            Obx(
+              () => CTextField(
+                controller: acon.spassword,
+                ispass: true,
+                isvisible: acon.sobs.value,
+                obs: acon.sobs.value,
+                passontap: () {
+                  acon.sobs.toggle();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                hint: 'Password',
+              ),
             ),
             SizedBox(
               height: 20,
             ),
-            CTextField(
-              controller: c5,
-              ispass: true,
-              hint: 'Confirm Password',
+            Obx(
+              () => CTextField(
+                controller: acon.sconfirmpassword,
+                ispass: true,
+                isvisible: acon.scobs.value,
+                obs: acon.scobs.value,
+                passontap: () {
+                  acon.scobs.toggle();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                hint: 'Confirm Password',
+              ),
             ),
             SizedBox(
               height: 10,
@@ -85,7 +96,83 @@ class SignupView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedGradientButton(
-                  text: 'Continue', onPressed: () => Get.to(() => OtpView())),
+                  text: 'Continue',
+                  onPressed: () {
+                    if (acon.sfirstname.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'First Name Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.slastname.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'Last Name Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.sphone.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'Mobile Number Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.semail.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'Email Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.spassword.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'Password Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.sconfirmpassword.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'Confirm Password Required',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.sphone.text.length != 10) {
+                      Fluttertoast.showToast(
+                        msg: 'Enter Valid Mobile Number',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.spassword.text.length < 5) {
+                      Fluttertoast.showToast(
+                        msg: 'Password should be above 5 characters',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (!acon.semail.text.trim().toString().isEmail) {
+                      Fluttertoast.showToast(
+                        msg: 'Enter Valid Email',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else if (acon.spassword.text !=
+                        acon.sconfirmpassword.text) {
+                      Fluttertoast.showToast(
+                        msg: 'Password Not Matched',
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                    } else {
+                      acon.generateotp();
+                    }
+                  }),
             ),
             SizedBox(
               height: 10,

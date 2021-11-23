@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/screens/reset_password.dart';
+import 'package:gb_marketing/services/controllers/auth.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
@@ -11,7 +13,10 @@ import 'package:pinput/pin_put/pin_put.dart';
 import 'package:sizer/sizer.dart';
 
 class OtpView extends StatelessWidget {
-  OtpView({Key? key}) : super(key: key);
+  final bool issign;
+  final String mobile;
+  OtpView({Key? key, this.issign = false, this.mobile = ''}) : super(key: key);
+
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
       border: Border.all(color: Get.theme.primaryColor),
@@ -20,7 +25,7 @@ class OtpView extends StatelessWidget {
   }
 
   final TextEditingController otp = TextEditingController();
-
+  final AuthCon acon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +53,7 @@ class OtpView extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 Txt(
-                  text: '9875651231',
+                  text: mobile,
                   weight: FontWeight.w500,
                   fsize: 13,
                 ),
@@ -97,7 +102,7 @@ class OtpView extends StatelessWidget {
                   ],
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => acon.generateotp(),
                   child: Txt(
                     text: 'RESEND OTP',
                     weight: FontWeight.w500,
@@ -131,7 +136,20 @@ class OtpView extends StatelessWidget {
                       );
                     } else {
                       print(otp.text);
-                      Get.offAll(() => BottamBar(currentindex: 0));
+                      if (acon.otp.value != otp.text.toString()) {
+                        Fluttertoast.showToast(
+                          msg: 'Enter Valid OTP',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 18,
+                        );
+                      } else {
+                        if (issign == false) {
+                          acon.signup();
+                        } else {
+                          Get.offAll(() => ResetPassView());
+                        }
+                      }
                     }
                     // if (mobile.text.isEmpty) {
                     //   Fluttertoast.showToast(

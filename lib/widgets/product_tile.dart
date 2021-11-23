@@ -1,18 +1,24 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/product_details.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class ProductTile extends StatelessWidget {
-  final bool isfav;
-  const ProductTile({Key? key, this.isfav = false}) : super(key: key);
+import '../api_endpoints.dart';
 
+class ProductTile extends StatelessWidget {
+  final prod;
+  final bool isfav;
+  ProductTile({Key? key, this.isfav = false, this.prod}) : super(key: key);
+  final HomeCon hcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        hcon.getproddetails(prod['product_id']);
         Get.to(() => ProductDetailsView());
       },
       child: Stack(
@@ -23,7 +29,23 @@ class ProductTile extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
-                  Expanded(child: Placeholder()),
+                  Expanded(
+                      child: prod['product_img'] == 'assets/images/' ||
+                              prod['product_img'] == ''
+                          ? Container(
+                              child: Image.asset('assets/logo.png'),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: API().imagebase + prod['product_img'],
+                              placeholder: (context, url) => Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.grey.withOpacity(0.2),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            )),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Row(
@@ -33,7 +55,7 @@ class ProductTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Txt(
-                                text: 'Glass cofee table',
+                                text: prod['product_name'],
                                 fsize: 12,
                                 weight: FontWeight.w500,
                                 lines: 2,
@@ -55,14 +77,14 @@ class ProductTile extends StatelessWidget {
                               Row(
                                 children: [
                                   Txt(
-                                    text: 'Save ₹123',
-                                    fsize: 11,
+                                    text: 'Save ₹${prod['discount_price']}',
+                                    fsize: 10,
                                     color: Colors.grey,
                                     lines: 2,
                                   ),
                                   Txt(
-                                    text: ' (15% OFF)',
-                                    fsize: 10,
+                                    text: ' (${prod['discount_percent']}% OFF)',
+                                    fsize: 9,
                                     color: Colors.red,
                                     weight: FontWeight.w500,
                                     lines: 2,
@@ -96,7 +118,7 @@ class ProductTile extends StatelessWidget {
                                         lines: 2,
                                       ),
                                       Text(
-                                        '₹123',
+                                        '₹ ${prod['slashed_price']}',
                                         style: TextStyle(
                                             color: Colors.pink,
                                             decoration:
@@ -106,18 +128,24 @@ class ProductTile extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.yellow,
-                                        size: 12.sp,
-                                      ),
-                                      SizedBox(
-                                        width: 2,
-                                      ),
-                                      Txt(
-                                        text: '3',
-                                        fsize: 10,
-                                      ),
+                                      prod['rating'] != '0'
+                                          ? Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                  size: 12.sp,
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Txt(
+                                                  text: prod['rating'],
+                                                  fsize: 10,
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
                                     ],
                                   ),
                                 ],
@@ -143,7 +171,7 @@ class ProductTile extends StatelessWidget {
                                   Row(
                                     children: [
                                       Txt(
-                                        text: '₹ 1233',
+                                        text: '₹ ${prod['product_price']}',
                                         fsize: 14,
                                         color: Colors.pink,
                                         weight: FontWeight.w500,
