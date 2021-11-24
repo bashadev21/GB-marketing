@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/products.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
+import 'package:gb_marketing/services/controllers/zoom_image.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
 import 'package:gb_marketing/widgets/search_bar.dart';
 import 'package:gb_marketing/widgets/text.dart';
+import 'package:gb_marketing/widgets/zoom_image.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -15,12 +17,28 @@ import '../../api_endpoints.dart';
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
   final HomeCon hcon = Get.find();
+  final ZoomCon zcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          SearchBar(),
+          Obx(() => SearchBar(
+                con: hcon.searchc,
+                showclear: hcon.showclear.value,
+                onsubmit: (val) {
+                  // hcon.searchmovie(val);
+
+                  ///for storing last search into the local storage
+                },
+                onchange: (val) {
+                  if (hcon.searchc.text.length != 0) {
+                    hcon.showclear.value = true;
+                  } else {
+                    hcon.showclear.value = false;
+                  }
+                },
+              )),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.sp),
@@ -40,7 +58,8 @@ class HomeView extends StatelessWidget {
                               autoplay: true,
                               duration: 1200,
                               onTap: (o) {
-                                print(o);
+                                zcon.selectedPageIndex.value = o;
+                                Get.to(() => ZoomImage(imgs: hcon.bannerlist));
                               },
                               autoplayDelay: 2000,
                               itemBuilder: (BuildContext context, int index) {
@@ -219,37 +238,42 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      GridView.builder(
-                          itemCount: 4,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 0.7, crossAxisCount: 2),
-                          itemBuilder: (context, index) {
-                            return ProductTile();
-                          }),
+                      Obx(
+                        () => GridView.builder(
+                            itemCount: hcon.recentproductlist.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.7, crossAxisCount: 2),
+                            itemBuilder: (context, index) {
+                              return ProductTile(
+                                prod: hcon.recentproductlist[index],
+                              );
+                            }),
+                      )
                     ],
                   ),
-                  // Positioned(
-                  //     top: 0,
-                  //     left: 0,
-                  //     right: 0,
-                  //     child: Expanded(
-                  //       child: Container(
-                  //         color: Colors.grey[300],
-                  //         child: ListView.builder(
-                  //             physics: NeverScrollableScrollPhysics(),
-                  //             itemCount: 4,
-                  //             itemBuilder: (context, index) {
-                  //               return ListTile(
-                  //                 title: Txt(
-                  //                   text: 'helo',
-                  //                 ),
-                  //               );
-                  //             }),
-                  //       ),
-                  //     ))
+                  Obx(() => hcon.showclear.value
+                      ? Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: Get.height / 2,
+                            color: Colors.grey[300],
+                            child: ListView.builder(
+                                itemCount: 3,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Txt(
+                                      text: 'helo',
+                                    ),
+                                  );
+                                }),
+                          ))
+                      : SizedBox())
                 ],
               ),
             ),

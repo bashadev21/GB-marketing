@@ -24,11 +24,14 @@ class ProfileCon extends GetxController with BaseController {
   final TextEditingController coldpass = new TextEditingController();
   final TextEditingController cnewpass = new TextEditingController();
   final TextEditingController cnewcpass = new TextEditingController();
+  var oobs = true.obs;
+  var nobs = true.obs;
+  var ncobs = true.obs;
 
   @override
   void onInit() {
     getfavlist();
-    getaddress();
+    // getaddress();
     super.onInit();
   }
 
@@ -49,6 +52,7 @@ class ProfileCon extends GetxController with BaseController {
   }
 
   void getaddress() async {
+    showLoading();
     var body = {
       'functocall': API().getadresslist,
       'user_id': GetStorage().read('userid').toString()
@@ -58,9 +62,39 @@ class ProfileCon extends GetxController with BaseController {
     if (response == null) return;
 
     print(response.toString());
+    hideLoading();
+
     if (response != '[]' || response != '') {
+      hideLoading();
       var data = json.decode(response);
       addresslist.value = data;
+    }
+  }
+
+  void updatepassword() async {
+    showLoading();
+    var body = {
+      'functocall': API().updatepassword,
+      'user_id': GetStorage().read('userid').toString(),
+      'old_password': coldpass.text,
+      'new_password': cnewpass.text,
+    };
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+    hideLoading();
+    Fluttertoast.showToast(
+      msg: response,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+    );
+    if (response == 'Password Updated') {
+      coldpass.clear();
+      cnewcpass.clear();
+      cnewpass.clear();
+      Get.back();
     }
   }
 

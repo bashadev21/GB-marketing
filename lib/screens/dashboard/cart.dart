@@ -37,9 +37,11 @@ class CartView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var cashlist = <int>[];
                     ccon.cartlist.forEach((e) {
-                      cashlist.add(int.parse(e['product_price']));
+                      cashlist.add(int.parse(e['product_price']) *
+                          int.parse(e['quantity']));
                     });
                     var total = cashlist.sum;
+                    ccon.totalamount.value = total.toString();
                     return Column(
                       children: [
                         CartTile(
@@ -59,7 +61,7 @@ class CartView extends StatelessWidget {
                                     ),
                                     Txt(
                                       text: '₹ ${total.toString()}',
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                       fsize: 13,
                                     ),
                                   ],

@@ -76,7 +76,9 @@ class CartTile extends StatelessWidget {
                           Column(
                             children: [
                               InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    hcon.productdelete(cart['temp_id']);
+                                  },
                                   child: Icon(CupertinoIcons.delete))
                             ],
                           )
@@ -116,22 +118,40 @@ class CartTile extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(
-                                Icons.remove_circle,
-                                color: Colors.grey,
+                              InkWell(
+                                onTap: () {
+                                  if (cart['quantity'] != '1') {
+                                    var qty = int.parse(cart['quantity']) - 1;
+                                    hcon.productadd(cart['product_id'], qty);
+                                  } else {
+                                    hcon.productdelete(cart['temp_id']);
+                                  }
+                                },
+                                child: Icon(
+                                  Icons.remove_circle,
+                                  color: Colors.grey,
+                                ),
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Txt(
-                                text: '1',
+                                text: cart['quantity'],
                               ),
                               SizedBox(
                                 width: 5,
                               ),
-                              Icon(
-                                Icons.add_circle,
-                                color: Colors.redAccent,
+                              InkWell(
+                                onTap: () {
+                                  if (cart['quantity'] != '10') {
+                                    var qty = int.parse(cart['quantity']) + 1;
+                                    hcon.productadd(cart['product_id'], qty);
+                                  }
+                                },
+                                child: Icon(
+                                  Icons.add_circle,
+                                  color: Colors.redAccent,
+                                ),
                               ),
                             ],
                           ),
@@ -139,7 +159,8 @@ class CartTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Txt(
-                                text: '₹ ${cart['product_price']}',
+                                text:
+                                    '₹ ${int.parse(cart['product_price']) * int.parse(cart['quantity'])}',
                                 fsize: 13,
                                 color: Colors.black,
                                 weight: FontWeight.w500,

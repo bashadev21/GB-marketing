@@ -104,7 +104,12 @@ class _BottamBarState extends State<BottamBar> {
                   badgeContent: Obx(() => Text(
                         ccon.cartlist.length.toString(),
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w500),
+                            fontSize:
+                                ccon.cartlist.length.toString().length == 1
+                                    ? 16
+                                    : 9,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
                       )),
                 ),
                 label: 'Cart',

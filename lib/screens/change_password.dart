@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text_field.dart';
@@ -7,9 +9,7 @@ import 'package:sizer/sizer.dart';
 
 class ChangePassView extends StatelessWidget {
   ChangePassView({Key? key}) : super(key: key);
-  final TextEditingController oldpasscon = new TextEditingController();
-  final TextEditingController newpasscon = new TextEditingController();
-  final TextEditingController confirmpasscon = new TextEditingController();
+  final ProfileCon pcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,27 +26,50 @@ class ChangePassView extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            CTextField(
-              controller: newpasscon,
-              hint: 'Old Password',
-              ispass: true,
-              isvisible: false,
+            Obx(
+              () => CTextField(
+                controller: pcon.coldpass,
+                hint: 'Old Password',
+                ispass: true,
+                obs: pcon.oobs.value,
+                isvisible: pcon.oobs.value,
+                passontap: () {
+                  pcon.oobs.toggle();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+              ),
             ),
             SizedBox(
               height: 30,
             ),
-            CTextField(
-              controller: confirmpasscon,
-              hint: 'New Password',
-              ispass: true,
+            Obx(
+              () => CTextField(
+                controller: pcon.cnewpass,
+                hint: 'New Password',
+                ispass: true,
+                obs: pcon.nobs.value,
+                isvisible: pcon.nobs.value,
+                passontap: () {
+                  pcon.nobs.toggle();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+              ),
             ),
             SizedBox(
               height: 30,
             ),
-            CTextField(
-              controller: oldpasscon,
-              hint: 'Confirm Password',
-              ispass: true,
+            Obx(
+              () => CTextField(
+                controller: pcon.cnewcpass,
+                hint: 'Confirm Password',
+                ispass: true,
+                obs: pcon.ncobs.value,
+                isvisible: pcon.ncobs.value,
+                passontap: () {
+                  pcon.ncobs.toggle();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+              ),
             ),
             SizedBox(
               height: 30,
@@ -59,7 +82,44 @@ class ChangePassView extends StatelessWidget {
                   child: RaisedGradientButton(
                       text: 'Confirm',
                       onPressed: () {
-                        print('button clicked');
+                        if (pcon.coldpass.text.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: 'Old Password Required',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16,
+                          );
+                        } else if (pcon.cnewpass.text.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: 'New Password Required',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16,
+                          );
+                        } else if (pcon.cnewcpass.text.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: 'Confirm Password Required',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16,
+                          );
+                        } else if (pcon.cnewpass.text.length < 5) {
+                          Fluttertoast.showToast(
+                            msg: 'Password should above 5 characters',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16,
+                          );
+                        } else if (pcon.cnewcpass.text != pcon.cnewpass.text) {
+                          Fluttertoast.showToast(
+                            msg: 'Password Not Matched',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16,
+                          );
+                        } else {
+                          pcon.updatepassword();
+                        }
                       }),
                 ),
               ],

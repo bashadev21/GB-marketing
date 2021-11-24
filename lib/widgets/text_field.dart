@@ -20,8 +20,10 @@ class CTextField extends StatelessWidget {
   final bool obs;
   final bool islabel;
   final VoidCallback passontap;
+  final ValueChanged onchage;
   final TextEditingController controller;
   static _defaultFunction() {}
+  static _onchageFunction(o) {}
   const CTextField(
       {Key? key,
       this.hint = '',
@@ -35,6 +37,7 @@ class CTextField extends StatelessWidget {
       this.ispass = false,
       this.isvisible = false,
       this.passontap = _defaultFunction,
+      this.onchage = _onchageFunction,
       this.preicon = Icons.person,
       this.ispreicon = false,
       this.isprefix = false,
@@ -58,6 +61,7 @@ class CTextField extends StatelessWidget {
       maxLength: max,
       cursorColor: Get.theme.primaryColor,
       cursorWidth: 2,
+      onChanged: _onchageFunction,
       style: GoogleFonts.poppins(
           textStyle: TextStyle(
               fontSize: 14.sp,

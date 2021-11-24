@@ -9,16 +9,23 @@ import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
 
-class ProductTile extends StatelessWidget {
+class ProductTile extends StatefulWidget {
   final prod;
   final bool isfav;
   ProductTile({Key? key, this.isfav = false, this.prod}) : super(key: key);
+
+  @override
+  State<ProductTile> createState() => _ProductTileState();
+}
+
+class _ProductTileState extends State<ProductTile> {
   final HomeCon hcon = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        hcon.getproddetails(prod['product_id']);
+        hcon.getproddetails(widget.prod['product_id']);
         Get.to(() => ProductDetailsView());
       },
       child: Stack(
@@ -30,13 +37,14 @@ class ProductTile extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                      child: prod['product_img'] == 'assets/images/' ||
-                              prod['product_img'] == ''
+                      child: widget.prod['product_img'] == 'assets/images/' ||
+                              widget.prod['product_img'] == ''
                           ? Container(
                               child: Image.asset('assets/logo.png'),
                             )
                           : CachedNetworkImage(
-                              imageUrl: API().imagebase + prod['product_img'],
+                              imageUrl:
+                                  API().imagebase + widget.prod['product_img'],
                               placeholder: (context, url) => Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -55,7 +63,7 @@ class ProductTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Txt(
-                                text: prod['product_name'],
+                                text: widget.prod['product_name'],
                                 fsize: 12,
                                 weight: FontWeight.w500,
                                 lines: 2,
@@ -77,13 +85,15 @@ class ProductTile extends StatelessWidget {
                               Row(
                                 children: [
                                   Txt(
-                                    text: 'Save ₹${prod['discount_price']}',
+                                    text:
+                                        'Save ₹${widget.prod['discount_price']}',
                                     fsize: 10,
                                     color: Colors.grey,
                                     lines: 2,
                                   ),
                                   Txt(
-                                    text: ' (${prod['discount_percent']}% OFF)',
+                                    text:
+                                        ' (${widget.prod['discount_percent']}% OFF)',
                                     fsize: 9,
                                     color: Colors.red,
                                     weight: FontWeight.w500,
@@ -118,7 +128,7 @@ class ProductTile extends StatelessWidget {
                                         lines: 2,
                                       ),
                                       Text(
-                                        '₹ ${prod['slashed_price']}',
+                                        '₹ ${widget.prod['slashed_price']}',
                                         style: TextStyle(
                                             color: Colors.pink,
                                             decoration:
@@ -128,7 +138,7 @@ class ProductTile extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      prod['rating'] != '0'
+                                      widget.prod['rating'] != '0'
                                           ? Row(
                                               children: [
                                                 Icon(
@@ -140,7 +150,7 @@ class ProductTile extends StatelessWidget {
                                                   width: 2,
                                                 ),
                                                 Txt(
-                                                  text: prod['rating'],
+                                                  text: widget.prod['rating'],
                                                   fsize: 10,
                                                 ),
                                               ],
@@ -171,7 +181,8 @@ class ProductTile extends StatelessWidget {
                                   Row(
                                     children: [
                                       Txt(
-                                        text: '₹ ${prod['product_price']}',
+                                        text:
+                                            '₹ ${widget.prod['product_price']}',
                                         fsize: 14,
                                         color: Colors.pink,
                                         weight: FontWeight.w500,
@@ -180,6 +191,10 @@ class ProductTile extends StatelessWidget {
                                     ],
                                   ),
                                   InkWell(
+                                    onTap: () {
+                                      hcon.productadd(
+                                          widget.prod['product_id'], 1);
+                                    },
                                     child: Icon(
                                       Icons.add_circle,
                                       color: Get.theme.primaryColorLight,
@@ -200,13 +215,25 @@ class ProductTile extends StatelessWidget {
           Positioned(
               top: 10,
               right: 10,
-              child: CircleAvatar(
-                child: Icon(
-                  isfav ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                  color: Colors.red,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    widget.prod['favourite_list'] == 'true'
+                        ? widget.prod['favourite_list'] = 'false'
+                        : widget.prod['favourite_list'] = 'true';
+                    hcon.favaddremove(widget.prod['product_id']);
+                  });
+                },
+                child: CircleAvatar(
+                  child: Icon(
+                    widget.prod['favourite_list'] == 'true'
+                        ? CupertinoIcons.heart_fill
+                        : CupertinoIcons.heart,
+                    color: Colors.red,
+                  ),
+                  radius: 15.sp,
+                  backgroundColor: Colors.grey.withOpacity(0.8),
                 ),
-                radius: 15.sp,
-                backgroundColor: Colors.grey.withOpacity(0.8),
               ))
         ],
       ),

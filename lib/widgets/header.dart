@@ -49,13 +49,16 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: Obx(() => CircleAvatar(
                           backgroundColor: Colors.red,
                           radius: ccon.cartlist.length.toString().length == 1
-                              ? 8
-                              : 11,
+                              ? 9
+                              : 9,
                           child: Text(
                             ccon.cartlist.length.toString(),
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 15,
+                                fontSize:
+                                    ccon.cartlist.length.toString().length == 1
+                                        ? 16
+                                        : 9,
                                 fontWeight: FontWeight.w400),
                           ),
                         )))

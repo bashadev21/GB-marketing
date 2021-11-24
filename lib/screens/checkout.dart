@@ -1,13 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/addressbook/all_address.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class CheckOutView extends StatelessWidget {
-  const CheckOutView({Key? key}) : super(key: key);
+import '../api_endpoints.dart';
 
+class CheckOutView extends StatelessWidget {
+  CheckOutView({Key? key}) : super(key: key);
+  final CartCon ccon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +50,7 @@ class CheckOutView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Txt(
-                                text: 'Demo',
+                                text: ccon.checklist[0]['fullname'],
                                 fsize: 13,
                                 weight: FontWeight.w500,
                               ),
@@ -64,7 +69,8 @@ class CheckOutView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Txt(
-                                      text: 'Demo Address Comes Here' * 3,
+                                      text:
+                                          '${ccon.checklist[0]['doorno']} , ${ccon.checklist[0]['street']} , ${ccon.checklist[0]['city']} - ${ccon.checklist[0]['pincode']} - ${ccon.checklist[0]['state']}',
                                       weight: FontWeight.w500,
                                       fsize: 12,
                                     ),
@@ -84,7 +90,7 @@ class CheckOutView extends StatelessWidget {
                                 fsize: 11,
                               ),
                               Txt(
-                                text: 'Near Post Office',
+                                text: '${ccon.checklist[0]['landmark']}',
                                 fsize: 12,
                               ),
                             ],
@@ -100,7 +106,7 @@ class CheckOutView extends StatelessWidget {
                                 fsize: 11,
                               ),
                               Txt(
-                                text: '987654321',
+                                text: '${ccon.checklist[0]['mobile_no']}',
                                 fsize: 12,
                               ),
                             ],
@@ -112,23 +118,28 @@ class CheckOutView extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.pink,
-                        borderRadius: BorderRadius.circular(3)),
-                    child: Center(
-                      child: Txt(
-                        text: 'Manage Address',
-                        color: Colors.white,
-                        defalutsize: true,
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => AddressView());
+                    },
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: BorderRadius.circular(3)),
+                      child: Center(
+                        child: Txt(
+                          text: 'Manage Address',
+                          color: Colors.white,
+                          defalutsize: true,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  for (int i = 0; i < 2; i++)
+                  for (int i = 0; i < ccon.cartlist.length; i++)
                     Column(
                       children: [
                         Container(
@@ -138,7 +149,24 @@ class CheckOutView extends StatelessWidget {
                               Container(
                                 height: 75.sp,
                                 width: 75.sp,
-                                child: Placeholder(),
+                                child: ccon.cartlist[i]['product_img'] == ''
+                                    ? Container(
+                                        child: Image.asset('assets/logo.png'),
+                                      )
+                                    : CachedNetworkImage(
+                                        imageUrl: API().imagebase +
+                                            ccon.cartlist[i]['product_img'],
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            color: Colors.grey.withOpacity(0.2),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                               ),
                               SizedBox(
                                 width: 10,
@@ -148,8 +176,9 @@ class CheckOutView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Txt(
-                                      text: 'Glass table',
+                                      text: ccon.cartlist[i]['product_name'],
                                       fsize: 13,
+                                      lines: 2,
                                       weight: FontWeight.w500,
                                     ),
                                     Padding(
@@ -163,7 +192,8 @@ class CheckOutView extends StatelessWidget {
                                             color: Colors.grey,
                                           ),
                                           Txt(
-                                            text: '₹1234',
+                                            text:
+                                                '₹${ccon.cartlist[i]['product_price']}',
                                             color: Colors.pink,
                                             weight: FontWeight.w500,
                                             fsize: 12,
@@ -186,14 +216,16 @@ class CheckOutView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                               Txt(
-                                                text: '3',
+                                                text: ccon.cartlist[i]
+                                                    ['quantity'],
                                                 fsize: 12,
                                                 weight: FontWeight.w500,
                                               ),
                                             ],
                                           ),
                                           Txt(
-                                            text: '₹1234',
+                                            text:
+                                                '₹ ${int.parse(ccon.cartlist[i]['product_price']) * int.parse(ccon.cartlist[i]['quantity'])}',
                                           )
                                         ],
                                       ),
@@ -440,8 +472,11 @@ class CheckOutView extends StatelessWidget {
             ),
             Container(
               height: kBottomNavigationBarHeight + 5,
-              child:
-                  RaisedGradientButton(text: 'Place Order', onPressed: () {}),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child:
+                    RaisedGradientButton(text: 'Place Order', onPressed: () {}),
+              ),
             ),
           ],
         ),

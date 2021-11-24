@@ -12,11 +12,20 @@ import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
 
-class ProductDetailsView extends StatelessWidget {
+class ProductDetailsView extends StatefulWidget {
   ProductDetailsView({Key? key}) : super(key: key);
+
+  @override
+  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+}
+
+class _ProductDetailsViewState extends State<ProductDetailsView> {
   final TextEditingController c1 = new TextEditingController();
+
   final TextEditingController c2 = new TextEditingController();
+
   final HomeCon hcon = Get.find();
+
   @override
   Widget build(BuildContext context) {
     final prod = hcon.productdetials;
@@ -78,9 +87,19 @@ class ProductDetailsView extends StatelessWidget {
                               width: 60,
                               child: Row(
                                 children: [
-                                  Icon(
-                                    CupertinoIcons.heart,
-                                    color: Colors.red,
+                                  InkWell(
+                                    onTap: () {
+                                      prod['favourite_list'] == 'true'
+                                          ? prod['favourite_list'] = 'false'
+                                          : prod['favourite_list'] = 'true';
+                                      hcon.favaddremove(prod['product_id']);
+                                    },
+                                    child: Icon(
+                                      prod['favourite_list'] == 'false'
+                                          ? CupertinoIcons.heart
+                                          : CupertinoIcons.heart_fill,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                   Spacer(),
                                   Icon(
@@ -243,36 +262,53 @@ class ProductDetailsView extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Txt(
-                                  text: '₹${prod['product_price']} INR',
-                                  color: Colors.pink,
-                                  fsize: 20,
-                                  weight: FontWeight.w500,
+                                Obx(
+                                  () => Txt(
+                                    text:
+                                        '₹${int.parse(prod['product_price']) * hcon.itemcount.value} INR',
+                                    color: Colors.pink,
+                                    fsize: 20,
+                                    weight: FontWeight.w500,
+                                  ),
                                 ),
                                 Container(
                                   width: 150,
                                   child: Row(
                                     children: [
-                                      Icon(Icons.remove_circle,
-                                          color: Colors.grey),
+                                      InkWell(
+                                        onTap: () {
+                                          hcon.decrement();
+                                        },
+                                        child: Icon(Icons.remove_circle,
+                                            color: Colors.grey),
+                                      ),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Expanded(
-                                        child: CTextField(
-                                          controller: c1,
+                                          child: Obx(
+                                        () => CTextField(
+                                          enabled: false,
+                                          controller: hcon.qty
+                                            ..text =
+                                                hcon.itemcount.value.toString(),
                                           max: 2,
                                           padd: 7,
                                           label: 'Qty',
                                           islabel: true,
                                           keyboard: TextInputType.number,
                                         ),
-                                      ),
+                                      )),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Icon(Icons.add_circle,
-                                          color: Colors.pink),
+                                      InkWell(
+                                        onTap: () {
+                                          hcon.increment();
+                                        },
+                                        child: Icon(Icons.add_circle,
+                                            color: Colors.pink),
+                                      ),
                                     ],
                                   ),
                                 )
@@ -296,24 +332,27 @@ class ProductDetailsView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // Container(
-                          //   height: 50,
-                          //   child: Row(
-                          //     children: [
-                          //       Expanded(
-                          //           child: RaisedGradientButton(
-                          //               ispink: true,
-                          //               text: 'Add to Cart',
-                          //               onPressed: () {})),
-                          //       SizedBox(
-                          //         width: 8,
-                          //       ),
-                          //       Expanded(
-                          //           child: RaisedGradientButton(
-                          //               text: 'Buy Now', onPressed: () {}))
-                          //     ],
-                          //   ),
-                          // ),
+                          Container(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: RaisedGradientButton(
+                                        ispink: true,
+                                        text: 'Add to Cart',
+                                        onPressed: () {
+                                          hcon.productadd(prod['product_id'],
+                                              hcon.qty.text);
+                                        })),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                    child: RaisedGradientButton(
+                                        text: 'Buy Now', onPressed: () {}))
+                              ],
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Container(
