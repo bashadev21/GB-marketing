@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
+import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../api_endpoints.dart';
@@ -15,12 +16,17 @@ class HomeCon extends GetxController with BaseController {
   var popproductlist = [].obs;
   var catproductlist = [].obs;
   var recentproductlist = [].obs;
+  var searchlist = [].obs;
   var productdetials = {}.obs;
   var load = false.obs;
   var showclear = false.obs;
   var itemcount = 1.obs;
+  var delcheck = 'check'.obs;
+  var selectedPageIndex = 0.obs;
+
   final TextEditingController qty = new TextEditingController();
   final TextEditingController searchc = new TextEditingController();
+  final TextEditingController pincode = new TextEditingController();
   void increment() {
     if (itemcount.value != 10) itemcount.value++;
     print(itemcount.value.toString());
@@ -36,7 +42,10 @@ class HomeCon extends GetxController with BaseController {
     getbanner();
     getpopcat();
     getpopprodcts();
-    getrecentlyadd();
+    if (GetStorage().read('userid').toString() != 'null') {
+      getrecentlyadd();
+    }
+
     super.onInit();
   }
 
@@ -66,12 +75,25 @@ class HomeCon extends GetxController with BaseController {
     print(popproductlist);
   }
 
-  void getpopcatprod(catid) async {
+  void deliverycheck() async {
+    var body = {
+      'functocall': API().pincheck,
+      'pincode': pincode.text.toString(),
+    };
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+    var data = json.decode(response);
+
+    delcheck.value = data[0]['msg'];
+  }
+
+  void getpopcatprod(catid, {paramn = 'categoryid'}) async {
     print(catid);
     var body = {
       'functocall': API().getpopprod,
-      'categoryid': catid,
-      'user_id': GetStorage().read('userid')
+      paramn: catid,
+      'user_id': GetStorage().read('userid').toString()
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
@@ -89,7 +111,7 @@ class HomeCon extends GetxController with BaseController {
     var body = {
       'functocall': API().addproducts,
       'product_id': prodid,
-      'user_id': GetStorage().read('userid'),
+      'user_id': GetStorage().read('userid').toString(),
       'quantity': qty.toString()
     };
     var response =
@@ -112,7 +134,7 @@ class HomeCon extends GetxController with BaseController {
     var body = {
       'functocall': API().deleteprod,
       'temp_id': tempid,
-      'user_id': GetStorage().read('userid'),
+      'user_id': GetStorage().read('userid').toString(),
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
@@ -132,7 +154,7 @@ class HomeCon extends GetxController with BaseController {
   void getrecentlyadd() async {
     var body = {
       'functocall': API().getrecentlyadd,
-      'user_id': GetStorage().read('userid')
+      'user_id': GetStorage().read('userid').toString()
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
@@ -145,12 +167,43 @@ class HomeCon extends GetxController with BaseController {
     }
   }
 
+  void serachprod() async {
+    var body = {'functocall': API().searchkey, 'keyword': searchc.text};
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+    if (response != '[]' || response != '') {
+      var data = json.decode(response);
+      searchlist.value = data;
+    }
+  }
+
+  void serachprodview(searchname) async {
+    var body = {
+      'functocall': API().searchproducts,
+      'search_product': searchname,
+      'user_id': GetStorage().read('userid').toString()
+    };
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+    if (response != '[]' || response != '') {
+      var data = json.decode(response);
+      catproductlist.value = data;
+    }
+  }
+
   void favaddremove(prodid) async {
+    final ProfileCon pcon = Get.find();
     print(prodid);
     var body = {
       'functocall': API().addremovefav,
       'product_id': prodid,
-      'user_id': GetStorage().read('userid')
+      'user_id': GetStorage().read('userid').toString()
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
@@ -161,6 +214,7 @@ class HomeCon extends GetxController with BaseController {
       toastLength: Toast.LENGTH_LONG,
       textColor: Colors.white,
     );
+    pcon.getfavlist();
     print(response.toString());
   }
 
@@ -170,7 +224,7 @@ class HomeCon extends GetxController with BaseController {
     var body = {
       'functocall': API().getproddetails,
       'product_id': prodid,
-      'user_id': GetStorage().read('userid')
+      'user_id': GetStorage().read('userid').toString()
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);

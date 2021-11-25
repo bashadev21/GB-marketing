@@ -13,7 +13,7 @@ class ResetPassView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-        backicon: false,
+        backicon: true,
         title: 'Change Password',
         carticon: false,
       ),

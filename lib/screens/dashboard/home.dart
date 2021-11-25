@@ -34,6 +34,7 @@ class HomeView extends StatelessWidget {
                 onchange: (val) {
                   if (hcon.searchc.text.length != 0) {
                     hcon.showclear.value = true;
+                    hcon.serachprod();
                   } else {
                     hcon.showclear.value = false;
                   }
@@ -48,45 +49,49 @@ class HomeView extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: [
-                      Container(
-                          height: 150.sp,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            elevation: 2,
-                            child: Swiper(
-                              autoplay: true,
-                              duration: 1200,
-                              onTap: (o) {
-                                zcon.selectedPageIndex.value = o;
-                                Get.to(() => ZoomImage(imgs: hcon.bannerlist));
-                              },
-                              autoplayDelay: 2000,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                    padding: EdgeInsets.all(4.0.sp),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: CachedNetworkImage(
-                                        imageUrl: API().imagebase +
-                                            hcon.bannerlist[index]['image'],
-                                        placeholder: (context, url) =>
-                                            Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            color: Colors.grey.withOpacity(0.2),
+                      Obx(
+                        () => Container(
+                            height: 150.sp,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              elevation: 2,
+                              child: Swiper(
+                                autoplay: true,
+                                duration: 1200,
+                                onTap: (o) {
+                                  zcon.selectedPageIndex.value = o;
+                                  Get.to(
+                                      () => ZoomImage(imgs: hcon.bannerlist));
+                                },
+                                autoplayDelay: 2000,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                      padding: EdgeInsets.all(4.0.sp),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: API().imagebase +
+                                              hcon.bannerlist[index]['image'],
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                            ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
-                                    ));
-                              },
-                              itemCount: hcon.bannerlist.length,
-                              pagination: new SwiperPagination(),
-                            ),
-                          )),
+                                      ));
+                                },
+                                itemCount: hcon.bannerlist.length,
+                                pagination: new SwiperPagination(),
+                              ),
+                            )),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Container(
@@ -229,10 +234,15 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Txt(
-                                text: 'Recently Added Products',
-                                fsize: 12,
-                                weight: FontWeight.w500,
+                              InkWell(
+                                onTap: () {
+                                  print(hcon.recentproductlist.length);
+                                },
+                                child: Txt(
+                                  text: 'Recently Added Products',
+                                  fsize: 12,
+                                  weight: FontWeight.w500,
+                                ),
                               ),
                             ],
                           ),
@@ -251,28 +261,70 @@ class HomeView extends StatelessWidget {
                                 prod: hcon.recentproductlist[index],
                               );
                             }),
-                      )
+                      ),
                     ],
                   ),
                   Obx(() => hcon.showclear.value
-                      ? Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: Get.height / 2,
-                            color: Colors.grey[300],
-                            child: ListView.builder(
-                                itemCount: 3,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Txt(
-                                      text: 'helo',
-                                    ),
-                                  );
-                                }),
-                          ))
+                      ? hcon.searchlist.length != 0
+                          ? Positioned(
+                              top: 2,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                height: Get.height / 2,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(25),
+                                        bottomRight: Radius.circular(25))),
+                                child: Obx(() => ListView.builder(
+                                    itemCount: hcon.searchlist.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      final search = hcon.searchlist[index];
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                            child: InkWell(
+                                              onTap: () {
+                                                hcon.serachprodview(
+                                                    search['suggestion']);
+                                                Get.to(() => ProductsView());
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Txt(
+                                                          text: search[
+                                                              'suggestion'],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: Container(
+                                              height: 0.1,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    })),
+                              ))
+                          : SizedBox()
                       : SizedBox())
                 ],
               ),

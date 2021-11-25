@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/screens/login.dart';
 import 'package:gb_marketing/screens/product_details.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
@@ -25,8 +28,17 @@ class _ProductTileState extends State<ProductTile> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        hcon.getproddetails(widget.prod['product_id']);
-        Get.to(() => ProductDetailsView());
+        if (GetStorage().read('userid').toString() != 'null') {
+          hcon.getproddetails(widget.prod['product_id']);
+          Get.to(() => ProductDetailsView());
+        } else {
+          Fluttertoast.showToast(
+            msg: 'Please Login!!!',
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+          );
+          Get.offAll(() => LoginView());
+        }
       },
       child: Stack(
         children: [
@@ -181,8 +193,16 @@ class _ProductTileState extends State<ProductTile> {
                                   Row(
                                     children: [
                                       Txt(
-                                        text:
-                                            '₹ ${widget.prod['product_price']}',
+                                        text: GetStorage()
+                                                        .read('vendor')
+                                                        .toString() ==
+                                                    'null' ||
+                                                GetStorage()
+                                                        .read('vendor')
+                                                        .toString() ==
+                                                    'false'
+                                            ? '₹ ${widget.prod['product_price']}'
+                                            : '₹ ${widget.prod['vendor_price']}',
                                         fsize: 14,
                                         color: Colors.pink,
                                         weight: FontWeight.w500,
@@ -192,8 +212,20 @@ class _ProductTileState extends State<ProductTile> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      hcon.productadd(
-                                          widget.prod['product_id'], 1);
+                                      if (GetStorage()
+                                              .read('userid')
+                                              .toString() !=
+                                          'null') {
+                                        hcon.productadd(
+                                            widget.prod['product_id'], 1);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                          msg: 'Please Login!!!',
+                                          backgroundColor: Colors.black54,
+                                          textColor: Colors.white,
+                                        );
+                                        Get.offAll(() => LoginView());
+                                      }
                                     },
                                     child: Icon(
                                       Icons.add_circle,
@@ -217,12 +249,21 @@ class _ProductTileState extends State<ProductTile> {
               right: 10,
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    widget.prod['favourite_list'] == 'true'
-                        ? widget.prod['favourite_list'] = 'false'
-                        : widget.prod['favourite_list'] = 'true';
-                    hcon.favaddremove(widget.prod['product_id']);
-                  });
+                  if (GetStorage().read('userid').toString() != 'null') {
+                    setState(() {
+                      widget.prod['favourite_list'] == 'true'
+                          ? widget.prod['favourite_list'] = 'false'
+                          : widget.prod['favourite_list'] = 'true';
+                      hcon.favaddremove(widget.prod['product_id']);
+                    });
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: 'Please Login!!!',
+                      backgroundColor: Colors.black54,
+                      textColor: Colors.white,
+                    );
+                    Get.offAll(() => LoginView());
+                  }
                 },
                 child: CircleAvatar(
                   child: Icon(

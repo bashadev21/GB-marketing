@@ -1,18 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/screens/addressbook/all_address.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
 
-class CheckOutView extends StatelessWidget {
+class CheckOutView extends StatefulWidget {
   CheckOutView({Key? key}) : super(key: key);
+
+  @override
+  State<CheckOutView> createState() => _CheckOutViewState();
+}
+
+class _CheckOutViewState extends State<CheckOutView> {
   final CartCon ccon = Get.find();
+  late Razorpay _razorpay;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,89 +49,96 @@ class CheckOutView extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  if (ccon.checklist.length != 0)
+                    Obx(
+                      () => Card(
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Txt(
-                                text: ccon.checklist[0]['fullname'],
-                                fsize: 13,
-                                weight: FontWeight.w500,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Txt(
+                                    text: ccon.checklist[0]['fullname'],
+                                    fsize: 13,
+                                    weight: FontWeight.w500,
+                                  ),
+                                  Row(
+                                    children: [],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
                               ),
                               Row(
-                                children: [],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Txt(
-                                      text:
-                                          '${ccon.checklist[0]['doorno']} , ${ccon.checklist[0]['street']} , ${ccon.checklist[0]['city']} - ${ccon.checklist[0]['pincode']} - ${ccon.checklist[0]['state']}',
-                                      weight: FontWeight.w500,
-                                      fsize: 12,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Txt(
+                                          text:
+                                              '${ccon.door.value} , ${ccon.street.value} , ${ccon.city.value} - ${ccon.pincode.value} - ${ccon.state.value}',
+                                          weight: FontWeight.w500,
+                                          fsize: 12,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Txt(
+                                    text: 'Landmark - ',
+                                    color: Colors.grey,
+                                    fsize: 11,
+                                  ),
+                                  Txt(
+                                    text: '${ccon.land.value}',
+                                    fsize: 12,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Txt(
+                                    text: 'Contact    - ',
+                                    color: Colors.grey,
+                                    fsize: 11,
+                                  ),
+                                  Txt(
+                                    text: '${ccon.mobile.value}',
+                                    fsize: 12,
+                                  ),
+                                ],
+                              )
                             ],
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Txt(
-                                text: 'Landmark - ',
-                                color: Colors.grey,
-                                fsize: 11,
-                              ),
-                              Txt(
-                                text: '${ccon.checklist[0]['landmark']}',
-                                fsize: 12,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Txt(
-                                text: 'Contact    - ',
-                                color: Colors.grey,
-                                fsize: 11,
-                              ),
-                              Txt(
-                                text: '${ccon.checklist[0]['mobile_no']}',
-                                fsize: 12,
-                              ),
-                            ],
-                          )
-                        ],
+                        ),
                       ),
                     ),
-                  ),
                   SizedBox(
                     height: 5,
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(() => AddressView());
+                      Get.to(() => AddressView(
+                            isselect: true,
+                          ));
                     },
                     child: Container(
                       height: 50,
@@ -129,7 +147,9 @@ class CheckOutView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(3)),
                       child: Center(
                         child: Txt(
-                          text: 'Manage Address',
+                          text: ccon.checklist.length != 0
+                              ? 'Manage Address'
+                              : 'Add Address',
                           color: Colors.white,
                           defalutsize: true,
                         ),
@@ -192,8 +212,16 @@ class CheckOutView extends StatelessWidget {
                                             color: Colors.grey,
                                           ),
                                           Txt(
-                                            text:
-                                                '₹${ccon.cartlist[i]['product_price']}',
+                                            text: GetStorage()
+                                                            .read('vendor')
+                                                            .toString() ==
+                                                        'null' ||
+                                                    GetStorage()
+                                                            .read('vendor')
+                                                            .toString() ==
+                                                        'false'
+                                                ? '₹${ccon.cartlist[i]['product_price']}'
+                                                : '₹${ccon.cartlist[i]['vendor_price']}',
                                             color: Colors.pink,
                                             weight: FontWeight.w500,
                                             fsize: 12,
@@ -275,7 +303,7 @@ class CheckOutView extends StatelessWidget {
                                   fsize: 14,
                                 ),
                                 Txt(
-                                  text: '₹12322',
+                                  text: '₹ ${ccon.totalamount.value}',
                                   weight: FontWeight.w500,
                                 ),
                               ],
@@ -293,7 +321,8 @@ class CheckOutView extends StatelessWidget {
                                   fsize: 14,
                                 ),
                                 Txt(
-                                  text: '₹123',
+                                  text:
+                                      '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
                                   weight: FontWeight.w500,
                                 ),
                               ],
@@ -311,7 +340,8 @@ class CheckOutView extends StatelessWidget {
                                   fsize: 14,
                                 ),
                                 Txt(
-                                  text: '₹123',
+                                  text:
+                                      '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
                                   weight: FontWeight.w500,
                                 ),
                               ],
@@ -329,7 +359,7 @@ class CheckOutView extends StatelessWidget {
                                   fsize: 14,
                                 ),
                                 Txt(
-                                  text: '₹123',
+                                  text: '₹${ccon.shipping.value}',
                                   weight: FontWeight.w500,
                                 ),
                               ],
@@ -354,7 +384,8 @@ class CheckOutView extends StatelessWidget {
                                     fsize: 14,
                                   ),
                                   Txt(
-                                    text: '₹12322',
+                                    text:
+                                        '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value) / 100 * 9).round() + (int.parse(ccon.totalamount.value) / 100 * 9).round() + (int.parse(ccon.totalamount.value)))}',
                                     weight: FontWeight.w500,
                                     color: Colors.white,
                                   ),
@@ -372,13 +403,20 @@ class CheckOutView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Txt(
-                        text:
-                            'Delivery Available.Estimated Delivery by 10 days',
-                        color: Colors.green,
-                        fsize: 10,
-                        weight: FontWeight.w500,
-                      ),
+                      Obx(
+                        () => Txt(
+                          text: ccon.msg.value ==
+                                  'Delivery Currently Unavailable'
+                              ? 'Delivery Currently Unavailable'
+                              : 'Delivery Available.Estimated Delivery by ${ccon.days.value} days',
+                          color:
+                              ccon.msg.value == 'Delivery Currently Unavailable'
+                                  ? Colors.red
+                                  : Colors.green,
+                          fsize: 10,
+                          weight: FontWeight.w500,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -395,72 +433,94 @@ class CheckOutView extends StatelessWidget {
                   Card(
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 40.sp,
-                                    width: 40.sp,
-                                    child: Placeholder(),
+                        InkWell(
+                            onTap: () {
+                              ccon.onlinepay.value = true;
+                              ccon.codpay.value = false;
+                            },
+                            child: Obx(
+                              () => Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 40.sp,
+                                          width: 40.sp,
+                                          child: Placeholder(),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Txt(
+                                        text: 'Online Payment',
+                                        weight: FontWeight.w500,
+                                        fsize: 12,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Txt(
-                                  text: 'Online Payment',
-                                  weight: FontWeight.w500,
-                                  fsize: 12,
-                                ),
-                              ],
-                            ),
-                            Transform.scale(
-                                scale: 1.4,
-                                child: Radio(
-                                    activeColor: Colors.green,
-                                    value: true,
-                                    groupValue: true,
-                                    toggleable: true,
-                                    onChanged: (s) {}))
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 40.sp,
-                                    width: 40.sp,
-                                    child: Placeholder(),
+                                  Transform.scale(
+                                      scale: 1.4,
+                                      child: Radio(
+                                          activeColor: Colors.green,
+                                          value: ccon.onlinepay.value,
+                                          groupValue: true,
+                                          toggleable: true,
+                                          onChanged: (s) {
+                                            ccon.onlinepay.value = true;
+                                            ccon.codpay.value = false;
+                                          }))
+                                ],
+                              ),
+                            )),
+                        InkWell(
+                            onTap: () {
+                              ccon.onlinepay.value = false;
+                              ccon.codpay.value = true;
+                            },
+                            child: Obx(
+                              () => Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 40.sp,
+                                          width: 40.sp,
+                                          child: Placeholder(),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Txt(
+                                        text: 'Cash on Delivery',
+                                        weight: FontWeight.w500,
+                                        fsize: 12,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Txt(
-                                  text: 'Cash on Delivery',
-                                  weight: FontWeight.w500,
-                                  fsize: 12,
-                                ),
-                              ],
-                            ),
-                            Transform.scale(
-                                scale: 1.4,
-                                child: Radio(
-                                    activeColor: Colors.green,
-                                    value: false,
-                                    groupValue: true,
-                                    toggleable: true,
-                                    onChanged: (s) {}))
-                          ],
-                        ),
+                                  Transform.scale(
+                                      scale: 1.4,
+                                      child: Radio(
+                                          activeColor: Colors.green,
+                                          value: ccon.codpay.value,
+                                          groupValue: true,
+                                          toggleable: true,
+                                          onChanged: (s) {
+                                            ccon.onlinepay.value = false;
+                                            ccon.codpay.value = true;
+                                          }))
+                                ],
+                              ),
+                            )),
                       ],
                     ),
                   ),
@@ -474,13 +534,92 @@ class CheckOutView extends StatelessWidget {
               height: kBottomNavigationBarHeight + 5,
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
-                child:
-                    RaisedGradientButton(text: 'Place Order', onPressed: () {}),
+                child: RaisedGradientButton(
+                    text: 'Place Order',
+                    onPressed: () {
+                      if (ccon.checklist.length == 0) {
+                        Fluttertoast.showToast(
+                          msg: 'Add Delivery Address',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      } else if (ccon.msg.value ==
+                          'Delivery Currently Unavailable for given address') {
+                        Fluttertoast.showToast(
+                          msg: 'Delivery Currently Unavailable',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      } else if (ccon.onlinepay.value == false &&
+                          ccon.codpay.value == false) {
+                        Fluttertoast.showToast(
+                          msg: 'Select Payment Mentod',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      } else {
+                        if (ccon.onlinepay.value) {
+                          openCheckout();
+                        }
+                      }
+                    }),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_1DP5mmOlF5G5ag',
+      'amount': 2000,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName!,
+        toastLength: Toast.LENGTH_SHORT);
   }
 }

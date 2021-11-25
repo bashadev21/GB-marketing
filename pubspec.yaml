@@ -48,6 +48,7 @@ dependencies:
   fluttertoast:
   upgrader: ^3.9.0
   share: ^2.0.4
+  razorpay_flutter: ^1.2.7
   
 
 dev_dependencies:

@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/api_endpoints.dart';
 import 'package:gb_marketing/screens/otp.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../base_client.dart';
+import 'cart.dart';
+import 'profile.dart';
 
 class AuthCon extends GetxController with BaseController {
   var otp = ''.obs;
@@ -47,6 +50,7 @@ class AuthCon extends GetxController with BaseController {
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
     if (response == null) return;
+    print(response);
     hideLoading();
     if (response == 'Please Register' || response == 'Invalid Credentials') {
       Fluttertoast.showToast(
@@ -59,7 +63,18 @@ class AuthCon extends GetxController with BaseController {
       lpassword.clear();
       var data = json.decode(response);
       GetStorage().write('userid', data[0]['userid']);
+      GetStorage().write('username', data[0]['username']);
+      GetStorage().write('vendor', data[0]['vendor']);
+
       print(GetStorage().read('userid').toString());
+      final HomeCon hcon = Get.find();
+      final CartCon ccon = Get.find();
+      final ProfileCon pcon = Get.find();
+      hcon.getrecentlyadd();
+      ccon.getcartlist();
+      ccon.checkoutaddres();
+      pcon.getfavlist();
+      pcon.myorders();
       Get.offAll(() => BottamBar(currentindex: 0));
     }
   }
@@ -123,6 +138,18 @@ class AuthCon extends GetxController with BaseController {
       var data = json.decode(response);
       GetStorage().write('userid', data[0]['userid']);
       print(GetStorage().read('userid').toString());
+      GetStorage().write('username', data[0]['username']);
+      GetStorage().write('vendor', data[0]['vendor']);
+      final HomeCon hcon = Get.find();
+      final CartCon ccon = Get.find();
+      final ProfileCon pcon = Get.find();
+      hcon.getrecentlyadd();
+      ccon.getcartlist();
+      ccon.checkoutaddres();
+      pcon.getfavlist();
+      pcon.getaddress();
+      pcon.myorders();
+
       Get.to(() => BottamBar(
             currentindex: 0,
           ));

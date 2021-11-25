@@ -5,6 +5,7 @@ import 'package:gb_marketing/screens/login.dart';
 import 'package:gb_marketing/widgets/profile_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../change_password.dart';
@@ -84,7 +85,7 @@ class ProfileView extends StatelessWidget {
                             color: Colors.transparent,
                             child: Container(
                               height: 150,
-                              width: 280,
+                              width: Get.width * .80,
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(
@@ -103,6 +104,9 @@ class ProfileView extends StatelessWidget {
                                       children: [
                                         InkWell(
                                           onTap: () {
+                                            GetStorage().remove('userid');
+                                            GetStorage().remove('username');
+                                            GetStorage().remove('vendor');
                                             Get.offAll(() => LoginView());
                                           },
                                           child: Txt(

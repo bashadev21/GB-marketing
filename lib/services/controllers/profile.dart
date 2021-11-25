@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../api_endpoints.dart';
@@ -11,6 +12,8 @@ import 'package:get/get.dart';
 class ProfileCon extends GetxController with BaseController {
   var favlist = [].obs;
   var addresslist = [].obs;
+  var myorderslist = [].obs;
+  var uniorderslist = [].obs;
 
   final TextEditingController aname = new TextEditingController();
   final TextEditingController adoor = new TextEditingController();
@@ -30,8 +33,12 @@ class ProfileCon extends GetxController with BaseController {
 
   @override
   void onInit() {
-    getfavlist();
-    // getaddress();
+    if (GetStorage().read('userid').toString() != 'null') {
+      getfavlist();
+      getaddress();
+      myorders();
+    }
+
     super.onInit();
   }
 
@@ -40,6 +47,7 @@ class ProfileCon extends GetxController with BaseController {
       'functocall': API().getfavlist,
       'user_id': GetStorage().read('userid').toString()
     };
+
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
     if (response == null) return;
@@ -52,7 +60,6 @@ class ProfileCon extends GetxController with BaseController {
   }
 
   void getaddress() async {
-    showLoading();
     var body = {
       'functocall': API().getadresslist,
       'user_id': GetStorage().read('userid').toString()
@@ -62,12 +69,26 @@ class ProfileCon extends GetxController with BaseController {
     if (response == null) return;
 
     print(response.toString());
-    hideLoading();
 
     if (response != '[]' || response != '') {
       hideLoading();
       var data = json.decode(response);
       addresslist.value = data;
+    }
+  }
+
+  void uniorder(orderid) async {
+    var body = {'functocall': API().uniqorder, 'order_id': orderid};
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+
+    if (response != '[]' || response != '') {
+      hideLoading();
+      var data = json.decode(response);
+      uniorderslist.value = data;
     }
   }
 
@@ -102,7 +123,7 @@ class ProfileCon extends GetxController with BaseController {
     showLoading();
     var body = {
       'functocall': API().addadresslist,
-      'user_id': GetStorage().read('userid'),
+      'user_id': GetStorage().read('userid').toString(),
       'fullname': aname.text,
       'door_no': adoor.text,
       'street': astreet.text,
@@ -133,6 +154,8 @@ class ProfileCon extends GetxController with BaseController {
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
+      final CartCon ccon = Get.find();
+      ccon.checkoutaddres();
       Get.back();
     } else {
       hideLoading();
@@ -149,7 +172,7 @@ class ProfileCon extends GetxController with BaseController {
     print(adid);
     var body = {
       'functocall': API().updateadress,
-      'user_id': GetStorage().read('userid'),
+      'user_id': GetStorage().read('userid').toString(),
       'fullname': aname.text,
       'useraddress_id': adid,
       'door_no': adoor.text,
@@ -195,7 +218,7 @@ class ProfileCon extends GetxController with BaseController {
   void deleteaddress(addressid) async {
     var body = {
       'functocall': API().deleteaddress,
-      'user_id': GetStorage().read('userid'),
+      'user_id': GetStorage().read('userid').toString(),
       'useraddress_id': addressid,
     };
     var response =
@@ -210,5 +233,19 @@ class ProfileCon extends GetxController with BaseController {
       backgroundColor: Colors.red,
       textColor: Colors.white,
     );
+  }
+
+  void myorders() async {
+    var body = {
+      'functocall': API().myorders,
+      'user_id': GetStorage().read('userid').toString(),
+    };
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+    if (response != '[]' || response != '') {
+      var data = json.decode(response);
+      myorderslist.value = data;
+    }
   }
 }

@@ -7,8 +7,11 @@ import 'package:gb_marketing/screens/dashboard/cart.dart';
 import 'package:gb_marketing/screens/dashboard/category.dart';
 import 'package:gb_marketing/screens/dashboard/home.dart';
 import 'package:gb_marketing/screens/dashboard/profile.dart';
+import 'package:gb_marketing/screens/login.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'drawer.dart';
@@ -25,6 +28,7 @@ class BottamBar extends StatefulWidget {
 
 class _BottamBarState extends State<BottamBar> {
   final CartCon ccon = Get.find();
+  final HomeCon hcon = Get.find();
   List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     CategoryView(),
@@ -34,7 +38,29 @@ class _BottamBarState extends State<BottamBar> {
 
   void _onItemTapped(int index) {
     setState(() {
+      hcon.searchc.clear();
+      hcon.searchlist.clear();
+      hcon.showclear.value = false;
       widget.currentindex = index;
+      if (index == 2) {
+        if (GetStorage().read('userid').toString() == 'null') {
+          Fluttertoast.showToast(
+            msg: 'Please Login!!!',
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+          );
+          Get.offAll(() => LoginView());
+        }
+      } else if (index == 3) {
+        if (GetStorage().read('userid').toString() == 'null') {
+          Fluttertoast.showToast(
+            msg: 'Please Login!!!',
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+          );
+          Get.offAll(() => LoginView());
+        }
+      }
       print(index);
     });
   }
@@ -102,7 +128,9 @@ class _BottamBarState extends State<BottamBar> {
                   borderRadius: BorderRadius.circular(100),
                   child: Icon(CupertinoIcons.shopping_cart),
                   badgeContent: Obx(() => Text(
-                        ccon.cartlist.length.toString(),
+                        GetStorage().read('userid').toString() == 'null'
+                            ? '0'
+                            : ccon.cartlist.length.toString(),
                         style: TextStyle(
                             fontSize:
                                 ccon.cartlist.length.toString().length == 1

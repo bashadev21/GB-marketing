@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'text.dart';
 
@@ -11,6 +12,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool center;
   final bool backicon;
   final bool carticon;
+  final VoidCallback ontap;
+  static _defaultFunction() {
+    Get.back();
+  }
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   BaseAppBar(
@@ -18,6 +24,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.title = 'GB Marketing',
       this.center = true,
       this.backicon = false,
+      this.ontap = _defaultFunction,
       this.carticon = false})
       : super(key: key);
   final CartCon ccon = Get.find();
@@ -26,49 +33,62 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: center,
-      title: Txt(
-        text: title,
-        color: Colors.white,
-        weight: FontWeight.w500,
-        defalutsize: true,
+      title: InkWell(
+        onTap: () {
+          print(GetStorage().read('vendor'));
+        },
+        child: Txt(
+          text: title,
+          color: Colors.white,
+          weight: FontWeight.w500,
+          defalutsize: true,
+        ),
       ),
       actions: [
         if (carticon)
-          IconButton(
-            onPressed: () => Get.offAll(() => BottamBar(currentindex: 2)),
-            icon: Stack(
-              fit: StackFit.expand,
-              children: [
-                const Icon(
-                  CupertinoIcons.shopping_cart,
-                  size: 26.0,
-                ),
-                Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Obx(() => CircleAvatar(
-                          backgroundColor: Colors.red,
-                          radius: ccon.cartlist.length.toString().length == 1
-                              ? 9
-                              : 9,
-                          child: Text(
-                            ccon.cartlist.length.toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize:
+          GetStorage().read('userid').toString() != 'null'
+              ? IconButton(
+                  onPressed: () => Get.offAll(() => BottamBar(currentindex: 2)),
+                  icon: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const Icon(
+                        CupertinoIcons.shopping_cart,
+                        size: 26.0,
+                      ),
+                      Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Obx(() => CircleAvatar(
+                                backgroundColor: Colors.red,
+                                radius:
                                     ccon.cartlist.length.toString().length == 1
-                                        ? 16
+                                        ? 9
                                         : 9,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        )))
-              ],
-            ),
-          ),
+                                child: Text(
+                                  GetStorage().read('userid').toString() ==
+                                          'null'
+                                      ? '0'
+                                      : ccon.cartlist.length.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: ccon.cartlist.length
+                                                  .toString()
+                                                  .length ==
+                                              1
+                                          ? 16
+                                          : 9,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              )))
+                    ],
+                  ),
+                )
+              : SizedBox(),
       ],
       leading: backicon
           ? IconButton(
-              onPressed: () => Get.back(),
+              onPressed: ontap,
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 color: Colors.white,

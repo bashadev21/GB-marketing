@@ -5,15 +5,18 @@ import 'package:gb_marketing/screens/drawer_menus/contact.dart';
 import 'package:gb_marketing/screens/drawer_menus/need_help.dart';
 import 'package:gb_marketing/screens/drawer_menus/privacy.dart';
 import 'package:gb_marketing/screens/drawer_menus/terms.dart';
+import 'package:gb_marketing/screens/login.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/drawer_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({Key? key}) : super(key: key);
-
+  final HomeCon hcon = Get.find();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -53,7 +56,11 @@ class DrawerWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Txt(
-                                text: 'Demo',
+                                text:
+                                    GetStorage().read('username').toString() ==
+                                            'null'
+                                        ? 'Guest'
+                                        : GetStorage().read('username'),
                                 weight: FontWeight.w500,
                                 lines: 2,
                               ),
@@ -77,15 +84,25 @@ class DrawerWidget extends StatelessWidget {
             ),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
-                  Get.offAll(() => BottamBar(
-                        currentindex: 3,
-                      ));
+                  if (GetStorage().read('userid').toString() != 'null') {
+                    Get.offAll(() => BottamBar(
+                          currentindex: 3,
+                        ));
+                  } else {
+                    Get.offAll(() => LoginView());
+                  }
                 },
                 title: 'My Account',
                 icon: Icons.person),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
                   Get.to(() => AboutView());
                 },
@@ -93,6 +110,9 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.feedback),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
                   Get.to(() => NeedHelpView());
                 },
@@ -100,6 +120,9 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.help),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
                   Get.to(() => TermsView());
                 },
@@ -107,6 +130,9 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.notes),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
                   Get.to(() => PrivacyView());
                 },
@@ -114,12 +140,22 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.privacy_tip),
             DrawerTile(
                 onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
                   Get.back();
                   Get.to(() => ContactView());
                 },
                 title: 'Contact Us',
                 icon: Icons.contact_mail),
-            DrawerTile(onTap: () {}, title: 'Share App', icon: Icons.share),
+            DrawerTile(
+                onTap: () {
+                  hcon.searchc.clear();
+                  hcon.searchlist.clear();
+                  hcon.showclear.value = false;
+                },
+                title: 'Share App',
+                icon: Icons.share),
           ],
         ),
       ),

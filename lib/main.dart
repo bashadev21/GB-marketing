@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gb_marketing/services/controllers/auth.dart';
+import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
@@ -40,7 +41,9 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.grey[50],
             primaryColorLight: Colors.blueAccent,
             primaryColor: Colors.lightBlue),
-        home: LoginView(),
+        home: GetStorage().read('userid').toString() == 'null'
+            ? LoginView()
+            : BottamBar(currentindex: 0),
         debugShowCheckedModeBanner: false,
       );
     });

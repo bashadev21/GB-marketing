@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
+import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 
 class ProductsView extends StatelessWidget {
@@ -17,17 +18,23 @@ class ProductsView extends StatelessWidget {
           carticon: true,
         ),
         body: Obx(
-          () => GridView.builder(
-            physics: BouncingScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 0.7),
-            itemCount: hcon.catproductlist.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ProductTile(
-                prod: hcon.catproductlist[index],
-              );
-            },
-          ),
+          () => hcon.catproductlist.length == 0
+              ? Center(
+                  child: Txt(
+                    text: 'No Products Found',
+                  ),
+                )
+              : GridView.builder(
+                  physics: BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 0.7),
+                  itemCount: hcon.catproductlist.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProductTile(
+                      prod: hcon.catproductlist[index],
+                    );
+                  },
+                ),
         ));
   }
 }

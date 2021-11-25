@@ -5,6 +5,7 @@ import 'package:gb_marketing/widgets/cart_tile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:collection/collection.dart';
 import '../checkout.dart';
@@ -30,57 +31,71 @@ class CartView extends StatelessWidget {
             ),
             Expanded(
                 child: Obx(
-              () => ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: ccon.cartlist.length,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    var cashlist = <int>[];
-                    ccon.cartlist.forEach((e) {
-                      cashlist.add(int.parse(e['product_price']) *
-                          int.parse(e['quantity']));
-                    });
-                    var total = cashlist.sum;
-                    ccon.totalamount.value = total.toString();
-                    return Column(
-                      children: [
-                        CartTile(
-                          cart: ccon.cartlist[index],
-                        ),
-                        index == ccon.cartlist.length - 1
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Txt(
-                                      text: 'Total: ',
-                                      color: Colors.grey,
-                                      fsize: 13,
+              () => ccon.cartlist.length == 0
+                  ? Center(
+                      child: Txt(
+                      text: 'Your Cart is empty',
+                    ))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: ccon.cartlist.length,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var cashlist = <int>[];
+                        ccon.cartlist.forEach((e) {
+                          if (GetStorage().read('vendor').toString() ==
+                                  'null' ||
+                              GetStorage().read('vendor').toString() ==
+                                  'false') {
+                            cashlist.add(int.parse(e['product_price']) *
+                                int.parse(e['quantity']));
+                          } else {
+                            cashlist.add(int.parse(e['vendor_price']) *
+                                int.parse(e['quantity']));
+                          }
+                        });
+                        var total = cashlist.sum;
+                        ccon.totalamount.value = total.toString();
+                        return Column(
+                          children: [
+                            CartTile(
+                              cart: ccon.cartlist[index],
+                            ),
+                            index == ccon.cartlist.length - 1
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Txt(
+                                          text: 'Total: ',
+                                          color: Colors.grey,
+                                          fsize: 13,
+                                        ),
+                                        Txt(
+                                          text: '₹ ${total.toString()}',
+                                          weight: FontWeight.bold,
+                                          fsize: 13,
+                                        ),
+                                      ],
                                     ),
-                                    Txt(
-                                      text: '₹ ${total.toString()}',
-                                      weight: FontWeight.bold,
-                                      fsize: 13,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox()
-                      ],
-                    );
-                  }),
+                                  )
+                                : SizedBox()
+                          ],
+                        );
+                      }),
             )),
-            Container(
-              height: kBottomNavigationBarHeight + 5,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: RaisedGradientButton(
-                    text: 'Proceed to Checkout',
-                    onPressed: () => Get.to(() => CheckOutView())),
-              ),
-            )
+            if (ccon.cartlist.length != 0)
+              Container(
+                height: kBottomNavigationBarHeight + 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: RaisedGradientButton(
+                      text: 'Proceed to Checkout',
+                      onPressed: () => Get.to(() => CheckOutView())),
+                ),
+              )
           ],
         ),
       ),

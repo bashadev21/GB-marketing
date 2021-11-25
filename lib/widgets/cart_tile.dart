@@ -5,6 +5,7 @@ import 'package:gb_marketing/screens/product_details.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import '../api_endpoints.dart';
 import 'text.dart';
@@ -104,7 +105,12 @@ class CartTile extends StatelessWidget {
                               width: 5,
                             ),
                             Txt(
-                              text: '₹ ${cart['product_price']}',
+                              text: GetStorage().read('vendor').toString() ==
+                                          'null' ||
+                                      GetStorage().read('vendor').toString() ==
+                                          'false'
+                                  ? '₹ ${cart['product_price']}'
+                                  : '₹ ${cart['vendor_price']}',
                               fsize: 12,
                               color: Colors.pink,
                               weight: FontWeight.w500,
@@ -159,8 +165,14 @@ class CartTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Txt(
-                                text:
-                                    '₹ ${int.parse(cart['product_price']) * int.parse(cart['quantity'])}',
+                                text: GetStorage().read('vendor').toString() ==
+                                            'null' ||
+                                        GetStorage()
+                                                .read('vendor')
+                                                .toString() ==
+                                            'false'
+                                    ? '₹ ${int.parse(cart['product_price']) * int.parse(cart['quantity'])}'
+                                    : '₹ ${int.parse(cart['vendor_price']) * int.parse(cart['quantity'])}',
                                 fsize: 13,
                                 color: Colors.black,
                                 weight: FontWeight.w500,

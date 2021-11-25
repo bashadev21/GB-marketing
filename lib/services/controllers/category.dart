@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:gb_marketing/screens/products.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
+
 import '../../api_endpoints.dart';
 import '../base_client.dart';
 import 'package:get/get.dart';
@@ -25,6 +28,8 @@ class CatCon extends GetxController with BaseController {
   }
 
   void getsubcat(catid) async {
+    final HomeCon hcon = Get.find();
+    subcategotylist.clear();
     var body = {
       'functocall': API().getsubcat,
       'category_id': catid,
@@ -34,7 +39,10 @@ class CatCon extends GetxController with BaseController {
     if (response == null) return;
 
     print(response.toString());
-    if (response != '[]' || response != '') {
+    if (response == '[]' || response == '') {
+      Get.to(() => ProductsView());
+      hcon.getpopcatprod(catid);
+    } else {
       var data = json.decode(response);
       subcategotylist.value = data[0]['subcategory'];
     }
