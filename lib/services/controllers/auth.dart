@@ -198,6 +198,7 @@ class AuthCon extends GetxController with BaseController {
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
     if (response == null) return;
+    print(response.toString());
     hideLoading();
     Fluttertoast.showToast(
       msg: response,
@@ -207,10 +208,10 @@ class AuthCon extends GetxController with BaseController {
     );
     if (response.toString().length == 6) {
       otp.value = response.toString();
-      Get.to(() => OtpView(
-            issign: true,
-            mobile: fphone.text,
-          ));
+      // Get.to(() => OtpView(
+      //       issign: true,
+      //       mobile: fphone.text,
+      //     ));
     }
   }
 }

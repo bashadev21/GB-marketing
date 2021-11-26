@@ -41,21 +41,7 @@ class CartView extends StatelessWidget {
                       itemCount: ccon.cartlist.length,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var cashlist = <int>[];
-                        ccon.cartlist.forEach((e) {
-                          if (GetStorage().read('vendor').toString() ==
-                                  'null' ||
-                              GetStorage().read('vendor').toString() ==
-                                  'false') {
-                            cashlist.add(int.parse(e['product_price']) *
-                                int.parse(e['quantity']));
-                          } else {
-                            cashlist.add(int.parse(e['vendor_price']) *
-                                int.parse(e['quantity']));
-                          }
-                        });
-                        var total = cashlist.sum;
-                        ccon.totalamount.value = total.toString();
+                        ccon.addsum();
                         return Column(
                           children: [
                             CartTile(
@@ -74,7 +60,8 @@ class CartView extends StatelessWidget {
                                           fsize: 13,
                                         ),
                                         Txt(
-                                          text: '₹ ${total.toString()}',
+                                          text:
+                                              '₹ ${ccon.totalamount.toString()}',
                                           weight: FontWeight.bold,
                                           fsize: 13,
                                         ),

@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/screens/checkout.dart';
+import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
+import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
@@ -439,7 +442,24 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ),
                                   Expanded(
                                       child: RaisedGradientButton(
-                                          text: 'Buy Now', onPressed: () {}))
+                                          text: 'Buy Now',
+                                          onPressed: () {
+                                            final CartCon ccon = Get.find();
+                                            ccon.cartlist.clear();
+
+                                            prod['quantity'] =
+                                                hcon.qty.text.toString();
+                                            ccon.cartlist.add(prod);
+                                            ccon.addsum();
+
+                                            ccon.singleprodid.value =
+                                                prod['product_id'];
+                                            ccon.singleqty.value =
+                                                hcon.qty.text;
+                                            Get.to(() => CheckOutView(
+                                                  isbuynow: true,
+                                                ));
+                                          }))
                                 ],
                               ),
                             ),

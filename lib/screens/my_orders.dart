@@ -106,136 +106,142 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                               SizedBox(
                                 height: 10.sp,
                               ),
-                              for (int i = 0;
-                                  i < order['order_detail'].length;
-                                  i++)
-                                Column(
-                                  children: [
-                                    Container(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 75.sp,
-                                            width: 75.sp,
-                                            child: order['order_detail'][i]
-                                                        ['product_main_img'] ==
-                                                    ''
-                                                ? Container(
-                                                    child: Image.asset(
-                                                        'assets/logo.png'),
-                                                  )
-                                                : CachedNetworkImage(
-                                                    imageUrl: API().imagebase +
-                                                        order['order_detail'][i]
-                                                            [
-                                                            'product_main_img'],
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                        color: Colors.grey
-                                                            .withOpacity(0.2),
+                              if (order['order_detail'].toString() != 'null')
+                                for (int i = 0;
+                                    i < order['order_detail'].length;
+                                    i++)
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 75.sp,
+                                              width: 75.sp,
+                                              child: order['order_detail'][i][
+                                                          'product_main_img'] ==
+                                                      ''
+                                                  ? Container(
+                                                      child: Image.asset(
+                                                          'assets/logo.png'),
+                                                    )
+                                                  : CachedNetworkImage(
+                                                      imageUrl: API()
+                                                              .imagebase +
+                                                          order['order_detail']
+                                                                  [i][
+                                                              'product_main_img'],
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                          color: Colors.grey
+                                                              .withOpacity(0.2),
+                                                        ),
                                                       ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
                                                     ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                  ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Txt(
-                                                  text: order['order_detail'][i]
-                                                      ['product_name'],
-                                                  fsize: 13,
-                                                  lines: 2,
-                                                  weight: FontWeight.w500,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 5),
-                                                  child: Row(
-                                                    children: [
-                                                      Txt(
-                                                        text: 'Quantity : ',
-                                                        fsize: 12,
-                                                        color: Colors.grey,
-                                                      ),
-                                                      Txt(
-                                                        text: order[
-                                                                'order_detail'][
-                                                            i]['product_count'],
-                                                        fsize: 12,
-                                                        weight: FontWeight.w500,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Padding(
-                                                //   padding: const EdgeInsets.symmetric(
-                                                //       vertical: 5),
-                                                //   child: Row(
-                                                //     children: [
-                                                //       StarRating(
-                                                //         starConfig: StarConfig(
-                                                //           fillColor: Colors.green,
-                                                //           size: 20,
-                                                //           strokeColor: Colors.green,
-                                                //         ),
-                                                //         rating: double.parse(
-                                                //             order['order_detail'][i]
-                                                //                 ['product_rating']),
-                                                //         onChangeRating: (int rating) {
-                                                //           setState(() {
-                                                //             order['order_detail'][i][
-                                                //                     'product_rating'] =
-                                                //                 rating.toString();
-                                                //           });
-                                                //         },
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                                // Padding(
-                                                //   padding: const EdgeInsets.symmetric(
-                                                //       vertical: 5),
-                                                //   child: Row(
-                                                //     children: [
-                                                //       InkWell(
-                                                //         onTap: () {},
-                                                //         child: Txt(
-                                                //           text: 'Edit Review',
-                                                //           fsize: 12,
-                                                //           weight: FontWeight.w500,
-                                                //           color:
-                                                //               Get.theme.primaryColor,
-                                                //         ),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                              ],
                                             ),
-                                          )
-                                        ],
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Txt(
+                                                    text: order['order_detail']
+                                                        [i]['product_name'],
+                                                    fsize: 13,
+                                                    lines: 2,
+                                                    weight: FontWeight.w500,
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 5),
+                                                    child: Row(
+                                                      children: [
+                                                        Txt(
+                                                          text: 'Quantity : ',
+                                                          fsize: 12,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        Txt(
+                                                          text: order[
+                                                                  'order_detail']
+                                                              [
+                                                              i]['product_count'],
+                                                          fsize: 12,
+                                                          weight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.symmetric(
+                                                  //       vertical: 5),
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       StarRating(
+                                                  //         starConfig: StarConfig(
+                                                  //           fillColor: Colors.green,
+                                                  //           size: 20,
+                                                  //           strokeColor: Colors.green,
+                                                  //         ),
+                                                  //         rating: double.parse(
+                                                  //             order['order_detail'][i]
+                                                  //                 ['product_rating']),
+                                                  //         onChangeRating: (int rating) {
+                                                  //           setState(() {
+                                                  //             order['order_detail'][i][
+                                                  //                     'product_rating'] =
+                                                  //                 rating.toString();
+                                                  //           });
+                                                  //         },
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.symmetric(
+                                                  //       vertical: 5),
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       InkWell(
+                                                  //         onTap: () {},
+                                                  //         child: Txt(
+                                                  //           text: 'Edit Review',
+                                                  //           fsize: 12,
+                                                  //           weight: FontWeight.w500,
+                                                  //           color:
+                                                  //               Get.theme.primaryColor,
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.sp,
-                                    ),
-                                  ],
-                                ),
+                                      SizedBox(
+                                        height: 4.sp,
+                                      ),
+                                    ],
+                                  ),
                             ],
                           ),
                         ),

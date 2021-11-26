@@ -14,7 +14,8 @@ import 'package:sizer/sizer.dart';
 import '../api_endpoints.dart';
 
 class CheckOutView extends StatefulWidget {
-  CheckOutView({Key? key}) : super(key: key);
+  final bool isbuynow;
+  CheckOutView({Key? key, this.isbuynow = false}) : super(key: key);
 
   @override
   State<CheckOutView> createState() => _CheckOutViewState();
@@ -22,604 +23,605 @@ class CheckOutView extends StatefulWidget {
 
 class _CheckOutViewState extends State<CheckOutView> {
   final CartCon ccon = Get.find();
-  late Razorpay _razorpay;
+  Future<bool> onWillPop() {
+    if (widget.isbuynow) {
+      ccon.getcartlist();
+      ccon.singleprodid.value = '';
+      ccon.singleqty.value = '';
+    }
+    return Future.value(true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BaseAppBar(
-        backicon: true,
-        title: 'Checkout',
-        carticon: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+          appBar: BaseAppBar(
+            backicon: true,
+            title: 'Checkout',
+            carticon: false,
+            ontap: () {
+              Get.back();
+              if (widget.isbuynow) {
+                ccon.getcartlist();
+                ccon.singleprodid.value = '';
+                ccon.singleqty.value = '';
+              }
+            },
+          ),
+          body: Obx(
+            () => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
                 children: [
-                  Txt(
-                    text: 'Shipping to',
-                    fsize: 13,
-                    weight: FontWeight.w500,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  if (ccon.checklist.length != 0)
-                    Obx(
-                      () => Card(
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Txt(
-                                    text: ccon.checklist[0]['fullname'],
-                                    fsize: 13,
-                                    weight: FontWeight.w500,
-                                  ),
-                                  Row(
-                                    children: [],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        Txt(
+                          text: 'Shipping to',
+                          fsize: 13,
+                          weight: FontWeight.w500,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        if (ccon.checklist.length != 0)
+                          Obx(
+                            () => Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Txt(
-                                          text:
-                                              '${ccon.door.value} , ${ccon.street.value} , ${ccon.city.value} - ${ccon.pincode.value} - ${ccon.state.value}',
+                                          text: ccon.checklist[0]['fullname'],
+                                          fsize: 13,
                                           weight: FontWeight.w500,
+                                        ),
+                                        Row(
+                                          children: [],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Txt(
+                                                text:
+                                                    '${ccon.door.value} , ${ccon.street.value} , ${ccon.city.value} - ${ccon.pincode.value} - ${ccon.state.value}',
+                                                weight: FontWeight.w500,
+                                                fsize: 12,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Txt(
+                                          text: 'Landmark - ',
+                                          color: Colors.grey,
+                                          fsize: 11,
+                                        ),
+                                        Txt(
+                                          text: '${ccon.land.value}',
                                           fsize: 12,
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Txt(
+                                          text: 'Contact    - ',
+                                          color: Colors.grey,
+                                          fsize: 11,
+                                        ),
+                                        Txt(
+                                          text: '${ccon.mobile.value}',
+                                          fsize: 12,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                height: 5,
+                            ),
+                          ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => AddressView(
+                                  isselect: true,
+                                ));
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.pink,
+                                borderRadius: BorderRadius.circular(3)),
+                            child: Center(
+                              child: Txt(
+                                text: ccon.checklist.length != 0
+                                    ? 'Manage Address'
+                                    : 'Add Address',
+                                color: Colors.white,
+                                defalutsize: true,
                               ),
-                              Row(
-                                children: [
-                                  Txt(
-                                    text: 'Landmark - ',
-                                    color: Colors.grey,
-                                    fsize: 11,
-                                  ),
-                                  Txt(
-                                    text: '${ccon.land.value}',
-                                    fsize: 12,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Txt(
-                                    text: 'Contact    - ',
-                                    color: Colors.grey,
-                                    fsize: 11,
-                                  ),
-                                  Txt(
-                                    text: '${ccon.mobile.value}',
-                                    fsize: 12,
-                                  ),
-                                ],
-                              )
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => AddressView(
-                            isselect: true,
-                          ));
-                    },
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.pink,
-                          borderRadius: BorderRadius.circular(3)),
-                      child: Center(
-                        child: Txt(
-                          text: ccon.checklist.length != 0
-                              ? 'Manage Address'
-                              : 'Add Address',
-                          color: Colors.white,
-                          defalutsize: true,
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  for (int i = 0; i < ccon.cartlist.length; i++)
-                    Column(
-                      children: [
-                        Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        for (int i = 0; i < ccon.cartlist.length; i++)
+                          Column(
                             children: [
                               Container(
-                                height: 75.sp,
-                                width: 75.sp,
-                                child: ccon.cartlist[i]['product_img'] == ''
-                                    ? Container(
-                                        child: Image.asset('assets/logo.png'),
-                                      )
-                                    : CachedNetworkImage(
-                                        imageUrl: API().imagebase +
-                                            ccon.cartlist[i]['product_img'],
-                                        placeholder: (context, url) =>
-                                            Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            color: Colors.grey.withOpacity(0.2),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Container(
+                                      height: 75.sp,
+                                      width: 75.sp,
+                                      child:
+                                          ccon.cartlist[i]['product_img'] == ''
+                                              ? Container(
+                                                  child: Image.asset(
+                                                      'assets/logo.png'),
+                                                )
+                                              : CachedNetworkImage(
+                                                  imageUrl: API().imagebase +
+                                                      ccon.cartlist[i]
+                                                          ['product_img'],
+                                                  placeholder: (context, url) =>
+                                                      Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                      color: Colors.grey
+                                                          .withOpacity(0.2),
+                                                    ),
+                                                  ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
+                                                ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Txt(
+                                            text: ccon.cartlist[i]
+                                                ['product_name'],
+                                            fsize: 13,
+                                            lines: 2,
+                                            weight: FontWeight.w500,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Row(
+                                              children: [
+                                                Txt(
+                                                  text: 'M.R.P.',
+                                                  fsize: 12,
+                                                  color: Colors.grey,
+                                                ),
+                                                Txt(
+                                                  text: GetStorage()
+                                                                  .read(
+                                                                      'vendor')
+                                                                  .toString() ==
+                                                              'null' ||
+                                                          GetStorage()
+                                                                  .read(
+                                                                      'vendor')
+                                                                  .toString() ==
+                                                              'false'
+                                                      ? '₹${ccon.cartlist[i]['product_price']}'
+                                                      : '₹${ccon.cartlist[i]['vendor_price']}',
+                                                  color: Colors.pink,
+                                                  weight: FontWeight.w500,
+                                                  fsize: 12,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Txt(
+                                                      text: 'Quantity : ',
+                                                      fsize: 12,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    Txt(
+                                                      text: ccon.cartlist[i]
+                                                          ['quantity'],
+                                                      fsize: 12,
+                                                      weight: FontWeight.w500,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Txt(
+                                                  text:
+                                                      '₹ ${int.parse(ccon.cartlist[i]['product_price']) * int.parse(ccon.cartlist[i]['quantity'])}',
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.sp,
+                              ),
+                            ],
+                          ),
+                        Card(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
                                     Txt(
-                                      text: ccon.cartlist[i]['product_name'],
-                                      fsize: 13,
-                                      lines: 2,
+                                      text: 'Price Details',
                                       weight: FontWeight.w500,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: Row(
-                                        children: [
-                                          Txt(
-                                            text: 'M.R.P.',
-                                            fsize: 12,
-                                            color: Colors.grey,
-                                          ),
-                                          Txt(
-                                            text: GetStorage()
-                                                            .read('vendor')
-                                                            .toString() ==
-                                                        'null' ||
-                                                    GetStorage()
-                                                            .read('vendor')
-                                                            .toString() ==
-                                                        'false'
-                                                ? '₹${ccon.cartlist[i]['product_price']}'
-                                                : '₹${ccon.cartlist[i]['vendor_price']}',
-                                            color: Colors.pink,
-                                            weight: FontWeight.w500,
-                                            fsize: 12,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Txt(
-                                                text: 'Quantity : ',
-                                                fsize: 12,
-                                                color: Colors.grey,
-                                              ),
-                                              Txt(
-                                                text: ccon.cartlist[i]
-                                                    ['quantity'],
-                                                fsize: 12,
-                                                weight: FontWeight.w500,
-                                              ),
-                                            ],
-                                          ),
-                                          Txt(
-                                            text:
-                                                '₹ ${int.parse(ccon.cartlist[i]['product_price']) * int.parse(ccon.cartlist[i]['quantity'])}',
-                                          )
-                                        ],
-                                      ),
+                                    Txt(
+                                      text: 'Inclusive of all taxes.',
+                                      color: Colors.grey,
+                                      fsize: 10,
                                     ),
                                   ],
                                 ),
-                              )
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Txt(
+                                        text: 'Sub Price',
+                                        color: Colors.grey,
+                                        fsize: 14,
+                                      ),
+                                      Txt(
+                                        text:
+                                            '₹ ${int.parse(ccon.totalamount.value) - (int.parse(ccon.totalamount.value) / 100 * 9).round() * 2}',
+                                        weight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Txt(
+                                        text: 'CGST',
+                                        color: Colors.grey,
+                                        fsize: 14,
+                                      ),
+                                      Txt(
+                                        text:
+                                            '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
+                                        weight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Txt(
+                                        text: 'SGST',
+                                        color: Colors.grey,
+                                        fsize: 14,
+                                      ),
+                                      Txt(
+                                        text:
+                                            '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
+                                        weight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Txt(
+                                        text: 'Shipping Charge',
+                                        color: Colors.grey,
+                                        fsize: 14,
+                                      ),
+                                      Txt(
+                                        text: '₹${ccon.shipping.value}',
+                                        weight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.teal[400],
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Txt(
+                                          text: 'Total Price',
+                                          color: Colors.white,
+                                          fsize: 14,
+                                        ),
+                                        Txt(
+                                          text:
+                                              '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value)).round())}',
+                                          weight: FontWeight.w500,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Obx(
+                              () => Expanded(
+                                child: Column(
+                                  children: [
+                                    Txt(
+                                      text: ccon.msg.value ==
+                                              'Delivery Currently Unavailable'
+                                          ? 'Delivery Currently Unavailable for this location'
+                                          : 'Delivery Available.Estimated Delivery by ${ccon.days.value} days',
+                                      color: ccon.msg.value ==
+                                              'Delivery Currently Unavailable'
+                                          ? Colors.red
+                                          : Colors.green,
+                                      fsize: 10,
+                                      iscenter: true,
+                                      weight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Txt(
+                            text: 'Mode of Payment',
+                            fsize: 15,
+                            weight: FontWeight.w500,
+                          ),
+                        ),
+                        Card(
+                          child: Column(
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    ccon.onlinepay.value = true;
+                                    ccon.codpay.value = false;
+                                  },
+                                  child: Obx(
+                                    () => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: 40.sp,
+                                                width: 40.sp,
+                                                child: Placeholder(),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Txt(
+                                              text: 'Online Payment',
+                                              weight: FontWeight.w500,
+                                              fsize: 12,
+                                            ),
+                                          ],
+                                        ),
+                                        Transform.scale(
+                                            scale: 1.4,
+                                            child: Radio(
+                                                activeColor: Colors.green,
+                                                value: ccon.onlinepay.value,
+                                                groupValue: true,
+                                                toggleable: true,
+                                                onChanged: (s) {
+                                                  ccon.onlinepay.value = true;
+                                                  ccon.codpay.value = false;
+                                                }))
+                                      ],
+                                    ),
+                                  )),
+                              InkWell(
+                                  onTap: () {
+                                    ccon.onlinepay.value = false;
+                                    ccon.codpay.value = true;
+                                  },
+                                  child: Obx(
+                                    () => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: 40.sp,
+                                                width: 40.sp,
+                                                child: Placeholder(),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Txt(
+                                              text: 'Cash on Delivery',
+                                              weight: FontWeight.w500,
+                                              fsize: 12,
+                                            ),
+                                          ],
+                                        ),
+                                        Transform.scale(
+                                            scale: 1.4,
+                                            child: Radio(
+                                                activeColor: Colors.green,
+                                                value: ccon.codpay.value,
+                                                groupValue: true,
+                                                toggleable: true,
+                                                onChanged: (s) {
+                                                  ccon.onlinepay.value = false;
+                                                  ccon.codpay.value = true;
+                                                }))
+                                      ],
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: 5.sp,
-                        ),
+                          height: 10,
+                        )
                       ],
                     ),
-                  Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  Container(
+                    height: kBottomNavigationBarHeight + 5,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Txt(
-                                text: 'Price Details',
-                                weight: FontWeight.w500,
-                              ),
-                              Txt(
-                                text: 'Inclusive of all taxes.',
-                                color: Colors.grey,
-                                fsize: 10,
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Txt(
-                                  text: 'Sub Price',
-                                  color: Colors.grey,
-                                  fsize: 14,
-                                ),
-                                Txt(
-                                  text: '₹ ${ccon.totalamount.value}',
-                                  weight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Txt(
-                                  text: 'CGST',
-                                  color: Colors.grey,
-                                  fsize: 14,
-                                ),
-                                Txt(
-                                  text:
-                                      '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
-                                  weight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Txt(
-                                  text: 'SGST',
-                                  color: Colors.grey,
-                                  fsize: 14,
-                                ),
-                                Txt(
-                                  text:
-                                      '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
-                                  weight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Txt(
-                                  text: 'Shipping Charge',
-                                  color: Colors.grey,
-                                  fsize: 14,
-                                ),
-                                Txt(
-                                  text: '₹${ccon.shipping.value}',
-                                  weight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.teal[400],
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10))),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Txt(
-                                    text: 'Total Price',
-                                    color: Colors.white,
-                                    fsize: 14,
-                                  ),
-                                  Txt(
-                                    text:
-                                        '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value) / 100 * 9).round() + (int.parse(ccon.totalamount.value) / 100 * 9).round() + (int.parse(ccon.totalamount.value)))}',
-                                    weight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      padding: const EdgeInsets.all(4.0),
+                      child: RaisedGradientButton(
+                          text: 'Place Order',
+                          onPressed: () {
+                            if (ccon.checklist.length == 0) {
+                              Fluttertoast.showToast(
+                                msg: 'Add Delivery Address',
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                            } else if (ccon.msg.value ==
+                                'Delivery Currently Unavailable for given address') {
+                              Fluttertoast.showToast(
+                                msg: 'Delivery Currently Unavailable',
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                            } else if (ccon.onlinepay.value == false &&
+                                ccon.codpay.value == false) {
+                              Fluttertoast.showToast(
+                                msg: 'Select Payment Menthod',
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                            } else {
+                              if (ccon.onlinepay.value) {
+                                var total = (int.parse(ccon.shipping.value) +
+                                    (int.parse(ccon.totalamount.value))
+                                        .round());
+                                ccon.getrazorpay(total);
+                              } else {
+                                var total = (int.parse(ccon.shipping.value) +
+                                    (int.parse(ccon.totalamount.value))
+                                        .round());
+                                ccon.codpayment(total);
+                              }
+                            }
+                          }),
                     ),
                   ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Obx(
-                        () => Txt(
-                          text: ccon.msg.value ==
-                                  'Delivery Currently Unavailable'
-                              ? 'Delivery Currently Unavailable'
-                              : 'Delivery Available.Estimated Delivery by ${ccon.days.value} days',
-                          color:
-                              ccon.msg.value == 'Delivery Currently Unavailable'
-                                  ? Colors.red
-                                  : Colors.green,
-                          fsize: 10,
-                          weight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Txt(
-                      text: 'Mode of Payment',
-                      fsize: 15,
-                      weight: FontWeight.w500,
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              ccon.onlinepay.value = true;
-                              ccon.codpay.value = false;
-                            },
-                            child: Obx(
-                              () => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: 40.sp,
-                                          width: 40.sp,
-                                          child: Placeholder(),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Txt(
-                                        text: 'Online Payment',
-                                        weight: FontWeight.w500,
-                                        fsize: 12,
-                                      ),
-                                    ],
-                                  ),
-                                  Transform.scale(
-                                      scale: 1.4,
-                                      child: Radio(
-                                          activeColor: Colors.green,
-                                          value: ccon.onlinepay.value,
-                                          groupValue: true,
-                                          toggleable: true,
-                                          onChanged: (s) {
-                                            ccon.onlinepay.value = true;
-                                            ccon.codpay.value = false;
-                                          }))
-                                ],
-                              ),
-                            )),
-                        InkWell(
-                            onTap: () {
-                              ccon.onlinepay.value = false;
-                              ccon.codpay.value = true;
-                            },
-                            child: Obx(
-                              () => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: 40.sp,
-                                          width: 40.sp,
-                                          child: Placeholder(),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Txt(
-                                        text: 'Cash on Delivery',
-                                        weight: FontWeight.w500,
-                                        fsize: 12,
-                                      ),
-                                    ],
-                                  ),
-                                  Transform.scale(
-                                      scale: 1.4,
-                                      child: Radio(
-                                          activeColor: Colors.green,
-                                          value: ccon.codpay.value,
-                                          groupValue: true,
-                                          toggleable: true,
-                                          onChanged: (s) {
-                                            ccon.onlinepay.value = false;
-                                            ccon.codpay.value = true;
-                                          }))
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  )
                 ],
               ),
             ),
-            Container(
-              height: kBottomNavigationBarHeight + 5,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: RaisedGradientButton(
-                    text: 'Place Order',
-                    onPressed: () {
-                      if (ccon.checklist.length == 0) {
-                        Fluttertoast.showToast(
-                          msg: 'Add Delivery Address',
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                        );
-                      } else if (ccon.msg.value ==
-                          'Delivery Currently Unavailable for given address') {
-                        Fluttertoast.showToast(
-                          msg: 'Delivery Currently Unavailable',
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                        );
-                      } else if (ccon.onlinepay.value == false &&
-                          ccon.codpay.value == false) {
-                        Fluttertoast.showToast(
-                          msg: 'Select Payment Mentod',
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                        );
-                      } else {
-                        if (ccon.onlinepay.value) {
-                          openCheckout();
-                        }
-                      }
-                    }),
-              ),
-            ),
-          ],
-        ),
-      ),
+          )),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _razorpay.clear();
-  }
-
-  void openCheckout() async {
-    var options = {
-      'key': 'rzp_test_1DP5mmOlF5G5ag',
-      'amount': 2000,
-      'name': 'Acme Corp.',
-      'description': 'Fine T-Shirt',
-      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
-      'external': {
-        'wallets': ['paytm']
-      }
-    };
-
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: e');
-    }
-  }
-
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    Fluttertoast.showToast(
-        msg: "SUCCESS: " + response.paymentId!,
-        toastLength: Toast.LENGTH_SHORT);
-  }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    Fluttertoast.showToast(
-        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
-        toastLength: Toast.LENGTH_SHORT);
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    Fluttertoast.showToast(
-        msg: "EXTERNAL_WALLET: " + response.walletName!,
-        toastLength: Toast.LENGTH_SHORT);
   }
 }

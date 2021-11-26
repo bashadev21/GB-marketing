@@ -6,6 +6,7 @@ import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'new_address.dart';
 
@@ -46,7 +47,10 @@ class AddressView extends StatelessWidget {
                           ccon.city.value = address['city'];
                           ccon.state.value = address['state'];
                           ccon.addressid.value = address['useraddress_id'];
+                          GetStorage().write(
+                              'lastadr', address['useraddress_id'].toString());
                           ccon.checkoutaddres();
+
                           Get.back();
                         }
                       },
