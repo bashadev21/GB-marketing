@@ -107,6 +107,7 @@ class ProfileView extends StatelessWidget {
                                             GetStorage().remove('userid');
                                             GetStorage().remove('username');
                                             GetStorage().remove('vendor');
+                                            GetStorage().remove('lastadr');
                                             Get.offAll(() => LoginView());
                                           },
                                           child: Txt(

@@ -4,7 +4,6 @@ class API {
   String completepaymenturl =
       'http://gbmarketingchennai.com/api/payment_return.php';
   String imagebase = 'http://gbmarketingchennai.com/admin/';
-
   String otp = 'generateotp';
   String login = 'login';
   String signup = 'register';
@@ -19,7 +18,6 @@ class API {
   String searchkey = 'search_suggestion';
   String searchproducts = 'search_product_name';
   String getcartlist = 'cart_list';
-
   String checkoutaddress = 'checkout_address';
   String updateaddress = 'get_edit_address';
   String getfavlist = 'favourite_page';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
+import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 
 class WishlistView extends StatelessWidget {
@@ -15,18 +16,24 @@ class WishlistView extends StatelessWidget {
         title: 'Wishlist',
         carticon: true,
       ),
-      body: Obx(() => GridView.builder(
-            physics: BouncingScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 0.7),
-            itemCount: pcon.favlist.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ProductTile(
-                isfav: true,
-                prod: pcon.favlist[index],
-              );
-            },
-          )),
+      body: Obx(() => pcon.favlist.length == 0
+          ? Center(
+              child: Txt(
+                text: 'No Products Found',
+              ),
+            )
+          : GridView.builder(
+              physics: BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: 0.7),
+              itemCount: pcon.favlist.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ProductTile(
+                  isfav: true,
+                  prod: pcon.favlist[index],
+                );
+              },
+            )),
     );
   }
 }

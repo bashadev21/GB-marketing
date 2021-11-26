@@ -211,7 +211,6 @@ class HomeCon extends GetxController with BaseController {
     Fluttertoast.showToast(
       msg: response,
       backgroundColor: Colors.black54,
-      toastLength: Toast.LENGTH_LONG,
       textColor: Colors.white,
     );
     pcon.getfavlist();
