@@ -23,6 +23,7 @@ class API {
   String getfavlist = 'favourite_page';
   String getadresslist = 'address_list';
   String uniqorder = 'unique_order_detail';
+  String ratereview = 'ratings_review';
   String updatepassword = 'updatepassword';
   String addadresslist = 'add_useraddress';
   String updateadress = 'update_edit_address';

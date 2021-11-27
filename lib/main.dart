@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         defaultTransition: Transition.cupertino,
         title: 'GB Marketing',
+        themeMode: ThemeMode.light,
         theme: ThemeData(
             scaffoldBackgroundColor: Colors.grey[50],
             primaryColorLight: Colors.blueAccent,

@@ -229,6 +229,7 @@ class _ProductTileState extends State<ProductTile> {
                                     },
                                     child: Icon(
                                       Icons.add_circle,
+                                      size: 25.sp,
                                       color: Get.theme.primaryColorLight,
                                     ),
                                   )

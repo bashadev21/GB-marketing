@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
@@ -21,6 +24,7 @@ class OrderDetails extends StatefulWidget {
 class _OrderDetailsState extends State<OrderDetails> {
   double rating = 0.0;
   final ProfileCon pcon = Get.find();
+
   @override
   Widget build(BuildContext context) {
     // final order = pcon.uniorderslist[0];
@@ -166,52 +170,91 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               ],
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Row(
-                                              children: [
-                                                StarRating(
-                                                  starConfig: StarConfig(
-                                                    fillColor: Colors.green,
-                                                    size: 20,
-                                                    strokeColor: Colors.green,
+                                          pcon.uniorderslist[0]
+                                                      ['order_stage'] ==
+                                                  'Pending'
+                                              ? Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 5),
+                                                  child: Row(
+                                                    children: [
+                                                      StarRating(
+                                                        starConfig: StarConfig(
+                                                          fillColor:
+                                                              Colors.green,
+                                                          size: 20,
+                                                          strokeColor:
+                                                              Colors.green,
+                                                        ),
+                                                        rating: double.parse(pcon
+                                                                    .uniorderslist[0]
+                                                                ['order_detail']
+                                                            [
+                                                            i]['product_rating']),
+                                                        onChangeRating:
+                                                            (int rating) {
+                                                          setState(() {
+                                                            pcon.ratingreview(
+                                                                pcon.uniorderslist[
+                                                                            0][
+                                                                        'order_detail'][i]
+                                                                    [
+                                                                    'product_id'],
+                                                                rating
+                                                                    .toString(),
+                                                                '');
+                                                            // if (pcon.uniorderslist[
+                                                            //                 0][
+                                                            //             'order_detail'][i]
+                                                            //         [
+                                                            //         'product_rating'] ==
+                                                            //     '0') {
+                                                            pcon.uniorderslist[
+                                                                            0][
+                                                                        'order_detail'][i]
+                                                                    [
+                                                                    'product_rating'] =
+                                                                rating
+                                                                    .toString();
+                                                            // }
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
                                                   ),
-                                                  rating: double.parse(pcon
-                                                              .uniorderslist[0]
-                                                          ['order_detail'][i]
-                                                      ['product_rating']),
-                                                  onChangeRating: (int rating) {
-                                                    setState(() {
-                                                      pcon.uniorderslist[0][
-                                                                  'order_detail'][i]
-                                                              [
-                                                              'product_rating'] =
-                                                          rating.toString();
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: Row(
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {},
-                                                  child: Txt(
-                                                    text: 'Edit Review',
-                                                    fsize: 12,
-                                                    weight: FontWeight.w500,
-                                                    color:
-                                                        Get.theme.primaryColor,
+                                                )
+                                              : SizedBox(),
+                                          pcon.uniorderslist[0]['order_detail']
+                                                      [i]['product_rating'] !=
+                                                  '0'
+                                              ? Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 5),
+                                                  child: Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {},
+                                                        child: Txt(
+                                                          text: pcon.uniorderslist[
+                                                                              0]
+                                                                          [
+                                                                          'order_detail'][i]
+                                                                      [
+                                                                      'product_review'] ==
+                                                                  ''
+                                                              ? 'Add Review'
+                                                              : 'Edit Review',
+                                                          fsize: 12,
+                                                          weight:
+                                                              FontWeight.w500,
+                                                          color: Get.theme
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                                )
+                                              : SizedBox(),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 5),
@@ -399,10 +442,90 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Column(
                             children: [
                               statusWidget("Order Placed", true),
-                              statusWidget("Shipped", false),
-                              statusWidget("Delivered", false),
-                              statusWidget("Fitting", false),
-                              statusWidget("Completed", false),
+                              statusWidget(
+                                  "Shipped",
+                                  pcon.uniorderslist[0]['order_stage'] ==
+                                          'Pending'
+                                      ? false
+                                      : pcon.uniorderslist[0]['order_stage'] ==
+                                              'Shipping'
+                                          ? true
+                                          : pcon.uniorderslist[0]
+                                                      ['order_stage'] ==
+                                                  'Delivered'
+                                              ? true
+                                              : pcon.uniorderslist[0]
+                                                          ['order_stage'] ==
+                                                      'Fitting'
+                                                  ? true
+                                                  : pcon.uniorderslist[0]
+                                                              ['order_stage'] ==
+                                                          'Completed'
+                                                      ? true
+                                                      : false),
+                              statusWidget(
+                                  "Delivered",
+                                  pcon.uniorderslist[0]['order_stage'] ==
+                                          'Pending'
+                                      ? false
+                                      : pcon.uniorderslist[0]['order_stage'] ==
+                                              'Shipping'
+                                          ? false
+                                          : pcon.uniorderslist[0]
+                                                      ['order_stage'] ==
+                                                  'Delivered'
+                                              ? true
+                                              : pcon.uniorderslist[0]
+                                                          ['order_stage'] ==
+                                                      'Fitting'
+                                                  ? true
+                                                  : pcon.uniorderslist[0]
+                                                              ['order_stage'] ==
+                                                          'Completed'
+                                                      ? true
+                                                      : false),
+                              statusWidget(
+                                  "Fitting",
+                                  pcon.uniorderslist[0]['order_stage'] ==
+                                          'Pending'
+                                      ? false
+                                      : pcon.uniorderslist[0]['order_stage'] ==
+                                              'Shipping'
+                                          ? false
+                                          : pcon.uniorderslist[0]
+                                                      ['order_stage'] ==
+                                                  'Delivered'
+                                              ? false
+                                              : pcon.uniorderslist[0]
+                                                          ['order_stage'] ==
+                                                      'Fitting'
+                                                  ? true
+                                                  : pcon.uniorderslist[0]
+                                                              ['order_stage'] ==
+                                                          'Completed'
+                                                      ? true
+                                                      : false),
+                              statusWidget(
+                                  "Completed",
+                                  pcon.uniorderslist[0]['order_stage'] ==
+                                          'Pending'
+                                      ? false
+                                      : pcon.uniorderslist[0]['order_stage'] ==
+                                              'Shipping'
+                                          ? false
+                                          : pcon.uniorderslist[0]
+                                                      ['order_stage'] ==
+                                                  'Delivered'
+                                              ? true
+                                              : pcon.uniorderslist[0]
+                                                          ['order_stage'] ==
+                                                      'Fitting'
+                                                  ? false
+                                                  : pcon.uniorderslist[0]
+                                                              ['order_stage'] ==
+                                                          'Completed'
+                                                      ? true
+                                                      : false),
                             ],
                           ),
                         ],
@@ -410,7 +533,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                       Row(
                         children: [
                           Txt(
-                            text: 'Delivery Estimated on: ',
+                            text:
+                                pcon.uniorderslist[0]['estimate'].toString() ==
+                                        'true'
+                                    ? 'Delivery Estimated on: '
+                                    : 'Delivered on: ',
                             color: Colors.grey,
                             fsize: 14,
                           ),

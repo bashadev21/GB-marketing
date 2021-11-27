@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:gb_marketing/widgets/text_field.dart';
 import 'package:gb_marketing/widgets/zoom_image.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
@@ -26,9 +29,16 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  final TextEditingController c1 = new TextEditingController();
+  bool _enabled = true;
 
-  final TextEditingController c2 = new TextEditingController();
+  void _onTap(name, url) {
+    setState(() => _enabled = false);
+    Share.share(
+      '$name \n \n $url',
+      subject: 'Check it out GB-Marketing app',
+    );
+    Timer(Duration(seconds: 1), () => setState(() => _enabled = true));
+  }
 
   final HomeCon hcon = Get.find();
   Future<bool> onWillPop() {
@@ -177,9 +187,16 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       ),
                                     ),
                                     Spacer(),
-                                    Icon(
-                                      Icons.share,
-                                      color: Colors.black,
+                                    InkWell(
+                                      onTap: () {
+                                        if (_enabled)
+                                          _onTap(prod['product_name'],
+                                              prod['url']);
+                                      },
+                                      child: Icon(
+                                        Icons.share,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ],
                                 ),

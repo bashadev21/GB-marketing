@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/screens/drawer_menus/about.dart';
@@ -12,11 +15,30 @@ import 'package:gb_marketing/widgets/drawer_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key? key}) : super(key: key);
+
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
   final HomeCon hcon = Get.find();
+  bool _enabled = true;
+
+  void _onTap() {
+    setState(() => _enabled = false);
+    Share.share(
+      'Let me recommend you this application https://play.google.com/store/apps/details?id=com.teckzy.gb_marketing',
+      subject: 'Check it out GB-Marketing app',
+    );
+    Timer(Duration(seconds: 1), () => setState(() => _enabled = true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -140,6 +162,7 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.privacy_tip),
             DrawerTile(
                 onTap: () {
+                  // openwhatsapp();
                   hcon.searchc.clear();
                   hcon.searchlist.clear();
                   hcon.showclear.value = false;
@@ -150,6 +173,7 @@ class DrawerWidget extends StatelessWidget {
                 icon: Icons.contact_mail),
             DrawerTile(
                 onTap: () {
+                  if (_enabled) _onTap();
                   hcon.searchc.clear();
                   hcon.searchlist.clear();
                   hcon.showclear.value = false;
@@ -160,5 +184,28 @@ class DrawerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  openwhatsapp() async {
+    var whatsapp = "+917904941100";
+    var whatsappURl_android = "whatsapp://send?phone=" + whatsapp + "&text=";
+    var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+    if (Platform.isIOS) {
+      // for iOS phone only
+      if (await canLaunch(whatappURL_ios)) {
+        await launch(whatappURL_ios, forceSafariVC: false);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: new Text("whatsapp no installed")));
+      }
+    } else {
+      // android , web
+      if (await canLaunch(whatsappURl_android)) {
+        await launch(whatsappURl_android);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
   }
 }

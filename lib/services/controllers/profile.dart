@@ -92,6 +92,28 @@ class ProfileCon extends GetxController with BaseController {
     }
   }
 
+  void ratingreview(productid, rate, review) async {
+    var body = {
+      'functocall': API().ratereview,
+      'product_id': productid,
+      'rating': rate,
+      'review': review,
+      'user_id': GetStorage().read('userid').toString()
+    };
+    print(body);
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+
+    Fluttertoast.showToast(
+      msg: response,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+    );
+  }
+
   void updatepassword() async {
     showLoading();
     var body = {
