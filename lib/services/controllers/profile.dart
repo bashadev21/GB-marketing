@@ -92,7 +92,9 @@ class ProfileCon extends GetxController with BaseController {
     }
   }
 
-  void ratingreview(productid, rate, review) async {
+  void ratingreview(productid, rate, review, orderid,
+      {reviewbool = false}) async {
+    if (reviewbool) showLoading();
     var body = {
       'functocall': API().ratereview,
       'product_id': productid,
@@ -106,12 +108,46 @@ class ProfileCon extends GetxController with BaseController {
     if (response == null) return;
 
     print(response.toString());
+    var data = json.decode(response);
+    hideLoading();
+    if (Get.isDialogOpen!) Get.back();
+
+    Fluttertoast.showToast(
+      msg: reviewbool ? data[0]['review'] : data[0]['rating'],
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+    );
+    uniorder(orderid);
+  }
+
+  void cancelorder(status, canproid, productid, orderid, price, qty) async {
+    showLoading();
+    var body = {
+      'functocall': API().cancelorder,
+      'page': status,
+      'order_id': orderid.toString(),
+      'pro_odr_price': price.toString(),
+      'cancel_pro_id': canproid.toString(),
+      'product_id': productid.toString(),
+      'pro_odr_quantity': qty.toString(),
+      'user_id': GetStorage().read('userid').toString()
+    };
+    print(body);
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+    // var data = json.decode(response);
+    hideLoading();
+    if (Get.isDialogOpen!) Get.back();
 
     Fluttertoast.showToast(
       msg: response,
       backgroundColor: Colors.black54,
       textColor: Colors.white,
     );
+    uniorder(orderid);
   }
 
   void updatepassword() async {

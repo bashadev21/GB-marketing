@@ -185,27 +185,4 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       ),
     );
   }
-
-  openwhatsapp() async {
-    var whatsapp = "+917904941100";
-    var whatsappURl_android = "whatsapp://send?phone=" + whatsapp + "&text=";
-    var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
-    if (Platform.isIOS) {
-      // for iOS phone only
-      if (await canLaunch(whatappURL_ios)) {
-        await launch(whatappURL_ios, forceSafariVC: false);
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: new Text("whatsapp no installed")));
-      }
-    } else {
-      // android , web
-      if (await canLaunch(whatsappURl_android)) {
-        await launch(whatsappURl_android);
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: new Text("whatsapp no installed")));
-      }
-    }
-  }
 }

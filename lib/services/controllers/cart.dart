@@ -32,6 +32,8 @@ class CartCon extends GetxController with BaseController {
   var msg = '0'.obs;
   var pincode = '0'.obs;
   var addressid = '0'.obs;
+  var couponidvar = '0'.obs;
+  var discount = '0'.obs;
   var onlinepay = false.obs;
   var singleprodid = ''.obs;
   var singleqty = ''.obs;
@@ -104,7 +106,7 @@ class CartCon extends GetxController with BaseController {
       'order_price': orderprice.toString(),
       'product_id': singleprodid.value.toString(),
       'quantity': singleqty.value.toString(),
-      'coupon_id': couponid,
+      'coupon_id': couponidvar.value.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
       'user_id': GetStorage().read('userid').toString(),
       'user_type': GetStorage().read('vendor').toString() == 'true'
@@ -196,7 +198,7 @@ class CartCon extends GetxController with BaseController {
       'order_price': orderprice.toString(),
       'product_id': singleprodid.value.toString(),
       'quantity': singleqty.value.toString(),
-      'coupon_id': couponid,
+      'coupon_id': couponidvar.value.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
       'user_id': GetStorage().read('userid').toString(),
       'user_type': GetStorage().read('vendor').toString() == 'true'
@@ -263,6 +265,7 @@ class CartCon extends GetxController with BaseController {
         ),
       ),
     ));
+    couponidvar.value = '0';
     // } else {
     //   hideLoading();
     //   Fluttertoast.showToast(
@@ -306,6 +309,63 @@ class CartCon extends GetxController with BaseController {
       var data = json.decode(response);
       razorcred.value = data;
       openCheckout();
+    }
+  }
+
+  void applycoupon(coupon) async {
+    showLoading();
+    var body = {
+      'functocall': API().couponapply,
+      'coupon_code': coupon,
+      'user_id': GetStorage().read('userid').toString(),
+    };
+    var response =
+        await BaseClient().post(API().baseurl, body).catchError(handleError);
+    if (response == null) return;
+
+    print(response.toString());
+    hideLoading();
+    if (response != '[]' || response != '') {
+      hideLoading();
+      var data = json.decode(response);
+      if (data[0]['msg'] == 'yes') {
+        couponidvar.value = data[1]['coupon_id'].toString();
+        if (data[1]['percent'] == '0') {
+          discount.value =
+              int.parse(data[1]['rs']).round().toString().split('.')[0];
+          // totalamount.value =
+          //     ((int.parse(totalamount.value) - ))
+          //         .round()
+          //         .toString();
+          Fluttertoast.showToast(
+            msg: 'Applied Successfully',
+            backgroundColor: Colors.green[400],
+            textColor: Colors.white,
+          );
+        } else {
+          discount.value = (int.parse(totalamount.value) /
+                  100 *
+                  int.parse(data[1]['percent']))
+              .toString()
+              .split('.')[0];
+          Fluttertoast.showToast(
+            msg: 'Applied Successfully',
+            backgroundColor: Colors.green[400],
+            textColor: Colors.white,
+          );
+          // totalamount.value = ((int.parse(totalamount.value) / 100) *
+          //         int.parse(data[1]['percent']))
+          //     .round()
+          //     .toString();
+          print(discount.value.toString());
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Coupon code not valid',
+          backgroundColor: Colors.red[400],
+          textColor: Colors.white,
+        );
+      }
     }
   }
 

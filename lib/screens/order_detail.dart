@@ -4,10 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_star_rating/flutter_star_rating.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
+import 'package:gb_marketing/widgets/text_field.dart';
 import 'package:get/get.dart';
 import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
@@ -24,7 +26,7 @@ class OrderDetails extends StatefulWidget {
 class _OrderDetailsState extends State<OrderDetails> {
   double rating = 0.0;
   final ProfileCon pcon = Get.find();
-
+  final TextEditingController reviewcon = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     // final order = pcon.uniorderslist[0];
@@ -172,7 +174,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           ),
                                           pcon.uniorderslist[0]
                                                       ['order_stage'] ==
-                                                  'Pending'
+                                                  'Completed'
                                               ? Padding(
                                                   padding: const EdgeInsets
                                                       .symmetric(vertical: 5),
@@ -202,7 +204,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                     'product_id'],
                                                                 rating
                                                                     .toString(),
-                                                                '');
+                                                                '',
+                                                                pcon.uniorderslist[
+                                                                        0][
+                                                                    'order_id']);
                                                             // if (pcon.uniorderslist[
                                                             //                 0][
                                                             //             'order_detail'][i]
@@ -224,6 +229,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   ),
                                                 )
                                               : SizedBox(),
+                                          if (pcon.uniorderslist[0]
+                                                      ['order_detail'][i]
+                                                      ['product_review']
+                                                  .toString() !=
+                                              '')
+                                            Obx(() => Txt(
+                                                  text: pcon.uniorderslist[0]
+                                                          ['order_detail'][i]
+                                                          ['product_review']
+                                                      .toString(),
+                                                  fsize: 11,
+                                                )),
                                           pcon.uniorderslist[0]['order_detail']
                                                       [i]['product_rating'] !=
                                                   '0'
@@ -233,7 +250,105 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   child: Row(
                                                     children: [
                                                       InkWell(
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          Get.dialog(Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .all(
+                                                                      15.0),
+                                                              child: Material(
+                                                                color: Colors
+                                                                    .transparent,
+                                                                child:
+                                                                    Container(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            SizedBox(
+                                                                              width: 40,
+                                                                            ),
+                                                                            Txt(
+                                                                              text: 'Review!',
+                                                                              weight: FontWeight.w500,
+                                                                            ),
+                                                                            InkWell(
+                                                                              onTap: () {
+                                                                                Get.back();
+                                                                              },
+                                                                              child: Container(
+                                                                                  height: 40,
+                                                                                  width: 40,
+                                                                                  child: Icon(
+                                                                                    Icons.clear,
+                                                                                    color: Colors.white,
+                                                                                  ),
+                                                                                  decoration: BoxDecoration(color: Colors.pink, borderRadius: BorderRadius.circular(15))),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(horizontal: 10),
+                                                                          child: CTextField(
+                                                                              istheme: true,
+                                                                              controller: reviewcon..text = pcon.uniorderslist[0]['order_detail'][i]['product_review'].toString()),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 120,
+                                                                              child: RaisedGradientButton(
+                                                                                  ispink: true,
+                                                                                  text: 'Done',
+                                                                                  onPressed: () {
+                                                                                    if (reviewcon.text.isEmpty) {
+                                                                                      Fluttertoast.showToast(
+                                                                                        msg: 'Add some feedback!!',
+                                                                                        backgroundColor: Colors.black54,
+                                                                                        textColor: Colors.white,
+                                                                                      );
+                                                                                    } else {
+                                                                                      pcon.ratingreview(pcon.uniorderslist[0]['order_detail'][i]['product_id'], '', reviewcon.text, pcon.uniorderslist[0]['order_id'], reviewbool: true);
+                                                                                    }
+                                                                                  }),
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  height:
+                                                                      Get.height *
+                                                                          .3,
+                                                                  width:
+                                                                      Get.width *
+                                                                          .80,
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              15)),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ));
+                                                        },
                                                         child: Txt(
                                                           text: pcon.uniorderslist[
                                                                               0]
@@ -275,6 +390,103 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                               [
                                                               'product_return_status'] ==
                                                           'true') {
+
+                                                               Get.dialog(Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
+                                                            child: Material(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              child: Container(
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            width:
+                                                                                40,
+                                                                          ),
+                                                                          Txt(
+                                                                            text:
+                                                                                'Cancel Product',
+                                                                            weight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Get.back();
+                                                                            },
+                                                                            child: Container(
+                                                                                height: 40,
+                                                                                width: 40,
+                                                                                child: Icon(
+                                                                                  Icons.clear,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                                decoration: BoxDecoration(color: Colors.pink, borderRadius: BorderRadius.circular(15))),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Txt(
+                                                                        text:
+                                                                            'Are you sure want to Return the Product?',
+                                                                        weight:
+                                                                            FontWeight.w500,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        defalutsize:
+                                                                            true,
+                                                                        iscenter:
+                                                                            true,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                120,
+                                                                            child: RaisedGradientButton(
+                                                                                ispink: true,
+                                                                                text: 'Yes, Return',
+                                                                                onPressed: () {
+                                                                                  pcon.cancelorder('return', pcon.uniorderslist[0]['order_detail'][i]['product_orderid'], pcon.uniorderslist[0]['order_detail'][i]['product_id'], pcon.uniorderslist[0]['order_id'], pcon.uniorderslist[0]['order_detail'][i]['price'], pcon.uniorderslist[0]['order_detail'][i]['product_count']);
+                                                                                }),
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                height:
+                                                                    Get.height *
+                                                                        .3,
+                                                                width:
+                                                                    Get.width *
+                                                                        .80,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ));
                                                       } else {
                                                         Get.dialog(Center(
                                                           child: Padding(
@@ -347,7 +559,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                             child: RaisedGradientButton(
                                                                                 ispink: true,
                                                                                 text: 'Yes, Cancel',
-                                                                                onPressed: () {}),
+                                                                                onPressed: () {
+                                                                                  pcon.cancelorder('cancel', pcon.uniorderslist[0]['order_detail'][i]['product_orderid'], pcon.uniorderslist[0]['order_detail'][i]['product_id'], pcon.uniorderslist[0]['order_id'], pcon.uniorderslist[0]['order_detail'][i]['price'], pcon.uniorderslist[0]['order_detail'][i]['product_count']);
+                                                                                }),
                                                                           ),
                                                                         ],
                                                                       )
@@ -380,30 +594,32 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             BorderRadius
                                                                 .circular(5)),
                                                     child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10,
-                                                          vertical: 5),
-                                                      child: Txt(
-                                                        text: pcon.uniorderslist[
-                                                                            0][
-                                                                        'order_detail'][i]
-                                                                    [
-                                                                    'product_deliver_status'] ==
-                                                                '0'
-                                                            ? 'Cancelled'
-                                                            : pcon.uniorderslist[0]
-                                                                            ['order_detail'][i]
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 5),
+                                                        child: Obx(
+                                                          () => Txt(
+                                                            text: pcon.uniorderslist[0]
+                                                                            [
+                                                                            'order_detail'][i]
                                                                         [
-                                                                        'product_return_status'] ==
-                                                                    'true'
-                                                                ? 'Return'
-                                                                : 'cancel',
-                                                        fsize: 10,
-                                                        weight: FontWeight.w500,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
+                                                                        'product_deliver_status'] ==
+                                                                    '0'
+                                                                ? 'Cancelled'
+                                                                : pcon.uniorderslist[0]['order_detail'][i]
+                                                                            [
+                                                                            'product_return_status'] ==
+                                                                        'true'
+                                                                    ? 'Return'
+                                                                    : 'cancel',
+                                                            fsize: 10,
+                                                            weight:
+                                                                FontWeight.w500,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )),
                                                   ),
                                                 ),
                                                 SizedBox(

@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
+import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
 import 'package:get/get.dart';
 
 class ProductsView extends StatelessWidget {
-  ProductsView({Key? key}) : super(key: key);
+  final bool issub;
+  ProductsView({Key? key, this.issub = false}) : super(key: key);
   final HomeCon hcon = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,9 @@ class ProductsView extends StatelessWidget {
           backicon: true,
           title: 'Products',
           carticon: true,
+          ontap: () {
+            issub ? Get.offAll(() => BottamBar(currentindex: 1)) : Get.back();
+          },
         ),
         body: Obx(
           () => hcon.catproductlist.length == 0

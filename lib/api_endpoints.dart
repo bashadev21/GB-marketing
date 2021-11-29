@@ -19,11 +19,13 @@ class API {
   String searchproducts = 'search_product_name';
   String getcartlist = 'cart_list';
   String checkoutaddress = 'checkout_address';
+  String couponapply = 'applycoupon';
   String updateaddress = 'get_edit_address';
   String getfavlist = 'favourite_page';
   String getadresslist = 'address_list';
   String uniqorder = 'unique_order_detail';
   String ratereview = 'ratings_review';
+  String cancelorder = 'cancelorder';
   String updatepassword = 'updatepassword';
   String addadresslist = 'add_useraddress';
   String updateadress = 'update_edit_address';

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/screens/addressbook/all_address.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
+import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text.dart';
+import 'package:gb_marketing/widgets/text_field.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -23,6 +25,7 @@ class CheckOutView extends StatefulWidget {
 
 class _CheckOutViewState extends State<CheckOutView> {
   final CartCon ccon = Get.find();
+  final HomeCon hcon = Get.find();
   Future<bool> onWillPop() {
     if (widget.isbuynow) {
       ccon.getcartlist();
@@ -32,6 +35,7 @@ class _CheckOutViewState extends State<CheckOutView> {
     return Future.value(true);
   }
 
+  final TextEditingController couponcon = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -282,8 +286,18 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                   ],
                                                 ),
                                                 Txt(
-                                                  text:
-                                                      '₹ ${int.parse(ccon.cartlist[i]['product_price']) * int.parse(ccon.cartlist[i]['quantity'])}',
+                                                  text: GetStorage()
+                                                                  .read(
+                                                                      'vendor')
+                                                                  .toString() ==
+                                                              'null' ||
+                                                          GetStorage()
+                                                                  .read(
+                                                                      'vendor')
+                                                                  .toString() ==
+                                                              'false'
+                                                      ? '₹ ${int.parse(ccon.cartlist[i]['product_price']) * int.parse(ccon.cartlist[i]['quantity'])}'
+                                                      : '₹ ${int.parse(ccon.cartlist[i]['vendor_price']) * int.parse(ccon.cartlist[i]['quantity'])}',
                                                 )
                                               ],
                                             ),
@@ -298,6 +312,113 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 height: 5.sp,
                               ),
                             ],
+                          ),
+                        if (GetStorage().read('vendor').toString() == 'true')
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey[300],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Obx(() => hcon.delcheck.value !=
+                                                      'check'
+                                                  ? Txt(
+                                                      text: hcon.delcheck.value,
+                                                      fsize: 9,
+                                                      iscenter: true,
+                                                      color: hcon.delcheck
+                                                                  .value ==
+                                                              'Delivery Available'
+                                                          ? Colors.green
+                                                          : Colors.pink,
+                                                      weight: FontWeight.w500,
+                                                    )
+                                                  : SizedBox()),
+                                              SizedBox(
+                                                height: 5,
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    if (ccon.discount.value != '0')
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              ccon.discount.value = '0';
+                                            },
+                                            child: Txt(
+                                              text: 'Remove',
+                                              fsize: 12,
+                                              weight: FontWeight.w500,
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: CTextField(
+                                              controller: couponcon,
+                                              padd: 7,
+                                              islabel: true,
+                                              label: 'Coupon Code',
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            width: 30.w,
+                                            height: 45,
+                                            child: RaisedGradientButton(
+                                                ispink: true,
+                                                text: ccon.discount.value == '0'
+                                                    ? '  Check  '
+                                                    : 'Applied',
+                                                onPressed: () {
+                                                  if (couponcon.text.isEmpty) {
+                                                    Fluttertoast.showToast(
+                                                      msg: 'Enter Coupon code',
+                                                      backgroundColor:
+                                                          Colors.black54,
+                                                      textColor: Colors.white,
+                                                    );
+                                                  } else if (ccon.discount.value
+                                                          .toString() !=
+                                                      '') {
+                                                    ccon.applycoupon(
+                                                        couponcon.text);
+                                                  } else {}
+                                                }),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         Card(
                           elevation: 3,
@@ -401,6 +522,26 @@ class _CheckOutViewState extends State<CheckOutView> {
                                     ],
                                   ),
                                 ),
+                                if (ccon.discount.value != '0')
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Txt(
+                                          text: 'Discount (-) ',
+                                          color: Colors.grey,
+                                          fsize: 14,
+                                        ),
+                                        Txt(
+                                          text: '₹${ccon.discount.value}',
+                                          weight: FontWeight.w500,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 Container(
                                   decoration: BoxDecoration(
                                       color: Colors.teal[400],
@@ -421,7 +562,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                         ),
                                         Txt(
                                           text:
-                                              '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value)).round())}',
+                                              '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value)).round()) - int.parse(ccon.discount.value)}',
                                           weight: FontWeight.w500,
                                           color: Colors.white,
                                         ),

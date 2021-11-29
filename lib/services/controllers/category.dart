@@ -40,8 +40,10 @@ class CatCon extends GetxController with BaseController {
 
     print(response.toString());
     if (response == '[]' || response == '') {
-      Get.to(() => ProductsView());
       hcon.getpopcatprod(catid);
+      Get.to(() => ProductsView(
+            issub: true,
+          ));
     } else {
       var data = json.decode(response);
       subcategotylist.value = data[0]['subcategory'];
