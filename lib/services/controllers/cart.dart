@@ -94,8 +94,8 @@ class CartCon extends GetxController with BaseController {
     payid,
     signid,
     orderprice, {
-    productid = '',
-    quantity = '',
+    productid = '0',
+    quantity = '0',
     couponid = '',
   }) async {
     showLoading();
@@ -107,6 +107,7 @@ class CartCon extends GetxController with BaseController {
       'product_id': singleprodid.value.toString(),
       'quantity': singleqty.value.toString(),
       'coupon_id': couponidvar.value.toString(),
+      'coupon_value': discount.value.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
       'user_id': GetStorage().read('userid').toString(),
       'user_type': GetStorage().read('vendor').toString() == 'true'
@@ -188,8 +189,8 @@ class CartCon extends GetxController with BaseController {
 
   void codpayment(
     orderprice, {
-    productid = '',
-    quantity = '',
+    productid = '0',
+    quantity = '0',
     couponid = '',
   }) async {
     showLoading();
@@ -199,6 +200,7 @@ class CartCon extends GetxController with BaseController {
       'product_id': singleprodid.value.toString(),
       'quantity': singleqty.value.toString(),
       'coupon_id': couponidvar.value.toString(),
+      'coupon_value': discount.value.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
       'user_id': GetStorage().read('userid').toString(),
       'user_type': GetStorage().read('vendor').toString() == 'true'

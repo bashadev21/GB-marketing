@@ -73,16 +73,17 @@ class CartView extends StatelessWidget {
                         );
                       }),
             )),
-            if (ccon.cartlist.length != 0)
-              Container(
-                height: kBottomNavigationBarHeight + 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: RaisedGradientButton(
-                      text: 'Proceed to Checkout',
-                      onPressed: () => Get.to(() => CheckOutView())),
-                ),
-              )
+            Obx(() => ccon.cartlist.length != 0
+                ? Container(
+                    height: kBottomNavigationBarHeight + 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: RaisedGradientButton(
+                          text: 'Proceed to Checkout',
+                          onPressed: () => Get.to(() => CheckOutView())),
+                    ),
+                  )
+                : SizedBox())
           ],
         ),
       ),

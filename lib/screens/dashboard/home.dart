@@ -151,7 +151,8 @@ class HomeView extends StatelessWidget {
                                           ),
                                         ),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                            Image.asset(
+                                                'assets/placeholder.jpeg'),
                                       )),
                                       Container(
                                         color: Colors.blueGrey[50],

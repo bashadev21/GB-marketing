@@ -635,7 +635,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                                               child: Container(
                                                 height: 40.sp,
                                                 width: 40.sp,
-                                                child: Placeholder(),
+                                                child: Image.asset(
+                                                    'assets/online.jpeg'),
                                               ),
                                             ),
                                             SizedBox(
@@ -678,10 +679,10 @@ class _CheckOutViewState extends State<CheckOutView> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Container(
-                                                height: 40.sp,
-                                                width: 40.sp,
-                                                child: Placeholder(),
-                                              ),
+                                                  height: 40.sp,
+                                                  width: 40.sp,
+                                                  child: Image.asset(
+                                                      'assets/cod.jpeg')),
                                             ),
                                             SizedBox(
                                               width: 10,

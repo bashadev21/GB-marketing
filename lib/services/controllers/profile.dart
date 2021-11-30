@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gb_marketing/screens/login.dart';
+import 'package:gb_marketing/services/controllers/auth.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -150,13 +152,13 @@ class ProfileCon extends GetxController with BaseController {
     uniorder(orderid);
   }
 
-  void updatepassword() async {
+  void updatepassword({isforgot = false, mobile = '', password}) async {
     showLoading();
     var body = {
       'functocall': API().updatepassword,
-      'user_id': GetStorage().read('userid').toString(),
-      'old_password': coldpass.text,
-      'new_password': cnewpass.text,
+      'user_id': isforgot ? mobile : GetStorage().read('userid').toString(),
+      'old_password': isforgot ? '0' : coldpass.text,
+      'new_password': isforgot ? password : cnewpass.text,
     };
     var response =
         await BaseClient().post(API().baseurl, body).catchError(handleError);
@@ -174,6 +176,11 @@ class ProfileCon extends GetxController with BaseController {
       cnewcpass.clear();
       cnewpass.clear();
       Get.back();
+    }
+    if (response == 'New Password Is Set!') {
+      final AuthCon acon = Get.find();
+      acon.fphone.clear();
+      Get.offAll(() => LoginView());
     }
   }
 

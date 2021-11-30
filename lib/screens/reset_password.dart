@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gb_marketing/services/controllers/auth.dart';
+import 'package:gb_marketing/services/controllers/profile.dart';
 import 'package:gb_marketing/widgets/graient_btn.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/text_field.dart';
@@ -61,8 +63,37 @@ class ResetPassView extends StatelessWidget {
               children: [
                 Container(
                   width: Get.width * .7,
-                  child:
-                      RaisedGradientButton(text: 'Confirm', onPressed: () {}),
+                  child: RaisedGradientButton(
+                      text: 'Confirm',
+                      onPressed: () {
+                        if (acon.rconfirmpassword.text.isEmpty ||
+                            acon.rpassword.text.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: 'Fields Required',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          );
+                        } else if (acon.rpassword.text.length < 5) {
+                          Fluttertoast.showToast(
+                            msg: 'Password should above 5 charaters',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          );
+                        } else if (acon.rconfirmpassword.text !=
+                            acon.rpassword.text) {
+                          Fluttertoast.showToast(
+                            msg: 'Password Not Matched',
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          );
+                        } else {
+                          final ProfileCon pcon = Get.find();
+                          pcon.updatepassword(
+                              isforgot: true,
+                              mobile: acon.fphone.text,
+                              password: acon.rpassword.text);
+                        }
+                      }),
                 ),
               ],
             )
