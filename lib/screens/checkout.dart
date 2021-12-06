@@ -313,7 +313,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                               ),
                             ],
                           ),
-                        if (GetStorage().read('vendor').toString() == 'false')
+                        if (GetStorage().read('vendor').toString() == 'true')
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Container(
@@ -420,7 +420,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                               ),
                             ),
                           ),
-                        if (GetStorage().read('vendor').toString() == 'false')
+                        if (GetStorage().read('vendor').toString() == 'true')
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Container(
