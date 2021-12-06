@@ -39,6 +39,7 @@ class CartCon extends GetxController with BaseController {
   var singleqty = ''.obs;
   var couponcode = ''.obs;
   var codpay = false.obs;
+  final TextEditingController vendornotes = new TextEditingController();
 
   late Razorpay _razorpay;
   @override
@@ -106,6 +107,7 @@ class CartCon extends GetxController with BaseController {
       'order_price': orderprice.toString(),
       'product_id': singleprodid.value.toString(),
       'quantity': singleqty.value.toString(),
+      'vendor_notes': vendornotes.text.toString(),
       'coupon_id': couponidvar.value.toString(),
       'coupon_value': discount.value.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
@@ -122,6 +124,8 @@ class CartCon extends GetxController with BaseController {
     if (response.toString().trim() == 'Payment Completed Successfully!') {
       singleprodid.value = '';
       singleqty.value = '';
+      vendornotes.clear();
+
       hideLoading();
       final ProfileCon pcon = Get.find();
       pcon.myorders();
@@ -201,6 +205,7 @@ class CartCon extends GetxController with BaseController {
       'quantity': singleqty.value.toString(),
       'coupon_id': couponidvar.value.toString(),
       'coupon_value': discount.value.toString(),
+      'vendor_notes': vendornotes.text.toString(),
       'addr_id': GetStorage().read('lastadr').toString(),
       'user_id': GetStorage().read('userid').toString(),
       'user_type': GetStorage().read('vendor').toString() == 'true'
@@ -215,6 +220,7 @@ class CartCon extends GetxController with BaseController {
     // if (response.toString().trim() == 'Order Placed') {
     singleprodid.value = '';
     singleqty.value = '';
+    vendornotes.clear();
     hideLoading();
     final ProfileCon pcon = Get.find();
     pcon.myorders();

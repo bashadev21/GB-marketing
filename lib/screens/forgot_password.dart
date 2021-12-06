@@ -31,7 +31,7 @@ class ForgotPassView extends StatelessWidget {
             ),
             Txt(
               text: 'Enter the Phone Number associated with your account',
-              weight: FontWeight.w500,
+              weight: FontWeight.bold,
               color: Colors.grey,
               iscenter: true,
             ),

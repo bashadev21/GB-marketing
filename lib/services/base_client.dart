@@ -25,13 +25,13 @@ class DialogHelper {
               children: [
                 Txt(
                   text: title,
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                   color: Get.theme.primaryColor,
                 ),
                 Txt(
                   text: description ?? '',
                   fsize: 12,
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                   color: Colors.black,
                 ),
                 SizedBox(

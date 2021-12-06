@@ -29,7 +29,7 @@ class PrivacyView extends StatelessWidget {
                         Txt(
                           text: 'Privacy Policy',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         )
                       ],
                     ),
@@ -54,7 +54,7 @@ class PrivacyView extends StatelessWidget {
                               Txt(
                                 text: 'What does this Privacy Policy Cover?',
                                 defalutsize: true,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -100,7 +100,7 @@ class PrivacyView extends StatelessWidget {
                                 text:
                                     'This Privacy Policy applies to information we collect:',
                                 defalutsize: true,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -164,7 +164,7 @@ class PrivacyView extends StatelessWidget {
                               Txt(
                                 text: 'Changes in Privcay Policy',
                                 defalutsize: true,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),

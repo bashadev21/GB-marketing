@@ -28,7 +28,7 @@ class TermsView extends StatelessWidget {
                         Txt(
                           text: 'Terms & Conditions',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                       ],
                     ),

@@ -54,7 +54,7 @@ class OtpView extends StatelessWidget {
                 ),
                 Txt(
                   text: mobile,
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                   fsize: 13,
                 ),
               ],
@@ -74,7 +74,7 @@ class OtpView extends StatelessWidget {
                 textStyle: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black87,
                         letterSpacing: .8)),
                 followingFieldDecoration: BoxDecoration(
@@ -105,7 +105,7 @@ class OtpView extends StatelessWidget {
                   onTap: () => acon.generateotp(),
                   child: Txt(
                     text: 'RESEND OTP',
-                    weight: FontWeight.w500,
+                    weight: FontWeight.bold,
                     color: Get.theme.primaryColorLight,
                     fsize: 13,
                   ),

@@ -55,7 +55,7 @@ class NeedHelpView extends StatelessWidget {
                         Txt(
                           text: 'Need Help?',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                       ],
                     ),
@@ -76,7 +76,7 @@ class NeedHelpView extends StatelessWidget {
                         Txt(
                           text: 'GB Marketing',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                       ],
                     ),
@@ -127,7 +127,7 @@ class NeedHelpView extends StatelessWidget {
                       text:
                           "However, for any product or services related complaint or query, please contact us.",
                       defalutsize: true,
-                      weight: FontWeight.w500,
+                      weight: FontWeight.bold,
                       color: Colors.black,
                     ),
                     SizedBox(
@@ -144,7 +144,7 @@ class NeedHelpView extends StatelessWidget {
                       title: Txt(
                         text: '9384055387',
                         defalutsize: true,
-                        weight: FontWeight.w500,
+                        weight: FontWeight.bold,
                       ),
                     ),
                     ListTile(
@@ -158,7 +158,7 @@ class NeedHelpView extends StatelessWidget {
                       title: Txt(
                         text: '9384055390',
                         defalutsize: true,
-                        weight: FontWeight.w500,
+                        weight: FontWeight.bold,
                       ),
                     ),
                   ],

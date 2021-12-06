@@ -103,7 +103,7 @@ class HomeView extends StatelessWidget {
                               Txt(
                                 text: 'Popular Categories',
                                 fsize: 12,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                               InkWell(
                                 onTap: () => Get.offAll(
@@ -112,7 +112,7 @@ class HomeView extends StatelessWidget {
                                   text: 'View All',
                                   fsize: 12,
                                   color: Colors.red,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 ),
                               ),
                             ],
@@ -177,7 +177,7 @@ class HomeView extends StatelessWidget {
                                                             lines: 2,
                                                             iscenter: true,
                                                             weight:
-                                                                FontWeight.w500,
+                                                                FontWeight.bold,
                                                           ),
                                                         ],
                                                       ),
@@ -209,7 +209,7 @@ class HomeView extends StatelessWidget {
                               Txt(
                                 text: 'Popular Products',
                                 fsize: 12,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -242,7 +242,7 @@ class HomeView extends StatelessWidget {
                                 child: Txt(
                                   text: 'Recently Added Products',
                                   fsize: 12,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 ),
                               ),
                             ],

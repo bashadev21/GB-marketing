@@ -25,7 +25,7 @@ class CartView extends StatelessWidget {
               child: Center(
                 child: Txt(
                   text: 'Cart',
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                 ),
               ),
             ),

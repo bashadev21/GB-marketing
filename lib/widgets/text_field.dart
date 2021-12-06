@@ -62,7 +62,7 @@ class CTextField extends StatelessWidget {
       cursorColor: Get.theme.primaryColor,
       cursorWidth: 2,
       onChanged: _onchageFunction,
-      style: GoogleFonts.poppins(
+      style: GoogleFonts.openSans(
           textStyle: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,

@@ -35,7 +35,7 @@ class ProfileTile extends StatelessWidget {
               title: Txt(
                 text: title,
                 fsize: 14,
-                weight: FontWeight.w500,
+                weight: FontWeight.bold,
               ),
             ),
           ),

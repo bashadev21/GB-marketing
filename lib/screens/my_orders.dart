@@ -63,7 +63,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                   ),
                                   Txt(
                                     text: order['uni_order_id'],
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                     fsize: 12,
                                   ),
                                 ],
@@ -81,7 +81,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                   Txt(
                                     text:
                                         '${order['ordered_on_date']} | ${order['ordered_on_time']} ',
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                     fsize: 12,
                                   ),
                                 ],
@@ -98,7 +98,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                   ),
                                   Txt(
                                     text: order['deliverdate'],
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                     fsize: 12,
                                   ),
                                 ],
@@ -164,7 +164,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                                         [i]['product_name'],
                                                     fsize: 13,
                                                     lines: 2,
-                                                    weight: FontWeight.w500,
+                                                    weight: FontWeight.bold,
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets
@@ -183,7 +183,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                                               i]['product_count'],
                                                           fsize: 12,
                                                           weight:
-                                                              FontWeight.w500,
+                                                              FontWeight.bold,
                                                         ),
                                                       ],
                                                     ),
@@ -223,7 +223,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                                                   //         child: Txt(
                                                   //           text: 'Edit Review',
                                                   //           fsize: 12,
-                                                  //           weight: FontWeight.w500,
+                                                  //           weight: FontWeight.bold,
                                                   //           color:
                                                   //               Get.theme.primaryColor,
                                                   //         ),

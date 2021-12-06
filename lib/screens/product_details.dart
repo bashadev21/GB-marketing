@@ -205,7 +205,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               title: Txt(
                                 text: prod['product_name'],
                                 fsize: 14,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                               subtitle: Txt(
                                 text: 'Hurry, only few left !!',
@@ -223,7 +223,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         ? 'No Ratings yet'
                                         : prod['rating'],
                                     fsize: 10,
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                   ),
                                   if (prod['rating'] != '0')
                                     Icon(
@@ -245,7 +245,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ),
                                   Txt(
                                     text: prod['model_no'],
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                     fsize: 12,
                                   )
                                 ],
@@ -268,7 +268,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['material_type'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -294,7 +294,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['dimension'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -320,7 +320,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['brand_name'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -374,11 +374,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                       .read('vendor')
                                                       .toString() ==
                                                   'false'
-                                          ? '₹${int.parse(prod['product_price']) * hcon.itemcount.value} INR'
-                                          : '₹${int.parse(prod['vendor_price']) * hcon.itemcount.value} INR',
+                                          ? '₹${int.parse(prod['product_price']) * hcon.itemcount.value} '
+                                          : '₹${int.parse(prod['vendor_price']) * hcon.itemcount.value} ',
                                       color: Colors.pink,
                                       fsize: 20,
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                   ),
                                   Container(
@@ -498,7 +498,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             Txt(
                                               text: 'Delivery',
                                               fsize: 14,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
@@ -522,7 +522,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                                 'Delivery Available'
                                                             ? Colors.green
                                                             : Colors.pink,
-                                                        weight: FontWeight.w500,
+                                                        weight: FontWeight.bold,
                                                       )
                                                     : SizedBox()),
                                                 SizedBox(
@@ -598,7 +598,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                       'Enter Pincode to get Delivery Info & Estimation date',
                                                   fsize: 9,
                                                   iscenter: true,
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                 ),
                                               ],
                                             ),
@@ -628,7 +628,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             Txt(
                                               text: 'Description',
                                               fsize: 14,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
@@ -686,7 +686,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 Txt(
                                   text: 'Similar Products',
                                   fsize: 14,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 )
                               ],
                             ),

@@ -28,7 +28,7 @@ class AboutView extends StatelessWidget {
                         Txt(
                           text: 'About',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                       ],
                     ),
@@ -49,7 +49,7 @@ class AboutView extends StatelessWidget {
                         Txt(
                           text: 'Service',
                           defalutsize: true,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                       ],
                     ),
@@ -79,7 +79,7 @@ class AboutView extends StatelessWidget {
                           "Customer satisfaction is our company ultimate goal, we are striving for establishing a famous brand and join hands with you to create and win glory.",
                       defalutsize: true,
                       color: Colors.black,
-                      weight: FontWeight.w500,
+                      weight: FontWeight.bold,
                     ),
                   ],
                 ),

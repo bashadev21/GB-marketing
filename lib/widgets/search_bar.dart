@@ -76,7 +76,7 @@ class SearchBar extends StatelessWidget {
                   style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black87,
                           letterSpacing: .8)),
                 ))
