@@ -23,6 +23,8 @@ class HomeCon extends GetxController with BaseController {
   var itemcount = 1.obs;
   var delcheck = 'check'.obs;
   var selectedPageIndex = 0.obs;
+  var selectedcolor = ''.obs;
+  var selectedcolorname = ''.obs;
 
   final TextEditingController qty = new TextEditingController();
   final TextEditingController searchc = new TextEditingController();

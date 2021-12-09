@@ -26,6 +26,18 @@ void main() async {
       const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue));
 }
 
+extension ColorExtension on String {
+  toColor() {
+    var hexColor = this.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    if (hexColor.length == 8) {
+      return Color(int.parse("0x$hexColor"));
+    }
+  }
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

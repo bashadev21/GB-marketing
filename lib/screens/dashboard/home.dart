@@ -57,14 +57,15 @@ class HomeView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               elevation: 2,
                               child: Swiper(
+                                autoplayDisableOnInteraction: true,
                                 autoplay: true,
-                                duration: 1200,
+                                duration: 1000,
                                 onTap: (o) {
                                   zcon.selectedPageIndex.value = o;
                                   Get.to(
                                       () => ZoomImage(imgs: hcon.bannerlist));
                                 },
-                                autoplayDelay: 2000,
+                                autoplayDelay: 3000,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                       padding: EdgeInsets.all(4.0.sp),
