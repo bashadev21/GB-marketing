@@ -108,22 +108,27 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             child:
                                                 Image.asset('assets/logo.png'),
                                           )
-                                        : CachedNetworkImage(
-                                            imageUrl: API().imagebase +
+                                        : Image.network(
+                                            API().imagebase +
                                                 prod['image'][index]['image'],
-                                            placeholder: (context, url) =>
-                                                Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                color: Colors.grey
-                                                    .withOpacity(0.2),
-                                              ),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
-                                          );
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                            return Image.asset(
+                                                'assets/placeholder.jpeg');
+                                          });
+                                    // CachedNetworkImage(
+                                    //   imageUrl: API().imagebase +
+                                    //       prod['image'][index]['image'],
+                                    //   placeholder: (context, url) => Container(
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10.0),
+                                    //       color: Colors.grey.withOpacity(0.2),
+                                    //     ),
+                                    //   ),
+                                    //   errorWidget: (context, url, error) =>
+                                    //       Icon(Icons.error),
+                                    // );
                                   }),
                             ),
                             Positioned(
@@ -255,7 +260,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ],
                               ),
                             ),
-                            if (prod['color'] != [])
+                            if (prod['color'].toString() != "[]")
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 6),
@@ -340,6 +345,95 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                   ))
                                               .toList()
                                               .cast<Widget>(),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            if (prod['shape'].toString() != "[]")
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Txt(
+                                      text: 'Shapes :  ',
+                                      color: Colors.grey,
+                                      fsize: 12,
+                                    ),
+                                    Obx(() => Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: prod['shape']
+                                                    .map((item) => Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  hcon.getproddetails(
+                                                                      item[
+                                                                          'product_id']);
+                                                                  Get.to(() =>
+                                                                      ProductDetailsView());
+                                                                  // hcon.selectedcolor
+                                                                  //         .value =
+                                                                  //     item[
+                                                                  //         'color_code'];
+                                                                  // hcon.selectedcolorname
+                                                                  //         .value =
+                                                                  //     item[
+                                                                  //         'color_name'];
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  decoration: BoxDecoration(
+                                                                      // color: hcon.selectedcolor
+                                                                      //             .value ==
+                                                                      //         item[
+                                                                      //             'color_code']
+                                                                      //     ? Colors
+                                                                      //         .black
+                                                                      //     : Colors
+                                                                      //         .transparent,
+                                                                      shape: BoxShape.circle),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            3.0),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          35.sp,
+                                                                      width:
+                                                                          35.sp,
+                                                                      child: Image.network(
+                                                                          API().imagebase +
+                                                                              item['shape'],
+                                                                          errorBuilder: (context,
+                                                                              error,
+                                                                              stackTrace) {
+                                                                        return Image.asset(
+                                                                            'assets/placeholder.jpeg');
+                                                                      }),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ))
+                                                    .toList()
+                                                    .cast<Widget>(),
+                                              ),
+                                            ],
+                                          ),
                                         ))
                                   ],
                                 ),
