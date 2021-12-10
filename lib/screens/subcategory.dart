@@ -68,7 +68,7 @@ class SubCaterGoryView extends StatelessWidget {
                                   ),
                                 ),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                                    Image.asset('assets/placeholder.jpeg'),
                               )),
                               Container(
                                 color: Color(0xfffff2df),
