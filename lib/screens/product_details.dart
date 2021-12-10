@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:hexcolor/hexcolor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +45,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     hcon.delcheck.value = 'check';
     hcon.itemcount.value = 1;
     hcon.pincode.clear();
+    hcon.selectedcolor.value = '';
+    hcon.selectedcolorname.value = '';
     return Future.value(true);
   }
 
@@ -65,6 +67,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               hcon.delcheck.value = 'check';
               hcon.itemcount.value = 1;
               hcon.pincode.clear();
+              hcon.selectedcolor.value = '';
+              hcon.selectedcolorname.value = '';
             },
           ),
           body: Obx(
@@ -223,7 +227,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         ? 'No Ratings yet'
                                         : prod['rating'],
                                     fsize: 10,
-                                    weight: FontWeight.bold,
+                                    weight: FontWeight.w500,
                                   ),
                                   if (prod['rating'] != '0')
                                     Icon(
@@ -251,6 +255,95 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ],
                               ),
                             ),
+                            if (prod['color'] != [])
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                child: Row(
+                                  children: [
+                                    Txt(
+                                      text: 'Colors :  ',
+                                      color: Colors.grey,
+                                      fsize: 12,
+                                    ),
+                                    Obx(() => Wrap(
+                                          children: prod['color']
+                                              .map((item) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            hcon.getproddetails(
+                                                                item[
+                                                                    'product_id']);
+                                                            Get.to(() =>
+                                                                ProductDetailsView());
+                                                            hcon.selectedcolor
+                                                                    .value =
+                                                                item[
+                                                                    'color_code'];
+                                                            hcon.selectedcolorname
+                                                                    .value =
+                                                                item[
+                                                                    'color_name'];
+                                                          },
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                color: hcon.selectedcolor
+                                                                            .value ==
+                                                                        item[
+                                                                            'color_code']
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Colors
+                                                                        .transparent,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3.0),
+                                                              child: Container(
+                                                                  height: 25.sp,
+                                                                  width: 25.sp,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: HexColor(
+                                                                        item[
+                                                                            'color_code']),
+                                                                  )),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                        Txt(
+                                                          text: item[
+                                                              'color_name'],
+                                                          fsize: 9,
+                                                          weight: hcon.selectedcolorname
+                                                                      .value ==
+                                                                  item[
+                                                                      'color_name']
+                                                              ? FontWeight.bold
+                                                              : FontWeight
+                                                                  .normal,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ))
+                                              .toList()
+                                              .cast<Widget>(),
+                                        ))
+                                  ],
+                                ),
+                              ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 6),
                               child: Row(
@@ -712,3 +805,5 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     );
   }
 }
+
+var dmo = ['sss', 'dd'];
