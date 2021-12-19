@@ -137,7 +137,7 @@ class _BottamBarState extends State<BottamBar> {
                                     ? 16
                                     : 9,
                             color: Colors.white,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.bold),
                       )),
                 ),
                 label: 'Cart',

@@ -119,7 +119,7 @@ class LoginView extends StatelessWidget {
                             child: Txt(
                               text: 'Sign Up',
                               color: Get.theme.primaryColor,
-                              weight: FontWeight.w500,
+                              weight: FontWeight.bold,
                               fsize: 13,
                             ),
                           ),

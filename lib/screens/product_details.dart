@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:hexcolor/hexcolor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +45,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     hcon.delcheck.value = 'check';
     hcon.itemcount.value = 1;
     hcon.pincode.clear();
+    hcon.selectedcolor.value = '';
+    hcon.selectedcolorname.value = '';
     return Future.value(true);
   }
 
@@ -65,6 +67,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               hcon.delcheck.value = 'check';
               hcon.itemcount.value = 1;
               hcon.pincode.clear();
+              hcon.selectedcolor.value = '';
+              hcon.selectedcolorname.value = '';
             },
           ),
           body: Obx(
@@ -104,22 +108,27 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             child:
                                                 Image.asset('assets/logo.png'),
                                           )
-                                        : CachedNetworkImage(
-                                            imageUrl: API().imagebase +
+                                        : Image.network(
+                                            API().imagebase +
                                                 prod['image'][index]['image'],
-                                            placeholder: (context, url) =>
-                                                Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                color: Colors.grey
-                                                    .withOpacity(0.2),
-                                              ),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
-                                          );
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                            return Image.asset(
+                                                'assets/placeholder.jpeg');
+                                          });
+                                    // CachedNetworkImage(
+                                    //   imageUrl: API().imagebase +
+                                    //       prod['image'][index]['image'],
+                                    //   placeholder: (context, url) => Container(
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10.0),
+                                    //       color: Colors.grey.withOpacity(0.2),
+                                    //     ),
+                                    //   ),
+                                    //   errorWidget: (context, url, error) =>
+                                    //       Icon(Icons.error),
+                                    // );
                                   }),
                             ),
                             Positioned(
@@ -205,7 +214,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               title: Txt(
                                 text: prod['product_name'],
                                 fsize: 14,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                               subtitle: Txt(
                                 text: 'Hurry, only few left !!',
@@ -245,12 +254,190 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ),
                                   Txt(
                                     text: prod['model_no'],
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                     fsize: 12,
                                   )
                                 ],
                               ),
                             ),
+                            if (prod['color'].toString() != "[]")
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                child: Row(
+                                  children: [
+                                    Txt(
+                                      text: 'Colors :  ',
+                                      color: Colors.grey,
+                                      fsize: 12,
+                                    ),
+                                    Obx(() => Wrap(
+                                          children: prod['color']
+                                              .map((item) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            hcon.getproddetails(
+                                                                item[
+                                                                    'product_id']);
+                                                            Get.to(() =>
+                                                                ProductDetailsView());
+                                                            hcon.selectedcolor
+                                                                    .value =
+                                                                item[
+                                                                    'color_code'];
+                                                            hcon.selectedcolorname
+                                                                    .value =
+                                                                item[
+                                                                    'color_name'];
+                                                          },
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                color: hcon.selectedcolor
+                                                                            .value ==
+                                                                        item[
+                                                                            'color_code']
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Colors
+                                                                        .transparent,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3.0),
+                                                              child: Container(
+                                                                  height: 25.sp,
+                                                                  width: 25.sp,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: HexColor(
+                                                                        item[
+                                                                            'color_code']),
+                                                                  )),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                        Txt(
+                                                          text: item[
+                                                              'color_name'],
+                                                          fsize: 9,
+                                                          weight: hcon.selectedcolorname
+                                                                      .value ==
+                                                                  item[
+                                                                      'color_name']
+                                                              ? FontWeight.bold
+                                                              : FontWeight
+                                                                  .normal,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ))
+                                              .toList()
+                                              .cast<Widget>(),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            if (prod['shape'].toString() != "[]")
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Txt(
+                                      text: 'Shapes :  ',
+                                      color: Colors.grey,
+                                      fsize: 12,
+                                    ),
+                                    Obx(() => Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: prod['shape']
+                                                    .map((item) => Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  hcon.getproddetails(
+                                                                      item[
+                                                                          'product_id']);
+                                                                  Get.to(() =>
+                                                                      ProductDetailsView());
+                                                                  // hcon.selectedcolor
+                                                                  //         .value =
+                                                                  //     item[
+                                                                  //         'color_code'];
+                                                                  // hcon.selectedcolorname
+                                                                  //         .value =
+                                                                  //     item[
+                                                                  //         'color_name'];
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  decoration: BoxDecoration(
+                                                                      // color: hcon.selectedcolor
+                                                                      //             .value ==
+                                                                      //         item[
+                                                                      //             'color_code']
+                                                                      //     ? Colors
+                                                                      //         .black
+                                                                      //     : Colors
+                                                                      //         .transparent,
+                                                                      shape: BoxShape.circle),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            3.0),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          35.sp,
+                                                                      width:
+                                                                          35.sp,
+                                                                      child: Image.network(
+                                                                          API().imagebase +
+                                                                              item['shape'],
+                                                                          errorBuilder: (context,
+                                                                              error,
+                                                                              stackTrace) {
+                                                                        return Image.asset(
+                                                                            'assets/placeholder.jpeg');
+                                                                      }),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ))
+                                                    .toList()
+                                                    .cast<Widget>(),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 6),
                               child: Row(
@@ -268,7 +455,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['material_type'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -294,7 +481,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['dimension'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -320,7 +507,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       children: [
                                         Txt(
                                           text: prod['brand_name'],
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -374,11 +561,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                       .read('vendor')
                                                       .toString() ==
                                                   'false'
-                                          ? '₹${int.parse(prod['product_price']) * hcon.itemcount.value} INR'
-                                          : '₹${int.parse(prod['vendor_price']) * hcon.itemcount.value} INR',
+                                          ? '₹${int.parse(prod['product_price']) * hcon.itemcount.value} '
+                                          : '₹${int.parse(prod['vendor_price']) * hcon.itemcount.value} ',
                                       color: Colors.pink,
                                       fsize: 20,
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                   ),
                                   Container(
@@ -498,7 +685,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             Txt(
                                               text: 'Delivery',
                                               fsize: 14,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
@@ -522,7 +709,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                                 'Delivery Available'
                                                             ? Colors.green
                                                             : Colors.pink,
-                                                        weight: FontWeight.w500,
+                                                        weight: FontWeight.bold,
                                                       )
                                                     : SizedBox()),
                                                 SizedBox(
@@ -598,7 +785,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                       'Enter Pincode to get Delivery Info & Estimation date',
                                                   fsize: 9,
                                                   iscenter: true,
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                 ),
                                               ],
                                             ),
@@ -628,7 +815,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             Txt(
                                               text: 'Description',
                                               fsize: 14,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
@@ -686,7 +873,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 Txt(
                                   text: 'Similar Products',
                                   fsize: 14,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 )
                               ],
                             ),
@@ -712,3 +899,5 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     );
   }
 }
+
+var dmo = ['sss', 'dd'];

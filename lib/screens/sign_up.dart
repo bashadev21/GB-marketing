@@ -190,7 +190,7 @@ class SignupView extends StatelessWidget {
                   child: Txt(
                     text: 'Login',
                     color: Get.theme.primaryColor,
-                    weight: FontWeight.w500,
+                    weight: FontWeight.bold,
                     fsize: 13,
                   ),
                 ),

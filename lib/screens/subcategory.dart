@@ -32,7 +32,7 @@ class SubCaterGoryView extends StatelessWidget {
                 children: [
                   Txt(
                     text: 'Select Subcategory',
-                    weight: FontWeight.w500,
+                    weight: FontWeight.bold,
                   ),
                 ],
               ),
@@ -68,7 +68,7 @@ class SubCaterGoryView extends StatelessWidget {
                                   ),
                                 ),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                                    Image.asset('assets/placeholder.jpeg'),
                               )),
                               Container(
                                 color: Color(0xfffff2df),
@@ -86,7 +86,7 @@ class SubCaterGoryView extends StatelessWidget {
                                               text: cat['sub_cate_name'],
                                               lines: 2,
                                               iscenter: true,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),

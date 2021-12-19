@@ -28,7 +28,7 @@ class Txt extends StatelessWidget {
       maxLines: lines,
       overflow: TextOverflow.ellipsis,
       textAlign: iscenter ? TextAlign.center : TextAlign.start,
-      style: GoogleFonts.poppins(
+      style: GoogleFonts.openSans(
           textStyle: TextStyle(
               fontSize: defalutsize ? 17 : fsize.sp,
               fontWeight: weight,

@@ -69,7 +69,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                           Txt(
                             text: pcon.uniorderslist[0]['uni_order_id'],
-                            weight: FontWeight.w500,
+                            weight: FontWeight.bold,
                             fsize: 14,
                           ),
                         ],
@@ -87,7 +87,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Txt(
                             text:
                                 '${pcon.uniorderslist[0]['ordered_on_date']} | ${pcon.uniorderslist[0]['ordered_on_time']}',
-                            weight: FontWeight.w500,
+                            weight: FontWeight.bold,
                             fsize: 14,
                           ),
                         ],
@@ -150,7 +150,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 ['product_name'],
                                             fsize: 13,
                                             lines: 2,
-                                            weight: FontWeight.w500,
+                                            weight: FontWeight.bold,
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -167,7 +167,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                           ['order_detail'][i]
                                                       ['product_count'],
                                                   fsize: 12,
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                 ),
                                               ],
                                             ),
@@ -282,7 +282,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                             ),
                                                                             Txt(
                                                                               text: 'Review!',
-                                                                              weight: FontWeight.w500,
+                                                                              weight: FontWeight.bold,
                                                                             ),
                                                                             InkWell(
                                                                               onTap: () {
@@ -361,7 +361,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                               : 'Edit Review',
                                                           fsize: 12,
                                                           weight:
-                                                              FontWeight.w500,
+                                                              FontWeight.bold,
                                                           color: Get.theme
                                                               .primaryColor,
                                                         ),
@@ -390,8 +390,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                               [
                                                               'product_return_status'] ==
                                                           'true') {
-
-                                                               Get.dialog(Center(
+                                                        Get.dialog(Center(
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
@@ -422,7 +421,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                             text:
                                                                                 'Cancel Product',
                                                                             weight:
-                                                                                FontWeight.w500,
+                                                                                FontWeight.bold,
                                                                           ),
                                                                           InkWell(
                                                                             onTap:
@@ -444,7 +443,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         text:
                                                                             'Are you sure want to Return the Product?',
                                                                         weight:
-                                                                            FontWeight.w500,
+                                                                            FontWeight.bold,
                                                                         color: Colors
                                                                             .grey,
                                                                         defalutsize:
@@ -519,7 +518,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                             text:
                                                                                 'Cancel Product',
                                                                             weight:
-                                                                                FontWeight.w500,
+                                                                                FontWeight.bold,
                                                                           ),
                                                                           InkWell(
                                                                             onTap:
@@ -541,7 +540,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         text:
                                                                             'Are you sure want to Cancel the Product?',
                                                                         weight:
-                                                                            FontWeight.w500,
+                                                                            FontWeight.bold,
                                                                         color: Colors
                                                                             .grey,
                                                                         defalutsize:
@@ -616,7 +615,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                     : 'cancel',
                                                             fsize: 10,
                                                             weight:
-                                                                FontWeight.w500,
+                                                                FontWeight.bold,
                                                             color: Colors.white,
                                                           ),
                                                         )),
@@ -629,7 +628,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   text:
                                                       '₹ ${pcon.uniorderslist[0]['order_detail'][i]['product_order_price']}',
                                                   fsize: 13,
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                   color: Colors.pink,
                                                 ),
                                               ],
@@ -759,7 +758,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                           Txt(
                             text: '${pcon.uniorderslist[0]['deliverdate']}',
-                            weight: FontWeight.w500,
+                            weight: FontWeight.bold,
                             fsize: 14,
                           ),
                         ],
@@ -771,7 +770,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         children: [
                           Txt(
                             text: 'Delivery Address: ',
-                            weight: FontWeight.w500,
+                            weight: FontWeight.bold,
                             fsize: 14,
                           ),
                         ],
@@ -794,7 +793,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   Txt(
                                     text: pcon.uniorderslist[0]['fullname'],
                                     fsize: 13,
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                   ),
                                   Row(
                                     children: [],
@@ -814,7 +813,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         Txt(
                                           text:
                                               '${pcon.uniorderslist[0]['door_no']} , ${pcon.uniorderslist[0]['area']} , ${pcon.uniorderslist[0]['city']} - ${pcon.uniorderslist[0]['pincode']} , ${pcon.uniorderslist[0]['state']}',
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           fsize: 12,
                                         ),
                                       ],
@@ -875,7 +874,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 children: [
                                   Txt(
                                     text: 'Price Details',
-                                    weight: FontWeight.w500,
+                                    weight: FontWeight.bold,
                                   ),
                                   Txt(
                                     text: 'Inclusive of all taxes.',
@@ -899,7 +898,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     Txt(
                                       text:
                                           '₹ ${int.parse(pcon.uniorderslist[0]['total_order_price']) - int.parse(pcon.uniorderslist[0]['deliver_charge'])}',
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                   ],
                                 ),
@@ -919,7 +918,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     Txt(
                                       text:
                                           '₹ ${pcon.uniorderslist[0]['deliver_charge']}',
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                   ],
                                 ),
@@ -945,7 +944,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       Txt(
                                         text:
                                             '₹  ${int.parse(pcon.uniorderslist[0]['total_order_price'])}',
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
                                     ],
@@ -991,7 +990,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               Txt(
                   text: status,
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                   color: (isActive) ? Colors.green : Colors.black,
                   fsize: 14),
               Container(

@@ -74,7 +74,7 @@ class AddressView extends StatelessWidget {
                                       Txt(
                                         text: address['fullname'],
                                         fsize: 13,
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                       ),
                                       Row(
                                         children: [
@@ -250,7 +250,7 @@ class AddressView extends StatelessWidget {
                                                                 'doorno'] +
                                                             ' , ' +
                                                             address['street'],
-                                                        weight: FontWeight.w500,
+                                                        weight: FontWeight.bold,
                                                         fsize: 12,
                                                       ),
                                                     ],
@@ -277,12 +277,12 @@ class AddressView extends StatelessWidget {
                                               children: [
                                                 Txt(
                                                   text: address['city'] + ' , ',
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                   fsize: 12,
                                                 ),
                                                 Txt(
                                                   text: address['pincode'],
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                   fsize: 12,
                                                 ),
                                               ],
@@ -304,7 +304,7 @@ class AddressView extends StatelessWidget {
                                           children: [
                                             Txt(
                                               text: address['state'],
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                               fsize: 12,
                                             ),
                                           ],

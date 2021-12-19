@@ -67,7 +67,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                         Txt(
                           text: 'Shipping to',
                           fsize: 13,
-                          weight: FontWeight.w500,
+                          weight: FontWeight.bold,
                         ),
                         SizedBox(
                           height: 5,
@@ -89,7 +89,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                         Txt(
                                           text: ccon.checklist[0]['fullname'],
                                           fsize: 13,
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                         ),
                                         Row(
                                           children: [],
@@ -109,7 +109,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                               Txt(
                                                 text:
                                                     '${ccon.door.value} , ${ccon.street.value} , ${ccon.city.value} - ${ccon.pincode.value} - ${ccon.state.value}',
-                                                weight: FontWeight.w500,
+                                                weight: FontWeight.bold,
                                                 fsize: 12,
                                               ),
                                             ],
@@ -230,7 +230,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                 ['product_name'],
                                             fsize: 13,
                                             lines: 2,
-                                            weight: FontWeight.w500,
+                                            weight: FontWeight.bold,
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -256,7 +256,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                       ? '₹${ccon.cartlist[i]['product_price']}'
                                                       : '₹${ccon.cartlist[i]['vendor_price']}',
                                                   color: Colors.pink,
-                                                  weight: FontWeight.w500,
+                                                  weight: FontWeight.bold,
                                                   fsize: 12,
                                                 )
                                               ],
@@ -281,7 +281,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                       text: ccon.cartlist[i]
                                                           ['quantity'],
                                                       fsize: 12,
-                                                      weight: FontWeight.w500,
+                                                      weight: FontWeight.bold,
                                                     ),
                                                   ],
                                                 ),
@@ -343,7 +343,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                               'Delivery Available'
                                                           ? Colors.green
                                                           : Colors.pink,
-                                                      weight: FontWeight.w500,
+                                                      weight: FontWeight.bold,
                                                     )
                                                   : SizedBox()),
                                               SizedBox(
@@ -366,7 +366,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                             child: Txt(
                                               text: 'Remove',
                                               fsize: 12,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                               color: Colors.red,
                                             ),
                                           )
@@ -420,6 +420,86 @@ class _CheckOutViewState extends State<CheckOutView> {
                               ),
                             ),
                           ),
+                        if (GetStorage().read('vendor').toString() == 'true')
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey[300],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Obx(() => hcon.delcheck.value !=
+                                                      'check'
+                                                  ? Txt(
+                                                      text: hcon.delcheck.value,
+                                                      fsize: 9,
+                                                      iscenter: true,
+                                                      color: hcon.delcheck
+                                                                  .value ==
+                                                              'Delivery Available'
+                                                          ? Colors.green
+                                                          : Colors.pink,
+                                                      weight: FontWeight.bold,
+                                                    )
+                                                  : SizedBox()),
+                                              SizedBox(
+                                                height: 5,
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    if (ccon.discount.value != '0')
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              ccon.discount.value = '0';
+                                            },
+                                            child: Txt(
+                                              text: 'Remove',
+                                              fsize: 12,
+                                              weight: FontWeight.bold,
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: CTextField(
+                                              controller: ccon.vendornotes,
+                                              padd: 7,
+                                              islabel: true,
+                                              label: 'Add Notes',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         Card(
                           elevation: 3,
                           shape: RoundedRectangleBorder(
@@ -434,7 +514,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                   children: [
                                     Txt(
                                       text: 'Price Details',
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                     Txt(
                                       text: 'Inclusive of all taxes.',
@@ -458,7 +538,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                       Txt(
                                         text:
                                             '₹ ${int.parse(ccon.totalamount.value) - (int.parse(ccon.totalamount.value) / 100 * 9).round() * 2}',
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                       ),
                                     ],
                                   ),
@@ -478,7 +558,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                       Txt(
                                         text:
                                             '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                       ),
                                     ],
                                   ),
@@ -498,7 +578,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                       Txt(
                                         text:
                                             '₹${(int.parse(ccon.totalamount.value) / 100 * 9).round()}',
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                       ),
                                     ],
                                   ),
@@ -517,7 +597,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                       ),
                                       Txt(
                                         text: '₹${ccon.shipping.value}',
-                                        weight: FontWeight.w500,
+                                        weight: FontWeight.bold,
                                       ),
                                     ],
                                   ),
@@ -537,7 +617,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                         ),
                                         Txt(
                                           text: '₹${ccon.discount.value}',
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                         ),
                                       ],
                                     ),
@@ -563,7 +643,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                         Txt(
                                           text:
                                               '₹${(int.parse(ccon.shipping.value) + (int.parse(ccon.totalamount.value)).round()) - int.parse(ccon.discount.value)}',
-                                          weight: FontWeight.w500,
+                                          weight: FontWeight.bold,
                                           color: Colors.white,
                                         ),
                                       ],
@@ -595,7 +675,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                           : Colors.green,
                                       fsize: 10,
                                       iscenter: true,
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                     ),
                                   ],
                                 ),
@@ -611,7 +691,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                           child: Txt(
                             text: 'Mode of Payment',
                             fsize: 15,
-                            weight: FontWeight.w500,
+                            weight: FontWeight.bold,
                           ),
                         ),
                         Card(
@@ -644,7 +724,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                             ),
                                             Txt(
                                               text: 'Online Payment',
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                               fsize: 12,
                                             ),
                                           ],
@@ -689,7 +769,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                             ),
                                             Txt(
                                               text: 'Cash on Delivery',
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                               fsize: 12,
                                             ),
                                           ],

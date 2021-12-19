@@ -83,7 +83,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                             'null'
                                         ? 'Guest'
                                         : GetStorage().read('username'),
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                                 lines: 2,
                               ),
                             ],

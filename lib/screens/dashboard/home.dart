@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/product_details.dart';
 import 'package:gb_marketing/screens/products.dart';
+import 'package:gb_marketing/screens/subcategory.dart';
+import 'package:gb_marketing/services/controllers/category.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/services/controllers/zoom_image.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
@@ -57,33 +60,66 @@ class HomeView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               elevation: 2,
                               child: Swiper(
+                                autoplayDisableOnInteraction: true,
                                 autoplay: true,
-                                duration: 1200,
+                                duration: 1000,
                                 onTap: (o) {
-                                  zcon.selectedPageIndex.value = o;
-                                  Get.to(
-                                      () => ZoomImage(imgs: hcon.bannerlist));
+                                  // if(hcon.bannerlist[index]['image'])
                                 },
-                                autoplayDelay: 2000,
+                                autoplayDelay: 3000,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                       padding: EdgeInsets.all(4.0.sp),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: API().imagebase +
-                                              hcon.bannerlist[index]['image'],
-                                          placeholder: (context, url) =>
-                                              Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
+                                      child: InkWell(
+                                        onTap: () {
+                                          print(hcon.bannerlist[index]
+                                              ['link_id']);
+                                          if (hcon.bannerlist[index]
+                                                  ['link_id'] ==
+                                              '0') {
+                                            zcon.selectedPageIndex.value =
+                                                index;
+                                            Get.to(() => ZoomImage(
+                                                imgs: hcon.bannerlist));
+                                          } else if (hcon.bannerlist[index]
+                                                  ['banner_type'] ==
+                                              'subcategory') {
+                                            final CatCon ccon = Get.find();
+                                            ccon.getsubcat(hcon
+                                                .bannerlist[index]['link_id']);
+                                            Get.to(() => SubCaterGoryView());
+                                          } else if (hcon.bannerlist[index]
+                                                  ['banner_type'] ==
+                                              'product') {
+                                            hcon.getproddetails(hcon
+                                                .bannerlist[index]['link_id']);
+                                            Get.to(() => ProductDetailsView());
+                                          } else {
+                                            zcon.selectedPageIndex.value =
+                                                index;
+                                            Get.to(() => ZoomImage(
+                                                imgs: hcon.bannerlist));
+                                          }
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            imageUrl: API().imagebase +
+                                                hcon.bannerlist[index]['image'],
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                color: Colors.grey
+                                                    .withOpacity(0.2),
+                                              ),
                                             ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
                                         ),
                                       ));
                                 },
@@ -103,7 +139,7 @@ class HomeView extends StatelessWidget {
                               Txt(
                                 text: 'Popular Categories',
                                 fsize: 12,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                               InkWell(
                                 onTap: () => Get.offAll(
@@ -112,7 +148,7 @@ class HomeView extends StatelessWidget {
                                   text: 'View All',
                                   fsize: 12,
                                   color: Colors.red,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 ),
                               ),
                             ],
@@ -177,7 +213,7 @@ class HomeView extends StatelessWidget {
                                                             lines: 2,
                                                             iscenter: true,
                                                             weight:
-                                                                FontWeight.w500,
+                                                                FontWeight.bold,
                                                           ),
                                                         ],
                                                       ),
@@ -209,7 +245,7 @@ class HomeView extends StatelessWidget {
                               Txt(
                                 text: 'Popular Products',
                                 fsize: 12,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -242,7 +278,7 @@ class HomeView extends StatelessWidget {
                                 child: Txt(
                                   text: 'Recently Added Products',
                                   fsize: 12,
-                                  weight: FontWeight.w500,
+                                  weight: FontWeight.bold,
                                 ),
                               ),
                             ],

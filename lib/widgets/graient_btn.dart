@@ -61,7 +61,7 @@ class RaisedGradientButton extends StatelessWidget {
                     text: text,
                     color: Colors.white,
                     defalutsize: true,
-                    weight: FontWeight.w500,
+                    weight: FontWeight.bold,
                   ),
                 ],
               ),

@@ -23,7 +23,7 @@ class CategoryView extends StatelessWidget {
               child: Center(
                 child: Txt(
                   text: 'Categories',
-                  weight: FontWeight.w500,
+                  weight: FontWeight.bold,
                 ),
               ),
             ),
@@ -36,7 +36,7 @@ class CategoryView extends StatelessWidget {
                 children: [
                   Txt(
                     text: 'Select Category',
-                    weight: FontWeight.w500,
+                    weight: FontWeight.bold,
                   ),
                 ],
               ),
@@ -88,7 +88,7 @@ class CategoryView extends StatelessWidget {
                                               fsize: 12,
                                               text: cat['category_name'],
                                               lines: 1,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
@@ -118,7 +118,7 @@ class CategoryView extends StatelessWidget {
                                               color: Colors.grey,
                                               lines: 2,
                                               iscenter: true,
-                                              weight: FontWeight.w500,
+                                              weight: FontWeight.bold,
                                             ),
                                           ],
                                         ),

@@ -27,7 +27,7 @@ class ProfileView extends StatelessWidget {
             child: Center(
               child: Txt(
                 text: 'Profile',
-                weight: FontWeight.w500,
+                weight: FontWeight.bold,
               ),
             ),
           ),
@@ -74,7 +74,7 @@ class ProfileView extends StatelessWidget {
                     child: Txt(
                       text: 'Sign  Out',
                       defalutsize: true,
-                      weight: FontWeight.w500,
+                      weight: FontWeight.bold,
                       color: Colors.white,
                     ),
                     onPressed: () {
@@ -94,7 +94,7 @@ class ProfileView extends StatelessWidget {
                                   children: [
                                     Txt(
                                       text: 'Are you sure want to Signout?',
-                                      weight: FontWeight.w500,
+                                      weight: FontWeight.bold,
                                       color: Colors.grey,
                                       defalutsize: true,
                                       iscenter: true,
@@ -114,7 +114,7 @@ class ProfileView extends StatelessWidget {
                                             text: 'YES',
                                             defalutsize: true,
                                             color: Colors.red,
-                                            weight: FontWeight.w500,
+                                            weight: FontWeight.bold,
                                           ),
                                         ),
                                         SizedBox(
@@ -126,7 +126,7 @@ class ProfileView extends StatelessWidget {
                                             text: 'NO',
                                             defalutsize: true,
                                             color: Colors.green,
-                                            weight: FontWeight.w500,
+                                            weight: FontWeight.bold,
                                           ),
                                         ),
                                         SizedBox(
