@@ -1,8 +1,8 @@
 class API {
-  String baseurl = 'http://gbmarketingchennai.com/api/index.php';
-  String paymenturl = 'http://gbmarketingchennai.com/api/payment.php';
+  String baseurl = 'https://gbmarketingchennai.com/api/index.php';
+  String paymenturl = 'https://gbmarketingchennai.com/api/payment.php';
   String completepaymenturl =
-      'http://gbmarketingchennai.com/api/payment_return.php';
+      'https://gbmarketingchennai.com/api/payment_return.php';
   String imagebase = 'http://gbmarketingchennai.com/admin/';
   String otp = 'generateotp';
   String login = 'login';
@@ -32,10 +32,10 @@ class API {
   String deleteaddress = 'delete_address';
   String myorders = 'orderlist';
   String addremovefav = 'add_remove_favourites';
-  String banner = 'http://gbmarketingchennai.com/api/bannerimages.php';
+  String banner = 'https://gbmarketingchennai.com/api/bannerimages.php';
   String getpopcat =
-      'http://gbmarketingchennai.com/api/categorylist.php?popular';
-  String getallcat = 'http://gbmarketingchennai.com/api/categorylist.php';
+      'https://gbmarketingchennai.com/api/categorylist.php?popular';
+  String getallcat = 'https://gbmarketingchennai.com/api/categorylist.php';
   String getpopproducts =
-      'http://gbmarketingchennai.com/api/productlist.php?popular';
+      'https://gbmarketingchennai.com/api/productlist.php?popular';
 }

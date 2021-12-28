@@ -42,9 +42,10 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.grey[50],
             primaryColorLight: Colors.blueAccent,
             primaryColor: Colors.lightBlue),
-        home: GetStorage().read('userid').toString() == 'null'
-            ? LoginView()
-            : BottamBar(currentindex: 0),
+        // home: GetStorage().read('userid').toString() == 'null'
+        //     ? LoginView()
+        //     : BottamBar(currentindex: 0),
+        home:  BottamBar(currentindex: 0),
         debugShowCheckedModeBanner: false,
       );
     });
