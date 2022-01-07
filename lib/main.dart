@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gb_marketing/services/controllers/auth.dart';
@@ -12,7 +14,17 @@ import 'services/controllers/home.dart';
 import 'services/controllers/profile.dart';
 import 'services/controllers/zoom_image.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() async {
+  HttpOverrides.global = MyHttpOverrides();
   await GetStorage.init();
   runApp(MyApp());
   Get.put(AuthCon());
@@ -45,7 +57,7 @@ class MyApp extends StatelessWidget {
         // home: GetStorage().read('userid').toString() == 'null'
         //     ? LoginView()
         //     : BottamBar(currentindex: 0),
-        home:  BottamBar(currentindex: 0),
+        home: BottamBar(currentindex: 0),
         debugShowCheckedModeBanner: false,
       );
     });
