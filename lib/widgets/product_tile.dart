@@ -204,7 +204,7 @@ class _ProductTileState extends State<ProductTile> {
                                             ? '₹ ${widget.prod['product_price']}'
                                             : '₹ ${widget.prod['vendor_price']}',
                                         fsize: 14,
-                                        color: Colors.pink,
+                                        color: Colors.black87,
                                         weight: FontWeight.bold,
                                         lines: 2,
                                       ),
