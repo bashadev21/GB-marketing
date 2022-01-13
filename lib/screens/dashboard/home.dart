@@ -53,80 +53,89 @@ class HomeView extends StatelessWidget {
                     shrinkWrap: true,
                     children: [
                       Obx(
-                        () => Container(
-                            height: 150.sp,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              elevation: 2,
-                              child: Swiper(
-                                autoplayDisableOnInteraction: true,
-                                autoplay: true,
-                                duration: 1000,
-                                onTap: (o) {
-                                  // if(hcon.bannerlist[index]['image'])
-                                },
-                                autoplayDelay: 3000,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                      padding: EdgeInsets.all(4.0.sp),
-                                      child: InkWell(
-                                        onTap: () {
-                                          print(hcon.bannerlist[index]
-                                              ['link_id']);
-                                          if (hcon.bannerlist[index]
-                                                  ['link_id'] ==
-                                              '0') {
-                                            zcon.selectedPageIndex.value =
-                                                index;
-                                            Get.to(() => ZoomImage(
-                                                imgs: hcon.bannerlist));
-                                          } else if (hcon.bannerlist[index]
-                                                  ['banner_type'] ==
-                                              'subcategory') {
-                                            final CatCon ccon = Get.find();
-                                            ccon.getsubcat(hcon
-                                                .bannerlist[index]['link_id']);
-                                            Get.to(() => SubCaterGoryView());
-                                          } else if (hcon.bannerlist[index]
-                                                  ['banner_type'] ==
-                                              'product') {
-                                            hcon.getproddetails(hcon
-                                                .bannerlist[index]['link_id']);
-                                            Get.to(() => ProductDetailsView());
-                                          } else {
-                                            zcon.selectedPageIndex.value =
-                                                index;
-                                            Get.to(() => ZoomImage(
-                                                imgs: hcon.bannerlist));
-                                          }
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: CachedNetworkImage(
-                                            imageUrl: API().imagebase +
-                                                hcon.bannerlist[index]['image'],
-                                            placeholder: (context, url) =>
-                                                Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                color: Colors.grey
-                                                    .withOpacity(0.2),
+                        () => hcon.bannerlist.length == 0
+                            ? SizedBox()
+                            : Container(
+                                height: 150.sp,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  elevation: 2,
+                                  child: Swiper(
+                                    autoplayDisableOnInteraction: true,
+                                    autoplay: true,
+                                    duration: 1000,
+                                    onTap: (o) {
+                                      // if(hcon.bannerlist[index]['image'])
+                                    },
+                                    autoplayDelay: 3000,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                          padding: EdgeInsets.all(4.0.sp),
+                                          child: InkWell(
+                                            onTap: () {
+                                              print(hcon.bannerlist[index]
+                                                  ['link_id']);
+                                              if (hcon.bannerlist[index]
+                                                      ['link_id'] ==
+                                                  '0') {
+                                                zcon.selectedPageIndex.value =
+                                                    index;
+                                                Get.to(() => ZoomImage(
+                                                    imgs: hcon.bannerlist));
+                                              } else if (hcon.bannerlist[index]
+                                                      ['banner_type'] ==
+                                                  'subcategory') {
+                                                final CatCon ccon = Get.find();
+                                                ccon.getsubcat(
+                                                    hcon.bannerlist[index]
+                                                        ['link_id']);
+                                                Get.to(
+                                                    () => SubCaterGoryView());
+                                              } else if (hcon.bannerlist[index]
+                                                      ['banner_type'] ==
+                                                  'product') {
+                                                hcon.getproddetails(
+                                                    hcon.bannerlist[index]
+                                                        ['link_id']);
+                                                Get.to(
+                                                    () => ProductDetailsView());
+                                              } else {
+                                                zcon.selectedPageIndex.value =
+                                                    index;
+                                                Get.to(() => ZoomImage(
+                                                    imgs: hcon.bannerlist));
+                                              }
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: API().imagebase +
+                                                    hcon.bannerlist[index]
+                                                        ['image'],
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                  ),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
                                               ),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
-                                          ),
-                                        ),
-                                      ));
-                                },
-                                itemCount: hcon.bannerlist.length,
-                                pagination: new SwiperPagination(),
-                              ),
-                            )),
+                                          ));
+                                    },
+                                    itemCount: hcon.bannerlist.length,
+                                    pagination: new SwiperPagination(),
+                                  ),
+                                )),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
