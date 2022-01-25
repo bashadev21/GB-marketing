@@ -10,6 +10,7 @@ import 'package:gb_marketing/screens/dashboard/profile.dart';
 import 'package:gb_marketing/screens/login.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
+import 'package:gb_marketing/widgets/end_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:upgrader/upgrader.dart';
@@ -82,15 +83,19 @@ class _BottamBarState extends State<BottamBar> {
 
   @override
   Widget build(BuildContext context) {
-    Upgrader().clearSavedSettings();
+    // Upgrader().clearSavedSettings();
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
         appBar: BaseAppBar(
-          carticon: true,
+          carticon: false,
         ),
+        endDrawer: EndDrawerWidget(),
         drawer: DrawerWidget(),
         body: UpgradeAlert(
+          // onIgnore: () {
+          //   return true;
+          // },
           dialogStyle: GetPlatform.isIOS
               ? UpgradeDialogStyle.cupertino
               : UpgradeDialogStyle.material,

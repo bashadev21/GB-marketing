@@ -28,17 +28,19 @@ class _ProductTileState extends State<ProductTile> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (GetStorage().read('userid').toString() != 'null') {
-          hcon.getproddetails(widget.prod['product_id']);
-          Get.to(() => ProductDetailsView());
-        } else {
-          Fluttertoast.showToast(
-            msg: 'Please Login!!!',
-            backgroundColor: Colors.black54,
-            textColor: Colors.white,
-          );
-          Get.offAll(() => LoginView());
-        }
+        hcon.getproddetails(widget.prod['product_id']);
+        Get.to(() => ProductDetailsView());
+        // if (GetStorage().read('userid').toString() != 'null') {
+        //   hcon.getproddetails(widget.prod['product_id']);
+        //   Get.to(() => ProductDetailsView());
+        // } else {
+        //   Fluttertoast.showToast(
+        //     msg: 'Please Login!!!',
+        //     backgroundColor: Colors.black54,
+        //     textColor: Colors.white,
+        //   );
+        //   Get.offAll(() => LoginView());
+        // }
       },
       child: Stack(
         children: [
@@ -86,98 +88,105 @@ class _ProductTileState extends State<ProductTile> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  GetStorage().read('vendor').toString() == 'null' ||
+                          GetStorage().read('vendor').toString() == 'false'
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Row(
                             children: [
-                              Row(
-                                children: [
-                                  Txt(
-                                    text:
-                                        'Save ₹${widget.prod['discount_price']}',
-                                    fsize: 10,
-                                    color: Colors.grey,
-                                    lines: 2,
-                                  ),
-                                  Txt(
-                                    text:
-                                        ' (${widget.prod['discount_percent']}% OFF)',
-                                    fsize: 9,
-                                    color: Colors.red,
-                                    weight: FontWeight.bold,
-                                    lines: 2,
-                                  ),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Txt(
+                                          text:
+                                              'Save ₹${widget.prod['discount_price']}',
+                                          fsize: 10,
+                                          color: Colors.grey,
+                                          lines: 2,
+                                        ),
+                                        Txt(
+                                          text:
+                                              ' (${widget.prod['discount_percent']}% OFF)',
+                                          fsize: 9,
+                                          color: Colors.red,
+                                          weight: FontWeight.bold,
+                                          lines: 2,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )
+                      : SizedBox(),
+                  GetStorage().read('vendor').toString() == 'null' ||
+                          GetStorage().read('vendor').toString() == 'false'
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Row(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Txt(
-                                        text: 'M.R.P. ',
-                                        fsize: 11,
-                                        color: Colors.pink,
-                                        lines: 2,
-                                      ),
-                                      Text(
-                                        '₹ ${widget.prod['slashed_price']}',
-                                        style: TextStyle(
-                                            color: Colors.pink,
-                                            decoration:
-                                                TextDecoration.lineThrough),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      widget.prod['rating'] != '0'
-                                          ? Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.yellow,
-                                                  size: 12.sp,
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Txt(
-                                                  text: widget.prod['rating'],
-                                                  fsize: 10,
-                                                ),
-                                              ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Txt(
+                                              text: 'M.R.P. ',
+                                              fsize: 11,
+                                              color: Colors.pink,
+                                              lines: 2,
+                                            ),
+                                            Text(
+                                              '₹ ${widget.prod['slashed_price']}',
+                                              style: TextStyle(
+                                                  color: Colors.pink,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
                                             )
-                                          : SizedBox(),
-                                    ],
-                                  ),
-                                ],
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            widget.prod['rating'] != '0'
+                                                ? Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.star,
+                                                        color: Colors.yellow,
+                                                        size: 12.sp,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Txt(
+                                                        text: widget
+                                                            .prod['rating'],
+                                                        fsize: 10,
+                                                      ),
+                                                    ],
+                                                  )
+                                                : SizedBox(),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : SizedBox(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Row(
@@ -228,8 +237,8 @@ class _ProductTileState extends State<ProductTile> {
                                       }
                                     },
                                     child: Icon(
-                                      Icons.add_circle,
-                                      size: 25.sp,
+                                      CupertinoIcons.cart_fill_badge_plus,
+                                      size: 22.sp,
                                       color: Get.theme.primaryColorLight,
                                     ),
                                   )
@@ -246,8 +255,8 @@ class _ProductTileState extends State<ProductTile> {
             ),
           ),
           Positioned(
-              top: 10,
-              right: 10,
+              top: 8.sp,
+              right: 8.sp,
               child: InkWell(
                 onTap: () {
                   if (GetStorage().read('userid').toString() != 'null') {
@@ -276,7 +285,27 @@ class _ProductTileState extends State<ProductTile> {
                   radius: 15.sp,
                   backgroundColor: Colors.grey.withOpacity(0.8),
                 ),
-              ))
+              )),
+          if (widget.prod['product_notify'] != '' &&
+              widget.prod['product_notify'] != null)
+            Positioned(
+                top: 8.sp,
+                left: 8.sp,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Get.theme.primaryColor,
+                      borderRadius: BorderRadius.circular(2.sp)),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 5.sp, vertical: 3.sp),
+                    child: Txt(
+                      text: widget.prod['product_notify'].toString(),
+                      weight: FontWeight.bold,
+                      color: Colors.white,
+                      fsize: 7,
+                    ),
+                  ),
+                ))
         ],
       ),
     );

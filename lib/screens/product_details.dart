@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:gb_marketing/widgets/greenBtn.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +21,7 @@ import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
 
 import '../api_endpoints.dart';
+import 'login.dart';
 
 class ProductDetailsView extends StatefulWidget {
   ProductDetailsView({Key? key}) : super(key: key);
@@ -53,6 +55,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   @override
   Widget build(BuildContext context) {
     final prod = hcon.productdetials;
+
     var pageController =
         PageController(initialPage: hcon.selectedPageIndex.value);
     return WillPopScope(
@@ -183,10 +186,22 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        prod['favourite_list'] == 'true'
-                                            ? prod['favourite_list'] = 'false'
-                                            : prod['favourite_list'] = 'true';
-                                        hcon.favaddremove(prod['product_id']);
+                                        if (GetStorage()
+                                                .read('userid')
+                                                .toString() !=
+                                            'null') {
+                                          prod['favourite_list'] == 'true'
+                                              ? prod['favourite_list'] = 'false'
+                                              : prod['favourite_list'] = 'true';
+                                          hcon.favaddremove(prod['product_id']);
+                                        } else {
+                                          Fluttertoast.showToast(
+                                            msg: 'Please Login!!!',
+                                            backgroundColor: Colors.black54,
+                                            textColor: Colors.white,
+                                          );
+                                          Get.offAll(() => LoginView());
+                                        }
                                       },
                                       child: Icon(
                                         prod['favourite_list'] == 'false'
@@ -516,35 +531,72 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 6),
-                              child: Row(
-                                children: [
-                                  Txt(
-                                    text: 'M.R.P. ',
-                                    color: Colors.grey,
-                                    fsize: 12,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                            GetStorage().read('vendor').toString() == 'null' ||
+                                    GetStorage().read('vendor').toString() ==
+                                        'false'
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 6),
+                                    child: Row(
                                       children: [
-                                        Text(
-                                          '₹ ${prod['slashed_price']}',
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color:
-                                                  Get.theme.primaryColorLight,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
+                                        Txt(
+                                          text: 'M.R.P. ',
+                                          color: Colors.grey,
+                                          fsize: 12,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              GetStorage()
+                                                              .read('vendor')
+                                                              .toString() ==
+                                                          'null' ||
+                                                      GetStorage()
+                                                              .read('vendor')
+                                                              .toString() ==
+                                                          'false'
+                                                  ? Text(
+                                                      '₹ ${prod['slashed_price']}',
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          color: Get.theme
+                                                              .primaryColorLight,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough),
+                                                    )
+                                                  : SizedBox()
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
                                   )
+                                : SizedBox(),
+                            if (prod['product_notify'] != '')
+                              Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.sp),
+                                        color: prod['product_notify'] ==
+                                                'Out of stock'
+                                            ? Colors.red
+                                            : Get.theme.primaryColor),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5.sp, vertical: 3.sp),
+                                    child: Txt(
+                                      text: prod['product_notify'],
+                                      weight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fsize: 10,
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 6),
                               child: Row(
@@ -563,7 +615,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                   'false'
                                           ? '₹${int.parse(prod['product_price']) * hcon.itemcount.value} '
                                           : '₹${int.parse(prod['vendor_price']) * hcon.itemcount.value} ',
-                                      color: Colors.pink,
+                                      color: Colors.black87,
                                       fsize: 20,
                                       weight: FontWeight.bold,
                                     ),
@@ -612,34 +664,53 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                children: [
-                                  Txt(
-                                    text: 'Save ₹${prod['discount_price']} ',
-                                    color: Colors.grey,
-                                    fsize: 10,
-                                  ),
-                                  Txt(
-                                    text: '(${prod['discount_percent']}% OFF) ',
-                                    color: Colors.red,
-                                    fsize: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            GetStorage().read('vendor').toString() == 'null' ||
+                                    GetStorage().read('vendor').toString() ==
+                                        'false'
+                                ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Row(
+                                      children: [
+                                        Txt(
+                                          text:
+                                              'Save ₹${prod['discount_price']} ',
+                                          color: Colors.grey,
+                                          fsize: 10,
+                                        ),
+                                        Txt(
+                                          text:
+                                              '(${prod['discount_percent']}% OFF) ',
+                                          color: Colors.red,
+                                          fsize: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(),
                             Container(
                               height: 50,
                               child: Row(
                                 children: [
                                   Expanded(
-                                      child: RaisedGradientButton(
-                                          ispink: true,
+                                      child: GreenGradientButton(
+                                          isgreen: true,
                                           text: 'Add to Cart',
                                           onPressed: () {
-                                            hcon.productadd(prod['product_id'],
-                                                hcon.qty.text);
+                                            if (GetStorage()
+                                                    .read('userid')
+                                                    .toString() !=
+                                                'null') {
+                                              hcon.productadd(
+                                                  prod['product_id'],
+                                                  hcon.qty.text);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                msg: 'Please Login!!!',
+                                                backgroundColor: Colors.black54,
+                                                textColor: Colors.white,
+                                              );
+                                              Get.offAll(() => LoginView());
+                                            }
                                           })),
                                   SizedBox(
                                     width: 8,
@@ -648,21 +719,33 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       child: RaisedGradientButton(
                                           text: 'Buy Now',
                                           onPressed: () {
-                                            final CartCon ccon = Get.find();
-                                            ccon.cartlist.clear();
+                                            if (GetStorage()
+                                                    .read('userid')
+                                                    .toString() !=
+                                                'null') {
+                                              final CartCon ccon = Get.find();
+                                              ccon.cartlist.clear();
 
-                                            prod['quantity'] =
-                                                hcon.qty.text.toString();
-                                            ccon.cartlist.add(prod);
-                                            ccon.addsum();
+                                              prod['quantity'] =
+                                                  hcon.qty.text.toString();
+                                              ccon.cartlist.add(prod);
+                                              ccon.addsum();
 
-                                            ccon.singleprodid.value =
-                                                prod['product_id'];
-                                            ccon.singleqty.value =
-                                                hcon.qty.text;
-                                            Get.to(() => CheckOutView(
-                                                  isbuynow: true,
-                                                ));
+                                              ccon.singleprodid.value =
+                                                  prod['product_id'];
+                                              ccon.singleqty.value =
+                                                  hcon.qty.text;
+                                              Get.to(() => CheckOutView(
+                                                    isbuynow: true,
+                                                  ));
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                msg: 'Please Login!!!',
+                                                backgroundColor: Colors.black54,
+                                                textColor: Colors.white,
+                                              );
+                                              Get.offAll(() => LoginView());
+                                            }
                                           }))
                                 ],
                               ),

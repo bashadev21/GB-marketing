@@ -65,7 +65,11 @@ class OtpView extends StatelessWidget {
               ),
               PinPut(
                   controller: otp,
-                  onChanged: (o) {},
+                  onChanged: (o) {
+                    if (o.length == 6) {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                    }
+                  },
                   eachFieldPadding: const EdgeInsets.all(10),
                   eachFieldHeight: 40.sp,
                   eachFieldWidth: 30.sp,

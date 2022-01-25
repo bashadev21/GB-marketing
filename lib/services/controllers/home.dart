@@ -237,7 +237,10 @@ class HomeCon extends GetxController with BaseController {
       load.value = false;
       var data = json.decode(response);
       productdetials.value = data[0];
-      print(productdetials.toString());
+      productdetials['image']
+          .insert(0, {'image': productdetials['product_img']});
+
+      print(productdetials['image'].toString());
     }
   }
 }
