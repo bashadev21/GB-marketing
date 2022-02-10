@@ -49,52 +49,92 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         carticon
             ? GetStorage().read('userid').toString() != 'null'
-                ? IconButton(
-                    onPressed: () =>
-                        Get.offAll(() => BottamBar(currentindex: 2)),
-                    icon: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        const Icon(
-                          CupertinoIcons.shopping_cart,
-                          size: 26.0,
-                        ),
-                        Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Obx(() => CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius:
-                                      ccon.cartlist.length.toString().length ==
+                ? Row(
+                    children: [
+                      IconButton(
+                        onPressed: () =>
+                            Get.offAll(() => BottamBar(currentindex: 2)),
+                        icon: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            const Icon(
+                              CupertinoIcons.shopping_cart,
+                              size: 26.0,
+                            ),
+                            Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Obx(() => CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: ccon.cartlist.length
+                                                  .toString()
+                                                  .length ==
                                               1
                                           ? 9
                                           : 9,
-                                  child: Text(
-                                    GetStorage().read('userid').toString() ==
-                                            'null'
-                                        ? '0'
-                                        : ccon.cartlist.length.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: ccon.cartlist.length
-                                                    .toString()
-                                                    .length ==
-                                                1
-                                            ? 16
-                                            : 9,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                )))
-                      ],
-                    ),
+                                      child: Text(
+                                        GetStorage()
+                                                    .read('userid')
+                                                    .toString() ==
+                                                'null'
+                                            ? '0'
+                                            : ccon.cartlist.length.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: ccon.cartlist.length
+                                                        .toString()
+                                                        .length ==
+                                                    1
+                                                ? 16
+                                                : 9,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    )))
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () =>
+                              Get.offAll(() => BottamBar(currentindex: 0)),
+                          icon: Icon(
+                            Icons.home,
+                            color: Colors.white,
+                          )),
+                      IconButton(
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                          )),
+                    ],
                   )
-                : SizedBox()
-            : IconButton(
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                )),
+                : Row(
+                    children: [
+                      // IconButton(
+                      //     onPressed: () =>
+                      //         Get.offAll(() => BottamBar(currentindex: 0)),
+                      //     icon: Icon(
+                      //       Icons.home,
+                      //       color: Colors.white,
+                      //     )),
+                      IconButton(
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                          )),
+                    ],
+                  )
+            : Row(
+                children: [
+                  IconButton(
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
       ],
       leading: backicon
           ? IconButton(

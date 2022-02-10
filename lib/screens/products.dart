@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gb_marketing/services/controllers/home.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
+import 'package:gb_marketing/widgets/end_drawer.dart';
 import 'package:gb_marketing/widgets/header.dart';
 import 'package:gb_marketing/widgets/product_tile.dart';
 import 'package:gb_marketing/widgets/text.dart';
@@ -14,6 +15,7 @@ class ProductsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        endDrawer: EndDrawerWidget(),
         appBar: BaseAppBar(
           backicon: true,
           title: 'Products',

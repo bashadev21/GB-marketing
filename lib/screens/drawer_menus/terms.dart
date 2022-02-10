@@ -37,7 +37,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* We are dealing with entire south indea i.e.Tamilnadu, Andhra Pradesh.",
+                          "* We are dealing with entire south india i.e.Tamilnadu, Andhra Pradesh.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),

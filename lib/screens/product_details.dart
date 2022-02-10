@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:gb_marketing/widgets/end_drawer.dart';
 import 'package:gb_marketing/widgets/greenBtn.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -61,6 +62,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+          endDrawer: EndDrawerWidget(),
           appBar: BaseAppBar(
             backicon: true,
             title: 'Product Details',
@@ -232,7 +234,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 weight: FontWeight.bold,
                               ),
                               subtitle: Txt(
-                                text: 'Hurry, only few left !!',
+                                text: prod['product_quantity'] == '0'
+                                    ? 'Out of stock'
+                                    : int.parse(prod['product_quantity']) <= 5
+                                        ? 'Hurry, only ${int.parse(prod['product_quantity'])} left !!'
+                                        : int.parse(prod['product_quantity'])
+                                                .isNegative
+                                            ? 'Comming soon'
+                                            : 'Hurry, only few left !!',
                                 color: Get.theme.primaryColorLight,
                                 fsize: 11,
                               ),
