@@ -25,7 +25,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   pinput: ^1.2.2
   fluttertoast:
-  upgrader: ^3.9.0
+  upgrader: ^3.13.0
   share: ^2.0.4
   razorpay_flutter: ^1.2.7
   url_launcher: ^6.0.15

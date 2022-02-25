@@ -101,7 +101,7 @@ class HomeCon extends GetxController with BaseController {
         await BaseClient().post(API().baseurl, body).catchError(handleError);
     if (response == null) return;
 
-    print(response.toString());
+    print('subcatttt'+response.toString());
     if (response != '[]' || response != '') {
       var data = json.decode(response);
       catproductlist.value = data;

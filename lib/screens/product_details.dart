@@ -732,21 +732,37 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                     .read('userid')
                                                     .toString() !=
                                                 'null') {
-                                              final CartCon ccon = Get.find();
-                                              ccon.cartlist.clear();
+                                              if (int.parse(prod[
+                                                      'product_quantity']) >=
+                                                  int.parse(hcon.qty.text
+                                                      .toString())) {
+                                                print(int.parse(prod[
+                                                        'product_quantity']) >=
+                                                    int.parse(hcon.qty.text
+                                                        .toString()));
+                                                final CartCon ccon = Get.find();
+                                                ccon.cartlist.clear();
 
-                                              prod['quantity'] =
-                                                  hcon.qty.text.toString();
-                                              ccon.cartlist.add(prod);
-                                              ccon.addsum();
+                                                prod['quantity'] =
+                                                    hcon.qty.text.toString();
+                                                ccon.cartlist.add(prod);
+                                                ccon.addsum();
 
-                                              ccon.singleprodid.value =
-                                                  prod['product_id'];
-                                              ccon.singleqty.value =
-                                                  hcon.qty.text;
-                                              Get.to(() => CheckOutView(
-                                                    isbuynow: true,
-                                                  ));
+                                                ccon.singleprodid.value =
+                                                    prod['product_id'];
+                                                ccon.singleqty.value =
+                                                    hcon.qty.text;
+                                                Get.to(() => CheckOutView(
+                                                      isbuynow: true,
+                                                    ));
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                  msg: 'Out of stock',
+                                                  backgroundColor:
+                                                      Colors.black54,
+                                                  textColor: Colors.white,
+                                                );
+                                              }
                                             } else {
                                               Fluttertoast.showToast(
                                                 msg: 'Please Login!!!',

@@ -276,15 +276,14 @@ class _ProductTileState extends State<ProductTile> {
                   }
                 },
                 child: CircleAvatar(
-                  child: Icon(
-                    widget.prod['favourite_list'] == 'true'
-                        ? CupertinoIcons.heart_fill
-                        : CupertinoIcons.heart,
-                    color: Colors.red,
-                  ),
-                  radius: 15.sp,
-                  backgroundColor: Colors.grey.withOpacity(0.8),
-                ),
+                    child: Icon(
+                      widget.prod['favourite_list'] == 'true'
+                          ? CupertinoIcons.heart_fill
+                          : CupertinoIcons.heart,
+                      color: Colors.red,
+                    ),
+                    radius: 15.sp,
+                    backgroundColor: Colors.transparent),
               )),
           if (widget.prod['product_notify'] != '' &&
               widget.prod['product_notify'] != null)

@@ -37,7 +37,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* We are dealing with entire south india i.e.Tamilnadu, Andhra Pradesh.",
+                          "* We are dealing with entire South India i.e., Tamilnadu, Andhra Pradesh.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),
@@ -46,7 +46,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* We are doing delivery and fitting int the shops for free of cost in goods value around 50000 thousand above.",
+                          "* We are doing delivery and fitting in the shops for free of cost in goods value around 50,000 Thousand above.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),
@@ -55,7 +55,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* Cash on delivery only possible for nre customers.",
+                          "* Cash on Delivery only possible for new customers.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),
@@ -72,7 +72,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* For any information relating to Warrenty,Guarantee or assurance kindly visit the product page on the platform.",
+                          "* For any information relating to Warranty, Guarantee or Assurance. Kindly visit the product page on the platform.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),
@@ -81,7 +81,7 @@ class TermsView extends StatelessWidget {
                     ),
                     Txt(
                       text:
-                          "* No deliveries though any courier or parcel service.In case of urgent deliveries to pay is applicable and we are not responsible for any transports damages.",
+                          "* No deliveries through any courier or parcel service. In case of urgent deliveries, To Pay is applicable and we are not responsible for any transports for any transports damages.",
                       defalutsize: true,
                       color: Colors.grey,
                     ),

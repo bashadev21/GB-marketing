@@ -93,6 +93,7 @@ class _BottamBarState extends State<BottamBar> {
         endDrawer: EndDrawerWidget(),
         drawer: DrawerWidget(),
         body: UpgradeAlert(
+          debugLogging: true,
           // onIgnore: () {
           //   return true;
           // },

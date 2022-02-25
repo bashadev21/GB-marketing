@@ -335,9 +335,22 @@ class HomeView extends StatelessWidget {
                                                 horizontal: 20, vertical: 10),
                                             child: InkWell(
                                               onTap: () {
-                                                hcon.serachprodview(
-                                                    search['suggestion']);
-                                                Get.to(() => ProductsView());
+                                                if (search['cat_sub'] == 2) {
+                                                  hcon.getpopcatprod(
+                                                      search['id'],
+                                                      paramn: 'sub_categoryid');
+                                                  Get.to(() => ProductsView());
+                                                } else if (search['cat_sub'] ==
+                                                    1) {
+                                                  hcon.getpopcatprod(
+                                                    search['id'],
+                                                  );
+                                                  Get.to(() => ProductsView());
+                                                } else {
+                                                  hcon.serachprodview(
+                                                      search['suggestion']);
+                                                  Get.to(() => ProductsView());
+                                                }
                                               },
                                               child: Row(
                                                 children: [

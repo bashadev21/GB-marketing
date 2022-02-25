@@ -204,8 +204,9 @@ class BaseController {
       var message = error.message;
       DialogHelper.showErroDialog(description: message);
     } else if (error is ApiNotRespondingException) {
-      DialogHelper.showErroDialog(
-          description: 'Oops! It took longer to respond.');
+      print('took longer');
+      // DialogHelper.showErroDialog(
+      //     description: 'Oops! It took longer to respond.');
     }
   }
 
