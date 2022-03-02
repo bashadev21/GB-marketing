@@ -103,7 +103,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                       IconButton(
                           onPressed: () => Scaffold.of(context).openEndDrawer(),
                           icon: Icon(
-                            Icons.more_vert,
+                            Icons.category,
                             color: Colors.white,
                           )),
                     ],
@@ -120,7 +120,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                       IconButton(
                           onPressed: () => Scaffold.of(context).openEndDrawer(),
                           icon: Icon(
-                            Icons.more_vert,
+                            Icons.category,
                             color: Colors.white,
                           )),
                     ],
@@ -130,7 +130,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                   IconButton(
                       onPressed: () => Scaffold.of(context).openEndDrawer(),
                       icon: Icon(
-                        Icons.more_vert,
+                        Icons.category,
                         color: Colors.white,
                       )),
                 ],

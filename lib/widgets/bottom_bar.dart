@@ -83,7 +83,7 @@ class _BottamBarState extends State<BottamBar> {
 
   @override
   Widget build(BuildContext context) {
-    // Upgrader().clearSavedSettings();
+    Upgrader().clearSavedSettings();
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
@@ -94,6 +94,10 @@ class _BottamBarState extends State<BottamBar> {
         drawer: DrawerWidget(),
         body: UpgradeAlert(
           debugLogging: true,
+          showIgnore: false,
+          showLater: false,
+          canDismissDialog: false,
+
           // onIgnore: () {
           //   return true;
           // },
