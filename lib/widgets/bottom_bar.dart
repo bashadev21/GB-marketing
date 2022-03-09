@@ -87,11 +87,11 @@ class _BottamBarState extends State<BottamBar> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-        appBar: BaseAppBar(
-          carticon: false,
-        ),
-        endDrawer: EndDrawerWidget(),
-        drawer: DrawerWidget(),
+        // appBar: BaseAppBar(
+        //   carticon: false,
+        // ),
+        // endDrawer: EndDrawerWidget(),
+        // drawer: DrawerWidget(),
         body: UpgradeAlert(
           debugLogging: true,
           showIgnore: false,

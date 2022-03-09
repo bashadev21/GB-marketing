@@ -7,6 +7,7 @@ import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
+import 'screens/dashboard/home.dart';
 import 'screens/login.dart';
 import 'services/controllers/cart.dart';
 import 'services/controllers/category.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
         // home: GetStorage().read('userid').toString() == 'null'
         //     ? LoginView()
         //     : BottamBar(currentindex: 0),
-        home: BottamBar(currentindex: 0),
+        home: HomeView(),
         debugShowCheckedModeBanner: false,
       );
     });

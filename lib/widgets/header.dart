@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/dashboard/cart.dart';
+import 'package:gb_marketing/screens/dashboard/home.dart';
 import 'package:gb_marketing/services/controllers/cart.dart';
 import 'package:gb_marketing/widgets/bottom_bar.dart';
 import 'package:get/get.dart';
@@ -52,8 +54,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ? Row(
                     children: [
                       IconButton(
-                        onPressed: () =>
-                            Get.offAll(() => BottamBar(currentindex: 2)),
+                        onPressed: () => Get.to(() => CartView()),
                         icon: Stack(
                           fit: StackFit.expand,
                           children: [
@@ -94,8 +95,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       ),
                       IconButton(
-                          onPressed: () =>
-                              Get.offAll(() => BottamBar(currentindex: 0)),
+                          onPressed: () => Get.offAll(() => HomeView()),
                           icon: Icon(
                             Icons.home,
                             color: Colors.white,

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gb_marketing/screens/dashboard/profile.dart';
 import 'package:gb_marketing/screens/drawer_menus/about.dart';
 import 'package:gb_marketing/screens/drawer_menus/contact.dart';
 import 'package:gb_marketing/screens/drawer_menus/need_help.dart';
@@ -111,9 +112,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   hcon.showclear.value = false;
                   Get.back();
                   if (GetStorage().read('userid').toString() != 'null') {
-                    Get.offAll(() => BottamBar(
-                          currentindex: 3,
-                        ));
+                    Get.to(() => ProfileView());
                   } else {
                     Get.offAll(() => LoginView());
                   }
